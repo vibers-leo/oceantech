@@ -12,6 +12,10 @@ import AdminSettings from '@/components/admin/AdminSettings';
 import BannerManager from '@/components/admin/BannerManager';
 import StoreStatus from '@/components/admin/StoreStatus';
 import MemberManager from '@/components/admin/MemberManager';
+import ShopeeOptimizer from '@/components/admin/ShopeeOptimizer';
+import SEALiveMap from '@/components/admin/SEALiveMap';
+
+import TeamCalendar from '@/components/admin/TeamCalendar';
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
@@ -43,6 +47,24 @@ export default function AdminPage() {
           >
             {language === 'ko' ? '대시보드' : 'Dashboard'}
           </div>
+          
+          <div className={styles.navGroupTitle}>GLOBAL EXPANSION</div>
+          
+          <div 
+            className={`${styles.navItem} ${activeTab === 'shopee_opt' ? styles.active : ''}`}
+            onClick={() => setActiveTab('shopee_opt')}
+          >
+            {language === 'ko' ? '쇼피 리스팅 (AI)' : 'Shopee Listing (AI)'}
+          </div>
+          <div 
+            className={`${styles.navItem} ${activeTab === 'live_map' ? styles.active : ''}`}
+            onClick={() => setActiveTab('live_map')}
+          >
+            {language === 'ko' ? '동남아 관제탑 (Live)' : 'SEA Live Map'}
+          </div>
+
+          <div className={styles.navGroupTitle}>OPERATIONS</div>
+
           <div 
             className={`${styles.navItem} ${activeTab === 'orders' ? styles.active : ''}`}
             onClick={() => setActiveTab('orders')}
@@ -89,6 +111,8 @@ export default function AdminPage() {
               if (language === 'ko') {
                 switch (activeTab) {
                   case 'dashboard': return '대시보드';
+                  case 'shopee_opt': return '쇼피 리스팅 최적화 (AI)';
+                  case 'live_map': return '동남아시아 실시간 관제탑';
                   case 'orders': return '주문 관리';
                   case 'members': return '회원 승인 및 관리';
                   case 'pricing': return '글로벌 가격 전략';
@@ -107,6 +131,9 @@ export default function AdminPage() {
         <div className={styles.contentArea}>
           {activeTab === 'dashboard' && (
             <>
+              {/* Team Calendar Section - Top Priority */}
+              <TeamCalendar />
+
               <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '총 주문 수' : 'Total Orders'}</h3>
@@ -128,17 +155,19 @@ export default function AdminPage() {
               <div className={styles.recentOrders}>
                 <h2>{language === 'ko' ? '최근 활동' : 'Recent Activity'}</h2>
                 <div className={styles.alertBox}>
-                  <strong>{language === 'ko' ? '포트원 결제 연동 준비' : 'Ready for Portone Payments'}</strong>
+                  <strong>{language === 'ko' ? '글로벌 확장 준비 완료' : 'Global Expansion Ready'}</strong>
                   <p>
                     {language === 'ko' 
-                      ? '설정(Settings) 메뉴에서 API 키를 설정하여 실시간 주문 추적을 활성화하세요.' 
-                      : 'Configure API keys in Settings to enable real-time order tracking.'}
+                      ? '새로운 [쇼피 리스팅 AI]와 [동남아 관제탑] 기능이 추가되었습니다. 왼쪽 메뉴에서 확인하세요.' 
+                      : 'New features [Shopee AI] and [SEA Live Map] are live. Check the sidebar.'}
                   </p>
                 </div>
               </div>
             </>
           )}
 
+          {activeTab === 'shopee_opt' && <ShopeeOptimizer />}
+          {activeTab === 'live_map' && <SEALiveMap />}
           {activeTab === 'orders' && <OrderManager />}
           {activeTab === 'members' && <MemberManager />}
           {activeTab === 'pricing' && <PriceSimulator />}

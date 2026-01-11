@@ -7,6 +7,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { ToastProvider } from '@/context/ToastContext';
+import AIChatBot from '@/components/AIChatBot';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -32,6 +33,7 @@ export default function RootLayout({
                 {children}
               </main>
               <Footer />
+              <AIChatBot />
               <ScrollToTop />
             </AuthProvider>
           </ToastProvider>

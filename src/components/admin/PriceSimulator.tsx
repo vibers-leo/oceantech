@@ -45,6 +45,7 @@ export default function PriceSimulator() {
   const [prevRates, setPrevRates] = useState<Record<string, number>>(YESTERDAY_RATES);
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [safetyBuffer, setSafetyBuffer] = useState(3); // Default 3% extra buffer
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -73,17 +74,53 @@ export default function PriceSimulator() {
     setProducts(products.map(p => p.id === id ? { ...p, priceKRW: newPrice } : p));
   };
 
+  const isWonWeak = rates['USD'] < YESTERDAY_RATES['USD'];
+
   return (
     <div className={styles.componentContainer}>
       <h2 className={styles.title}>
-        {language === 'ko' ? '글로벌 판매 전략 시뮬레이터 (아마존 & 쇼피)' : 'Global Strategy Pricing (Amazon & Shopee)'}
+        {language === 'ko' ? '글로벌 판매 전략 및 환율 시뮬레이터' : 'Global Strategy & Exchange Rate Simulator'}
       </h2>
+      
+      <div className={styles.volatilityAlert} style={{
+        background: isWonWeak ? '#fff7ed' : '#f0fdf4',
+        border: `1px solid ${isWonWeak ? '#fdba74' : '#86efac'}`,
+        padding: '15px',
+        borderRadius: '8px',
+        marginBottom: '20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div>
+          <strong style={{ color: isWonWeak ? '#c2410c' : '#15803d' }}>
+            {language === 'ko' 
+              ? `[환율 상태] 현재 원화 ${isWonWeak ? '약세' : '강세'} 국면` 
+              : `[FX Status] KRW is currently ${isWonWeak ? 'Weak' : 'Strong'}`}
+          </strong>
+          <p style={{ margin: '5px 0 0', fontSize: '0.9rem', color: '#666' }}>
+            {language === 'ko'
+              ? '달러 대비 원화 가치가 하락하여 수출 경쟁력은 높아졌으나, 원자재 비용 상승을 고려해야 합니다.'
+              : 'KRW value dropped against USD. Export competitiveness increased, but check material costs.'}
+          </p>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+           <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>환율 변동 대비 안전 마진 (Safety Buffer)</label>
+           <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '5px' }}>
+              <input 
+                type="number" 
+                value={safetyBuffer} 
+                onChange={(e) => setSafetyBuffer(Number(e.target.value))}
+                style={{ width: '60px', padding: '5px', borderRadius: '4px', border: '1px solid #ddd' }}
+              /> %
+           </div>
+        </div>
+      </div>
+
       <p className={styles.desc}>
         {language === 'ko' 
-          ? '해외 플랫폼 수수료(Amazon ~15%, Shopee ~5~10%) 및 배송 완충비용을 고려한 권장 판매가입니다.'
-          : 'Recommended selling price considering overseas platform fees and shipping buffer.'}
-        <br/>
-        <small>* 적용 마진율: Amazon (160%), Shopee (135%) 기준 자동 계산</small>
+          ? '해외 플랫폼 수수료(Amazon ~15%, Shopee ~10%) 및 배송/안전 마진을 포함한 최종 제안 판매가입니다.'
+          : 'Final suggested selling price including platform fees (~15%), shipping, and safety buffer.'}
       </p>
       
       {loading ? <div>Loading Rates...</div> : (
@@ -92,15 +129,15 @@ export default function PriceSimulator() {
             <thead>
               <tr>
                 <th>{language === 'ko' ? '제품 정보' : 'Product Information'}</th>
-                <th style={{width: '150px'}}>{language === 'ko' ? '기준 판매가 (KRW)' : 'Base Price (KRW)'}</th>
+                <th style={{width: '150px'}}>{language === 'ko' ? '기준가 (KRW)' : 'Base (KRW)'}</th>
                 {CURRENCIES.map(c => (
                    <th key={c.code}>
                      <div className={styles.thCol}>
-                       <span>{language === 'ko' ? c.countryKO : c.country} ({c.code})</span>
-                       <span className={styles.rate}>x {rates[c.code]?.toFixed(4)}</span>
+                       <span>{language === 'ko' ? c.countryKO : c.country}</span>
+                       <span className={styles.rate}>1₩ = {rates[c.code]?.toFixed(5)}</span>
                      </div>
                    </th>
-                ))}
+                 ))}
               </tr>
             </thead>
             <tbody>
@@ -115,34 +152,44 @@ export default function PriceSimulator() {
                       onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
                     />
                   </td>
-                  {CURRENCIES.map(c => (
-                    <td key={c.code} className={styles.currVal}>
-                      <div className={styles.priceMain}>
-                        {formatCurrency(p.priceKRW * (rates[c.code] || 0) * c.markup, c.code)}
-                      </div>
-                      
-                      {/* Fluctuation Indicator */}
-                      {rates[c.code] && (
-                        <div className={styles.priceDiff}>
-                          {(() => {
-                            const current = p.priceKRW * rates[c.code] * c.markup;
-                            const prev = p.priceKRW * (prevRates[c.code] || rates[c.code]) * c.markup;
-                            const diff = current - prev;
-                            const isPositive = diff >= 0;
-                            return (
-                              <span style={{ color: isPositive ? '#166534' : '#991b1b', fontSize: '0.75rem' }}>
-                                {isPositive ? '▲' : '▼'} {formatCurrency(Math.abs(diff), c.code)}
-                              </span>
-                            );
-                          })()}
+                  {CURRENCIES.map(c => {
+                    const currentRate = rates[c.code] || 0;
+                    const prevRate = prevRates[c.code] || currentRate;
+                    const totalMarkup = c.markup * (1 + safetyBuffer / 100);
+                    
+                    const currentPrice = p.priceKRW * currentRate * totalMarkup;
+                    const prevPrice = p.priceKRW * prevRate * totalMarkup;
+                    const diff = currentPrice - prevPrice;
+                    const isPositive = diff >= 0;
+
+                    return (
+                      <td key={c.code} className={styles.currVal} style={{ paddingBottom: '1.5rem', paddingTop: '1rem', verticalAlign: 'top' }}>
+                        <div className={styles.priceMain} style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#1e293b' }}>
+                          {formatCurrency(currentPrice, c.code)}
                         </div>
-                      )}
-                    </td>
-                  ))}
+                        
+                        {/* KRW Conversion Display */}
+                        <div style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
+                          (≈ {Math.round(currentPrice / currentRate).toLocaleString()}원)
+                        </div>
+
+                        {/* Fluctuation Indicator */}
+                        <div className={styles.priceDiff} style={{ marginTop: '4px' }}>
+                          <span style={{ color: isPositive ? '#166534' : '#991b1b', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                            {isPositive ? '▲' : '▼'} {formatCurrency(Math.abs(diff), c.code)}
+                            <span style={{ color: '#94a3b8', fontSize: '0.75rem', marginLeft: '2px' }}>
+                               변동
+                            </span>
+                          </span>
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
           </table>
+          <div style={{ height: '100px' }}></div> {/* Added Bottom Space */}
         </div>
       )}
     </div>

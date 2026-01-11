@@ -1,0 +1,40 @@
+{
+  "companyName": "(주)오션테크 (Ocean Tech Co., Ltd.)",
+  "bizNo": "",
+  "ceo": "조제복",
+  "establishmentDate": "",
+  "address": "부산광역시 남구 못골번영로 71번길 74 (대연동, 부산예술대학교 본관 4층)",
+  "website": "www.rminu.com",
+  "managerName": "",
+  "managerTel": "010-7169-3438",
+  "managerEmail": "jbanion@naver.com",
+  "sales2023": "",
+  "sales2024": "",
+  "sales2025": "1,000",
+  "export2023": "0",
+  "export2024": "0",
+  "export2025": "50,000",
+  "itemParams": "제모용 왁스 (Hair Removal Wax)",
+  "hscode": "3307.90",
+  "overview": "(주)오션테크는 2024년 설립된 뷰티 왁싱 전문 기업으로, 전문가용 하이엔드 왁스 브랜드 '라캉(LACAN)'과 이를 기반으로 한 셀프 왁싱 브랜드 '알마이너(R-MINU)'를 운영하고 있습니다.\n\n당사는 국내 프리미엄 왁싱 샵 200여 곳의 실제 시술 데이터와 아티스트의 피드백을 기반으로 제품을 개발합니다. '라캉'을 통해 검증된 프로페셔널 포뮬러를 홈케어에 맞게 최적화하여, 독자적인 '3 Core Technologies'로 구현했습니다. 현재 국내 온라인 시장에서 품질을 인정받고 있으며, 이러한 K-Salon의 노하우를 바탕으로 글로벌 홈케어 시장을 공략하고자 합니다.",
+  "productDetails": "당사의 주력 제품인 '알마이너 하드 왁스'는 전문가 수준의 제모력을 가정에서도 안전하게 구현한 제품입니다.\n\n1. Elasticity Tech (엘라스틱 테크): 공중합체(Copolymer MI 150) 성분을 적용하여 왁스가 끊어지지 않는 고탄성을 유지, 초보자도 쉽게 롱 스트립 시술이 가능합니다. (고온다습한 환경에서도 물성 유지)\n2. Hair Cohesion Tech (모발 응집 테크): 아비에트산 85% 이상의 천연 유래 성분으로 미세한 잔털까지 완벽하게 응집하여 제거합니다.\n3. Adhesion Coating Tech (밀착 코팅 테크): 피부 점착은 최소화하고 모근 밀착력은 극대화하여 통증과 자극을 획기적으로 낮췄습니다.\n\n또한, 50-55도의 낮은 융점으로 화상 위험을 줄였으며, 식품 등급(Food Grade) 원료를 사용하여 민감한 피부에도 안심하고 사용할 수 있습니다.",
+  "marketAnalysis": "1. 타겟 시장: 동남아시아 (싱가포르, 말레이시아, 베트남) 및 북미 (미국)\n\n2. 선정 사유 및 차별화 전략:\n- 동남아시아 (Shopee) → '기후 맞춤형 솔루션'\n  : 고온다습한 기후로 인해 왁스가 녹거나 끈적이는 문제를 해결한 'Heat-Resistance' 물성과 K-Beauty 선호도를 결합하여 시장을 공략합니다.\n\n- 북미 (Amazon US) → 'Cost-saving Premium'\n  : 회당 $100 이상의 높은 살롱 시술 비용이 부담스러운 소비자를 타겟으로, '샵 1회 비용으로 5회 홈케어'가 가능한 고가성비 프리미엄 전략을 펼칩니다.",
+  "marketingPlan": "1. 수출 준비 (규격 인증)\n- 북미: MoCRA(미국 화장품 규제 현대화법) 대응 및 FDA 시설 등록\n- 동남아: 주요 수출국 식약처 등록 (Notification)\n\n2. 글로벌 플랫폼 입점 및 최적화\n- Shopee(SEA) 및 Amazon(US) 브랜드 스토어 개설\n- 현지 언어/문화/검색 트렌드에 맞춘 SEO 최적화 상세페이지 제작\n\n3. 디지털 마케팅 전략\n- 숏폼 콘텐츠: 틱톡/릴스를 통해 끊어지지 않는 왁스 영상(Visual Satisfaction) 바이럴 유도\n- 키워드 광고: 'Pain-free', 'Sensitive Skin' 등 기능성 키워드와 'Korean Salon Quality' 키워드 동시 공략",
+  "budgetItems": [
+    {
+      "category": "홍보/광고",
+      "detail": "Amazon/Shopee 키워드 검색 광고 및 인플루언서 마케팅",
+      "amount": "10,000"
+    },
+    {
+      "category": "해외규격인증",
+      "detail": "FDA 등록, MoCRA 대응 컨설팅 및 인허가 대행비",
+      "amount": "5,000"
+    },
+    {
+      "category": "브랜드 개발",
+      "detail": "글로벌 마켓용 외국어 상세페이지 및 패키지 디자인",
+      "amount": "5,000"
+    }
+  ]
+}
