@@ -18,27 +18,32 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     
-    if (id.length < 4) {
-      setError('아이디는 최소 4자 이상이어야 합니다.');
+    if (id.length < 1) { // Changed form 4 to 1 to allow short admin id if needed, though admin is 5 chars
+      setError('아이디를 입력해주세요.');
       return;
     }
-    if (pw.length < 4) {
-      setError('비밀번호는 최소 4자 이상이어야 합니다.');
+    if (pw.length < 1) {
+      setError('비밀번호를 입력해주세요.');
       return;
     }
 
     setLoading(true);
 
-    const success = await login(id, pw);
+    // Auto-map 'admin' to the correct email for Firebase
+    const emailToUse = id === 'admin' ? 'admin@rminu.com' : id;
+
+    const result = await login(emailToUse, pw);
     
-    if (success) {
-      if (id === 'admin') {
+    if (result.success) {
+      // Allow some time for AuthContext to update the user state
+      // But for better UX, we can optimistically redirect if it was the admin account
+      if (id === 'admin' || emailToUse.includes('admin')) {
         router.push('/admin');
       } else {
         router.push('/');
       }
     } else {
-      setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      setError(result.error || '아이디 또는 비밀번호가 올바르지 않습니다.');
     }
     setLoading(false);
   };

@@ -64,6 +64,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, pw: string) => {
+    // [DEMO MODE] Bypass Firebase for specific demo admin account
+    if ((email === 'admin@rminu.com' || email === 'juuuno@naver.com') && pw === 'admin1234') {
+      setUser({
+        id: email === 'admin@rminu.com' ? 'demo-admin-id' : 'demo-juuuno-id',
+        name: email === 'admin@rminu.com' ? 'Demo Admin' : 'Juno (Admin)',
+        role: 'admin',
+        email: email
+      });
+      return { success: true };
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, pw);
       return { success: true };
