@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, X, Calendar as CalendarIcon, Clock, Users } from 'lucide-react';
-import styles from './AdminComponents.module.css';
+import { ChevronLeft, ChevronRight, Plus, X, Calendar as CalendarIcon } from 'lucide-react';
+import styles from './TeamCalendar.module.css';
 
 interface Event {
   id: number;
@@ -67,7 +67,7 @@ export default function TeamCalendar() {
 
   const handleDeleteEvent = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (confirm('Delete this event?')) {
+    if (confirm('일정을 삭제하시겠습니까?')) {
       setEvents(events.filter(ev => ev.id !== id));
     }
   };
@@ -76,7 +76,7 @@ export default function TeamCalendar() {
     const cells = [];
     // Empty cells for padding
     for (let i = 0; i < firstDayOfMonth; i++) {
-        cells.push(<div key={`empty-${i}`} className="h-32 bg-[#1e293b]/30 border border-[#334155]/30"></div>);
+        cells.push(<div key={`empty-${i}`} className={styles.cell} style={{backgroundColor: '#f9fafb'}}></div>);
     }
     
     // Days
@@ -84,35 +84,37 @@ export default function TeamCalendar() {
         const dateStr = formatDate(day);
         const dayEvents = events.filter(e => e.date === dateStr);
         const isToday = dateStr === new Date().toISOString().split('T')[0];
+        const isWeekend = new Date(dateStr).getDay() === 0 || new Date(dateStr).getDay() === 6;
 
         cells.push(
             <div 
                 key={day} 
                 onClick={() => setSelectedDate(dateStr)}
-                className={`h-32 border border-[#334155]/50 p-2 relative hover:bg-[#334155]/20 transition-colors cursor-pointer group ${isToday ? 'bg-[#38bdf8]/10' : 'bg-[#1e293b]/50'}`}
+                className={`${styles.cell} ${isToday ? styles.today : ''}`}
             >
-                <div className={`flex justify-between items-start mb-2`}>
-                    <span className={`text-sm font-bold ${isToday ? 'text-[#38bdf8] bg-[#38bdf8]/20 px-2 py-0.5 rounded-full' : 'text-gray-400'}`}>
+                <div className={styles.cellHeader}>
+                    <span 
+                        className={`${styles.dayNumber} ${isToday ? styles.today : ''} ${isWeekend ? styles.weekend : ''}`}
+                    >
                         {day}
                     </span>
-                    <button className="opacity-0 group-hover:opacity-100 text-[#38bdf8] hover:bg-[#38bdf8]/20 p-1 rounded transition-all">
+                    <button className={styles.addBtn}>
                         <Plus size={14} />
                     </button>
                 </div>
                 
-                <div className="flex flex-col gap-1 overflow-y-auto max-h-[80px] scrollbar-hide">
+                <div className={styles.eventList}>
                     {dayEvents.map(ev => (
                         <div 
                             key={ev.id} 
-                            className={`text-xs p-1.5 rounded border-l-2 truncate flex justify-between items-center group/item
-                             ${ev.type === 'meeting' ? 'bg-blue-900/40 border-blue-500 text-blue-200' : 
-                               ev.type === 'deadline' ? 'bg-red-900/40 border-red-500 text-red-200' : 
-                               'bg-slate-700/40 border-slate-500 text-slate-300'}`}
+                            className={`${styles.event} ${styles[ev.type]}`}
                         >
-                            <span>{ev.title}</span>
+                            <span style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '85%'}}>
+                                {ev.title}
+                            </span>
                             <X 
                                 size={10} 
-                                className="opacity-0 group-hover/item:opacity-100 cursor-pointer hover:text-white"
+                                className={styles.deleteBtn}
                                 onClick={(e) => handleDeleteEvent(ev.id, e)} 
                             />
                         </div>
@@ -125,95 +127,101 @@ export default function TeamCalendar() {
   };
 
   return (
-    <div className={styles.componentContainer} style={{ background: '#0f172a', border: '1px solid #334155', marginBottom: '20px' }}>
+    <div className={styles.calendarContainer}>
       
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-4">
-            <h2 className={styles.title} style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <CalendarIcon className="text-[#38bdf8]" />
-                Team Schedule
-            </h2>
-            <div className="flex items-center gap-2 bg-[#1e293b] rounded-lg p-1 border border-[#334155]">
-                <button onClick={handlePrevMonth} className="p-1 hover:bg-[#334155] rounded text-gray-400 hover:text-white"><ChevronLeft size={20}/></button>
-                <span className="font-bold text-white px-2 w-32 text-center text-sm">
+      <div className={styles.header}>
+        <div className={styles.headerTitleGroup}>
+            <div className={styles.iconBox}>
+                <CalendarIcon size={20} />
+            </div>
+            <div>
+                <h2 className={styles.title}>Team Calendar</h2>
+                <p className={styles.subtitle}>Manage schedules & deadlines</p>
+            </div>
+        </div>
+
+        <div className={styles.controls}>
+            <div className={styles.legend}>
+                <div className={styles.legendItem}>
+                    <div className={`${styles.dot} ${styles.meeting}`}></div> Meeting
+                </div>
+                <div className={styles.legendItem}>
+                    <div className={`${styles.dot} ${styles.deadline}`}></div> Deadline
+                </div>
+            </div>
+
+            <div className={styles.navButton}>
+                <button onClick={handlePrevMonth} className={styles.navBtn}><ChevronLeft size={16}/></button>
+                <span className={styles.currentDate}>
                     {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
                 </span>
-                <button onClick={handleNextMonth} className="p-1 hover:bg-[#334155] rounded text-gray-400 hover:text-white"><ChevronRight size={20}/></button>
-            </div>
-        </div>
-        
-        <div className="flex gap-4 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div> Meeting
-            </div>
-            <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div> Deadline
+                <button onClick={handleNextMonth} className={styles.navBtn}><ChevronRight size={16}/></button>
             </div>
         </div>
       </div>
 
-      {/* Calendar Grid Header */}
-      <div className="grid grid-cols-7 mb-2 text-center text-sm font-semibold text-gray-500 uppercase tracking-wider">
-        <div className="text-red-400">Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div className="text-blue-400">Sat</div>
+      {/* Grid */}
+      <div>
+        <div className={styles.gridHeader}>
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
+                <div key={day} className={`${styles.dayName} ${i === 0 ? styles.sun : i === 6 ? styles.sat : ''}`}>
+                    {day}
+                </div>
+            ))}
+        </div>
+        <div className={styles.gridBody}>
+            {renderCells()}
+        </div>
       </div>
 
-      {/* Calendar Body */}
-      <div className="grid grid-cols-7 gap-1 bg-[#334155]/20 p-1 rounded-lg border border-[#334155]">
-        {renderCells()}
-      </div>
-
-      {/* Add Event Modal (Simplified inline) */}
+      {/* Modal */}
       {selectedDate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn">
-            <div className="bg-[#1e293b] border border-[#334155] p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-                <h3 className="text-lg font-bold text-white mb-4 flex justify-between items-center">
-                    Add Event ({selectedDate})
-                    <button onClick={() => setSelectedDate(null)} className="text-gray-400 hover:text-white"><X size={20}/></button>
-                </h3>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+                <div className={styles.modalHeader}>
+                    <div>
+                        <h3 className={styles.modalTitle}>Add Schedule</h3>
+                        <p className={styles.modalDate}>{selectedDate}</p>
+                    </div>
+                    <button onClick={() => setSelectedDate(null)} className={styles.closeBtn}><X size={16}/></button>
+                </div>
                 
                 <input 
                     autoFocus
                     type="text" 
-                    placeholder="Event Title..."
-                    className="w-full bg-[#0f172a] border border-[#334155] text-white rounded-lg p-3 mb-4 focus:border-[#38bdf8] outline-none"
+                    placeholder="e.g. Strategy Meeting..."
+                    className={styles.input}
                     value={newEventTitle}
                     onChange={(e) => setNewEventTitle(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleAddEvent()}
                 />
                 
-                <div className="flex gap-2 mb-6">
-                    {['meeting', 'deadline', 'other'].map(type => (
+                <div className={styles.typeSelector}>
+                    {[
+                        { id: 'meeting', label: 'Meeting' },
+                        { id: 'deadline', label: 'Deadline' },
+                        { id: 'other', label: 'Other' }
+                    ].map(type => (
                         <button
-                            key={type}
-                            onClick={() => setNewEventType(type as any)}
-                            className={`flex-1 py-2 text-xs rounded-lg border capitalize transition-all ${
-                                newEventType === type 
-                                ? 'bg-[#38bdf8]/20 border-[#38bdf8] text-[#38bdf8]' 
-                                : 'bg-transparent border-[#334155] text-gray-400 hover:border-gray-500'
-                            }`}
+                            key={type.id}
+                            onClick={() => setNewEventType(type.id as any)}
+                            className={`${styles.typeBtn} ${newEventType === type.id ? styles.active + ' ' + styles[type.id] : ''}`}
                         >
-                            {type}
+                            {type.label}
                         </button>
                     ))}
                 </div>
 
                 <button 
                     onClick={handleAddEvent}
-                    className="w-full bg-gradient-to-r from-[#00d2ff] to-[#3a7bd5] text-white font-bold py-3 rounded-xl hover:opacity-90 transition-opacity"
+                    className={styles.createBtn}
                 >
-                    Create Schedule
+                    Create Event
                 </button>
             </div>
         </div>
       )}
-
     </div>
   );
 }

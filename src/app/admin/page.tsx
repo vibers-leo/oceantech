@@ -14,6 +14,7 @@ import StoreStatus from '@/components/admin/StoreStatus';
 import MemberManager from '@/components/admin/MemberManager';
 import ShopeeOptimizer from '@/components/admin/ShopeeOptimizer';
 import SEALiveMap from '@/components/admin/SEALiveMap';
+import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 
 import TeamCalendar from '@/components/admin/TeamCalendar';
 
@@ -61,6 +62,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab('live_map')}
           >
             {language === 'ko' ? '동남아 관제탑 (Live)' : 'SEA Live Map'}
+          </div>
+          <div 
+            className={`${styles.navItem} ${activeTab === 'tradekorea' ? styles.active : ''}`}
+            onClick={() => setActiveTab('tradekorea')}
+          >
+            {language === 'ko' ? '트레이드코리아 분석' : 'TradeKorea Strategy'}
           </div>
 
           <div className={styles.navGroupTitle}>OPERATIONS</div>
@@ -113,6 +120,7 @@ export default function AdminPage() {
                   case 'dashboard': return '대시보드';
                   case 'shopee_opt': return '쇼피 리스팅 최적화 (AI)';
                   case 'live_map': return '동남아시아 실시간 관제탑';
+                  case 'tradekorea': return '트레이드코리아 활용 전략';
                   case 'orders': return '주문 관리';
                   case 'members': return '회원 승인 및 관리';
                   case 'pricing': return '글로벌 가격 전략';
@@ -168,6 +176,7 @@ export default function AdminPage() {
 
           {activeTab === 'shopee_opt' && <ShopeeOptimizer />}
           {activeTab === 'live_map' && <SEALiveMap />}
+          {activeTab === 'tradekorea' && <TradeKoreaAnalysis />}
           {activeTab === 'orders' && <OrderManager />}
           {activeTab === 'members' && <MemberManager />}
           {activeTab === 'pricing' && <PriceSimulator />}
