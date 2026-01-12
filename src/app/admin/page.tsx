@@ -17,8 +17,7 @@ import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 
 import { Menu, X } from 'lucide-react';
-
-// ... imports
+import TeamCalendar, { CalendarEvent } from '@/components/admin/TeamCalendar';
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
@@ -26,6 +25,34 @@ export default function AdminPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default open
+
+  // Persistent Schedule State
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+  // Load from LocalStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('team_result_events');
+    if (saved) {
+      try {
+        setEvents(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse events', e);
+      }
+    }
+  }, []);
+
+  // Save to LocalStorage on change
+  useEffect(() => {
+    localStorage.setItem('team_result_events', JSON.stringify(events));
+  }, [events]);
+
+  const handleAddEvent = (newEvent: CalendarEvent) => {
+    setEvents(prev => [...prev, newEvent]);
+  };
+
+  const handleDeleteEvent = (id: number) => {
+    setEvents(prev => prev.filter(e => e.id !== id));
+  };
 
   // Protect Route
   useEffect(() => {
@@ -92,6 +119,13 @@ export default function AdminPage() {
           <div className={styles.navGroupTitle}>OPERATIONS</div>
 
           <div 
+            className={`${styles.navItem} ${activeTab === 'schedule' ? styles.active : ''}`}
+            onClick={() => { setActiveTab('schedule'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
+          >
+            {language === 'ko' ? '일정 관리' : 'Schedule Management'}
+          </div>
+
+          <div 
             className={`${styles.navItem} ${activeTab === 'orders' ? styles.active : ''}`}
             onClick={() => { setActiveTab('orders'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
@@ -143,6 +177,7 @@ export default function AdminPage() {
                   case 'shopee_opt': return '쇼피 리스팅 최적화 (AI)';
                   case 'live_map': return '동남아시아 실시간 관제탑';
                   case 'tradekorea': return '트레이드코리아 활용 전략';
+                  case 'schedule': return '일정 관리';
                   case 'orders': return '주문 관리';
                   case 'members': return '회원 승인 및 관리';
                   case 'pricing': return '글로벌 가격 전략';
@@ -162,7 +197,7 @@ export default function AdminPage() {
           {activeTab === 'dashboard' && (
             <>
               {/* Team Calendar Section - Top Priority */}
-              <TeamCalendar />
+              <TeamCalendar events={events} onAddEvent={handleAddEvent} onDeleteEvent={handleDeleteEvent} />
 
               <div className={styles.statsGrid}>
                 {/* Stat cards content... same as before */}
@@ -195,6 +230,12 @@ export default function AdminPage() {
                 </div>
               </div>
             </>
+          )}
+
+          {activeTab === 'schedule' && (
+             <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+                <TeamCalendar events={events} onAddEvent={handleAddEvent} onDeleteEvent={handleDeleteEvent} />
+             </div>
           )}
 
           {activeTab === 'shopee_opt' && <ShopeeOptimizer />}

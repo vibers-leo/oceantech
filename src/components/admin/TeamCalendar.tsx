@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, X, Calendar as CalendarIcon } from 'lucide-react';
 import styles from './TeamCalendar.module.css';
 
-interface Event {
+export interface CalendarEvent {
   id: number;
   date: string; // YYYY-MM-DD
   title: string;
@@ -12,15 +12,14 @@ interface Event {
   participants?: string;
 }
 
-const MOCK_EVENTS: Event[] = [
-  { id: 1, date: '2026-01-13', title: 'Ocean Tech Strategy Meeting', type: 'meeting', participants: 'All Staff' },
-  { id: 2, date: '2026-01-15', title: 'Shopee Listing Review', type: 'deadline', participants: 'Marketing Team' },
-  { id: 3, date: '2026-01-20', title: 'Export Voucher Submission', type: 'deadline', participants: 'Admin' },
-];
+interface TeamCalendarProps {
+  events: CalendarEvent[];
+  onAddEvent: (event: CalendarEvent) => void;
+  onDeleteEvent: (id: number) => void;
+}
 
-export default function TeamCalendar() {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 1)); // Start Jan 2026
-  const [events, setEvents] = useState<Event[]>(MOCK_EVENTS);
+export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: TeamCalendarProps) {
+  const [currentDate, setCurrentDate] = useState(new Date()); 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventType, setNewEventType] = useState<'meeting' | 'deadline' | 'other'>('meeting');
@@ -51,24 +50,24 @@ export default function TeamCalendar() {
     return `${year}-${month}-${d}`;
   };
 
-  const handleAddEvent = () => {
+  const triggerAddEvent = () => {
     if (!selectedDate || !newEventTitle.trim()) return;
-    const newEvent: Event = {
+    const newEvent: CalendarEvent = {
       id: Date.now(),
       date: selectedDate,
       title: newEventTitle,
       type: newEventType,
       participants: 'Team'
     };
-    setEvents([...events, newEvent]);
+    onAddEvent(newEvent);
     setNewEventTitle('');
     setSelectedDate(null); // Close modal
   };
 
-  const handleDeleteEvent = (id: number, e: React.MouseEvent) => {
+  const triggerDeleteEvent = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     if (confirm('일정을 삭제하시겠습니까?')) {
-      setEvents(events.filter(ev => ev.id !== id));
+      onDeleteEvent(id);
     }
   };
 
@@ -115,7 +114,7 @@ export default function TeamCalendar() {
                             <X 
                                 size={10} 
                                 className={styles.deleteBtn}
-                                onClick={(e) => handleDeleteEvent(ev.id, e)} 
+                                onClick={(e) => triggerDeleteEvent(ev.id, e)} 
                             />
                         </div>
                     ))}
@@ -194,7 +193,7 @@ export default function TeamCalendar() {
                     className={styles.input}
                     value={newEventTitle}
                     onChange={(e) => setNewEventTitle(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAddEvent()}
+                    onKeyDown={(e) => e.key === 'Enter' && triggerAddEvent()}
                 />
                 
                 <div className={styles.typeSelector}>
@@ -214,7 +213,7 @@ export default function TeamCalendar() {
                 </div>
 
                 <button 
-                    onClick={handleAddEvent}
+                    onClick={triggerAddEvent}
                     className={styles.createBtn}
                 >
                     Create Event
