@@ -85,7 +85,7 @@ export default function AIChatBot() {
 
     if (lowerInput.includes('수출') || lowerInput.includes('export')) {
       reply = language === 'ko' 
-        ? "현재 2026년 수출바우처 사업 계획이 시스템에 등록되어 있습니다.\n주요 타겟 국가는 [싱가포르, 말레이시아]이며, 목표 매출액은 5만 달러입니다. 관련 문서를 띄워드릴까요?"
+        ? "현재 2026년 수출바우처 사업 계획이 시스템에 등록되어 있습니다.\n주요 타겟 국가는 싱가포르, 말레이시아이며, 목표 매출액은 5만 달러입니다. 관련 문서를 띄워드릴까요?"
         : "The 2026 Export Voucher Plan is registered in the system. Target markets are Singapore and Malaysia with a $50k target. Shall I open the document?";
     } else if (lowerInput.includes('가격') || lowerInput.includes('price')) {
       reply = language === 'ko'
@@ -93,16 +93,16 @@ export default function AIChatBot() {
         : "Checking Global Pricing...\nBased on current rates, the R-minu Hard Wax (500g) MSRP is $18.50 USD. This includes a 160% markup margin.";
     } else if (lowerInput.includes('비전') || lowerInput.includes('vision') || lowerInput.includes('회사') || lowerInput.includes('company')) {
       reply = language === 'ko'
-        ? "오션테크의 비전은 [해양 바이오 기술]과 [디지털 뷰티]의 융합입니다.\n바다의 생명력을 데이터 기반의 홈케어 솔루션으로 재해석하여, 글로벌 No.1 스마트 뷰티 기업으로 도약하는 것이 목표입니다."
-        : "Ocean Tech's vision is the convergence of [Marine Bio-Tech] and [Digital Beauty].\nWe aim to be the Global No.1 Smart Beauty Company by reinterpreting marine vitality into data-driven home care solutions.";
+        ? "오션테크의 비전은 해양 바이오 기술과 디지털 뷰티의 융합입니다.\n바다의 생명력을 데이터 기반의 홈케어 솔루션으로 재해석하여, 글로벌 No.1 스마트 뷰티 기업으로 도약하는 것이 목표입니다."
+        : "Ocean Tech's vision is the convergence of Marine Bio-Tech and Digital Beauty.\nWe aim to be the Global No.1 Smart Beauty Company by reinterpreting marine vitality into data-driven home care solutions.";
     } else if (lowerInput.includes('안녕') || lowerInput.includes('hi') || lowerInput.includes('hello')) {
       reply = language === 'ko'
         ? "반갑습니다! 오늘 미팅 준비는 완벽하신가요? 제가 도울 일이 있다면 말씀해주세요."
         : "Greetings! Is everything ready for the meeting? Let me know if I can assist.";
     } else {
       reply = language === 'ko'
-        ? "죄송합니다. 현재 데모 모드에서는 [수출], [가격], [제품], [비전] 관련 문의에만 답변할 수 있도록 설정되어 있습니다."
-        : "I apologize. In Demo Mode, I am configured to answer inquiries related to [Export], [Price], [Products], and [Vision] only.";
+        ? "죄송합니다. 현재 데모 모드에서는 수출, 가격, 제품, 비전 관련 문의에만 답변할 수 있도록 설정되어 있습니다."
+        : "I apologize. In Demo Mode, I am configured to answer inquiries related to Export, Price, Products, and Vision only.";
     }
 
     setIsTyping(false);

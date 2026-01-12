@@ -62,7 +62,7 @@ export default function ShopeeOptimizer() {
       // Dynamic Generation Logic (Mock)
       const emojiTitle = ["🔥", "✨", "🌟"][Math.floor(Math.random() * 3)];
       const kwString = selectedKeywords.slice(0, 2).join(" & ");
-      const title = `${emojiTitle} [Korea No.1] ${productName} | ${kwString} ${selectedKeywords.includes('Ready Stock') ? '[Ready Stock]' : ''}`;
+      const title = `${emojiTitle} Korea No.1 ${productName} | ${kwString} ${selectedKeywords.includes('Ready Stock') ? '(Ready Stock)' : ''}`;
       
       setResult({
         title: title,

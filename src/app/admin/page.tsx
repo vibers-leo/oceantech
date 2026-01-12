@@ -166,8 +166,8 @@ export default function AdminPage() {
                   <strong>{language === 'ko' ? '글로벌 확장 준비 완료' : 'Global Expansion Ready'}</strong>
                   <p>
                     {language === 'ko' 
-                      ? '새로운 [쇼피 리스팅 AI]와 [동남아 관제탑] 기능이 추가되었습니다. 왼쪽 메뉴에서 확인하세요.' 
-                      : 'New features [Shopee AI] and [SEA Live Map] are live. Check the sidebar.'}
+                      ? '새로운 쇼피 리스팅 AI와 동남아 관제탑 기능이 추가되었습니다. 왼쪽 메뉴에서 확인하세요.' 
+                      : 'New features Shopee AI and SEA Live Map are live. Check the sidebar.'}
                   </p>
                 </div>
               </div>
