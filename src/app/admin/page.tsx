@@ -107,7 +107,7 @@ export default function AdminPage() {
             className={`${styles.navItem} ${activeTab === 'live_map' ? styles.active : ''}`}
             onClick={() => { setActiveTab('live_map'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
-            {language === 'ko' ? '동남아 관제탑 (Live)' : 'SEA Live Map'}
+            {language === 'ko' ? '동남아 시장분석 (Market Analysis)' : 'SEA Market Analysis'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'tradekorea' ? styles.active : ''}`}
@@ -175,7 +175,7 @@ export default function AdminPage() {
                 switch (activeTab) {
                   case 'dashboard': return '대시보드';
                   case 'shopee_opt': return '쇼피 리스팅 최적화 (AI)';
-                  case 'live_map': return '동남아시아 실시간 관제탑';
+                  case 'live_map': return '동남아 시장분석 및 관제탑';
                   case 'tradekorea': return '트레이드코리아 활용 전략';
                   case 'schedule': return '일정 관리';
                   case 'orders': return '주문 관리';

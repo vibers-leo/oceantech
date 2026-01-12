@@ -4,10 +4,20 @@ import React, { useEffect, useState } from 'react';
 import styles from './AdminComponents.module.css';
 
 /*
-  SEA Live Map (Control Tower)
+  SEA Market Analysis
   - Visualizes "Live Orders" from 6 SEA countries.
-  - Uses an abstract SVG map with coordinates for key capitals.
+  - Provides concise beauty market insights for each region.
 */
+
+// Market Data
+const MARKET_INSIGHTS = [
+  { id: 'VN', country: 'Vietnam', flag: '🇻🇳', title: 'K-Beauty Avid Fans', desc: 'High trust in Korean skincare. Price-sensitive but quality-focused. Influenser marketing is key.' },
+  { id: 'TH', country: 'Thailand', flag: '🇹🇭', title: 'Trend Leaders', desc: 'Sophisticated market with high competition. Strong demand for whitening & anti-aging. Social commerce is dominant.' },
+  { id: 'PH', country: 'Philippines', flag: '🇵🇭', title: 'Whitening Focus', desc: 'English-friendly market. Obsessed with whitening products. Low price point sensitivity for sachets/trial kits.' },
+  { id: 'MY', country: 'Malaysia', flag: '🇲🇾', title: 'Halal Conscious', desc: 'Multi-ethnic market. Halal certification is a major plus. High skincare awareness among urban population.' },
+  { id: 'SG', country: 'Singapore', flag: '🇸🇬', title: 'Premium & Clean', desc: 'High purchasing power. Preference for "Clean Beauty", eco-friendly, and premium clinical brands.' },
+  { id: 'ID', country: 'Indonesia', flag: '🇮🇩', title: 'Halal Mandatory', desc: 'Massive volume potential. BPOM & Halal certification effectively mandatory. Young demographic driving basic skincare growth.' },
+];
 
 // Coordinates roughly relative to a 800x600 viewBox
 const LOCATIONS = [
@@ -52,8 +62,8 @@ export default function SEALiveMap() {
     <div className={styles.componentContainer} style={{ background: '#0f172a', color: 'white', border: '1px solid #334155' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
-          <h2 className={styles.title} style={{ color: 'white', marginBottom: '5px' }}>SEA Live Command Center</h2>
-          <p className={styles.desc} style={{ color: '#94a3b8' }}>Real-time order tracking from Shopee & Lazada platforms.</p>
+          <h2 className={styles.title} style={{ color: 'white', marginBottom: '5px' }}>SEA Market Analysis</h2>
+          <p className={styles.desc} style={{ color: '#94a3b8' }}>Real-time monitoring & Regional Beauty Market Insights</p>
         </div>
         <div style={{ display: 'flex', gap: '15px' }}>
            <div className="flex flex-col items-end">
@@ -67,7 +77,7 @@ export default function SEALiveMap() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '20px', marginBottom: '30px' }}>
         
         {/* Map Visualization */}
         <div style={{ position: 'relative', height: '500px', background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)', borderRadius: '12px', overflow: 'hidden', border: '1px solid #334155' }}>
@@ -177,8 +187,29 @@ export default function SEALiveMap() {
              </div>
            </div>
         </div>
-
       </div>
+
+      {/* Market Insights Section (New) */}
+      <h3 style={{ fontSize: '1.2rem', color: 'white', marginBottom: '15px', borderLeft: '4px solid #38bdf8', paddingLeft: '10px' }}>
+         Regional Beauty Market Insights
+      </h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '15px' }}>
+         {MARKET_INSIGHTS.map(m => (
+            <div key={m.id} style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', border: '1px solid #334155' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '1.5rem' }}>{m.flag}</span>
+                  <h4 style={{ color: 'white', margin: 0, fontSize: '1rem' }}>{m.country}</h4>
+               </div>
+               <div style={{ background: '#0f172a', padding: '8px 12px', borderRadius: '6px', color: '#38bdf8', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '10px', display: 'inline-block' }}>
+                  {m.title}
+               </div>
+               <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5', margin: 0 }}>
+                  {m.desc}
+               </p>
+            </div>
+         ))}
+      </div>
+
     </div>
   );
 }
