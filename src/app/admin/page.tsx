@@ -16,13 +16,16 @@ import ShopeeOptimizer from '@/components/admin/ShopeeOptimizer';
 import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 
-import TeamCalendar from '@/components/admin/TeamCalendar';
+import { Menu, X } from 'lucide-react';
+
+// ... imports
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
   const { language } = useLanguage();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default open
 
   // Protect Route
   useEffect(() => {
@@ -32,6 +35,9 @@ export default function AdminPage() {
       }
     }
   }, [user, isLoading, router]);
+  
+  // Mobile responsive helper: close sidebar on route change or initial load if small screen?
+  // For now, simple toggle logic.
 
   if (isLoading || !user || user.role !== 'admin') {
      return <div className="loading">Loading Admin Panel...</div>;
@@ -39,12 +45,25 @@ export default function AdminPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <div className={styles.logo}>ADMIN</div>
+      {/* Mobile Overlay */}
+      <div 
+        className={`${styles.overlay} ${isSidebarOpen ? styles.show : ''}`} 
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
+      <div className={`${styles.sidebar} ${isSidebarOpen ? styles.show : styles.hidden}`}>
+        <div className={styles.logo} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            ADMIN
+            {/* Close button for mobile within sidebar */}
+            <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(false)} style={{ color: 'white', display: 'none' }}> 
+               {/* Display none by default, could show on mobile only via CSS if needed, but overlay click handles it mostly */}
+               <X />
+            </button>
+        </div>
         <nav className={styles.nav}>
           <div 
             className={`${styles.navItem} ${activeTab === 'dashboard' ? styles.active : ''}`}
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => { setActiveTab('dashboard'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '대시보드' : 'Dashboard'}
           </div>
@@ -53,19 +72,19 @@ export default function AdminPage() {
           
           <div 
             className={`${styles.navItem} ${activeTab === 'shopee_opt' ? styles.active : ''}`}
-            onClick={() => setActiveTab('shopee_opt')}
+            onClick={() => { setActiveTab('shopee_opt'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '쇼피 리스팅 (AI)' : 'Shopee Listing (AI)'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'live_map' ? styles.active : ''}`}
-            onClick={() => setActiveTab('live_map')}
+            onClick={() => { setActiveTab('live_map'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '동남아 관제탑 (Live)' : 'SEA Live Map'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'tradekorea' ? styles.active : ''}`}
-            onClick={() => setActiveTab('tradekorea')}
+            onClick={() => { setActiveTab('tradekorea'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '트레이드코리아 분석' : 'TradeKorea Strategy'}
           </div>
@@ -74,37 +93,37 @@ export default function AdminPage() {
 
           <div 
             className={`${styles.navItem} ${activeTab === 'orders' ? styles.active : ''}`}
-            onClick={() => setActiveTab('orders')}
+            onClick={() => { setActiveTab('orders'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '주문 관리' : 'Orders'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'members' ? styles.active : ''}`}
-            onClick={() => setActiveTab('members')}
+            onClick={() => { setActiveTab('members'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '회원 승인/관리' : 'Members'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'pricing' ? styles.active : ''}`}
-            onClick={() => setActiveTab('pricing')}
+            onClick={() => { setActiveTab('pricing'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '글로벌 가격' : 'Global Pricing'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'banners' ? styles.active : ''}`}
-            onClick={() => setActiveTab('banners')}
+            onClick={() => { setActiveTab('banners'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '배너 관리' : 'Banner Manager'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'stores' ? styles.active : ''}`}
-            onClick={() => setActiveTab('stores')}
+            onClick={() => { setActiveTab('stores'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '입점 현황' : 'Store Status'}
           </div>
           <div 
             className={`${styles.navItem} ${activeTab === 'settings' ? styles.active : ''}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => { setActiveTab('settings'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '설정' : 'Settings'}
           </div>
@@ -113,6 +132,9 @@ export default function AdminPage() {
 
       <div className={styles.main}>
         <header className={styles.header}>
+          <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            <Menu className="w-6 h-6" />
+          </button>
           <h1>
             {(() => {
               if (language === 'ko') {
@@ -143,6 +165,7 @@ export default function AdminPage() {
               <TeamCalendar />
 
               <div className={styles.statsGrid}>
+                {/* Stat cards content... same as before */}
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '총 주문 수' : 'Total Orders'}</h3>
                   <div className={styles.value}>1,024</div>
