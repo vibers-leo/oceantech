@@ -9,14 +9,20 @@ import styles from './AdminComponents.module.css';
   - Provides concise beauty market insights for each region.
 */
 
+/*
+  SEA Market Analysis
+  - Visualizes "Live Orders" from 6 SEA countries.
+  - Provides concise beauty market insights for each region.
+*/
+
 // Market Data
 const MARKET_INSIGHTS = [
-  { id: 'VN', country: 'Vietnam', flag: '🇻🇳', title: 'K-Beauty Avid Fans', desc: 'High trust in Korean skincare. Price-sensitive but quality-focused. Influenser marketing is key.' },
-  { id: 'TH', country: 'Thailand', flag: '🇹🇭', title: 'Trend Leaders', desc: 'Sophisticated market with high competition. Strong demand for whitening & anti-aging. Social commerce is dominant.' },
-  { id: 'PH', country: 'Philippines', flag: '🇵🇭', title: 'Whitening Focus', desc: 'English-friendly market. Obsessed with whitening products. Low price point sensitivity for sachets/trial kits.' },
-  { id: 'MY', country: 'Malaysia', flag: '🇲🇾', title: 'Halal Conscious', desc: 'Multi-ethnic market. Halal certification is a major plus. High skincare awareness among urban population.' },
-  { id: 'SG', country: 'Singapore', flag: '🇸🇬', title: 'Premium & Clean', desc: 'High purchasing power. Preference for "Clean Beauty", eco-friendly, and premium clinical brands.' },
-  { id: 'ID', country: 'Indonesia', flag: '🇮🇩', title: 'Halal Mandatory', desc: 'Massive volume potential. BPOM & Halal certification effectively mandatory. Young demographic driving basic skincare growth.' },
+  { id: 'VN', country: 'Vietnam', flag: '🇻🇳', title: 'K-뷰티 고관여층', desc: '한국 화장품에 대한 신뢰도 높음. 가격 민감도가 있지만 품질 중시. 인플루언서 마케팅 필수.' },
+  { id: 'TH', country: 'Thailand', flag: '🇹🇭', title: '트렌드 리더', desc: '경쟁이 치열하고 성숙한 시장. 미백 및 안티에이징 수요 강력. 소셜 커머스(틱톡샵 등) 강세.' },
+  { id: 'PH', country: 'Philippines', flag: '🇵🇭', title: '미백(Whitening) 집중', desc: '영어 친화적 시장. 미백 제품에 대한 압도적 수요. 소포장(Sachet) 제품 선호.' },
+  { id: 'MY', country: 'Malaysia', flag: '🇲🇾', title: '할랄 / 스킨케어', desc: '다민족 국가. 할랄 인증이 중요하며 도시 거주층을 중심으로 스킨케어에 대한 인식 높음.' },
+  { id: 'SG', country: 'Singapore', flag: '🇸🇬', title: '프리미엄 & 클린뷰티', desc: '높은 구매력. 클린 뷰티, 친환경, 프리미엄 더마 코스메틱 선호.' },
+  { id: 'ID', country: 'Indonesia', flag: '🇮🇩', title: '할랄 필수 (BPOM)', desc: '거대한 내수 시장. BPOM 및 할랄 인증 사실상 필수. 젊은 층 중심의 기초 화장품 성장세.' },
 ];
 
 // Coordinates roughly relative to a 800x600 viewBox
@@ -30,11 +36,11 @@ const LOCATIONS = [
 ];
 
 const RECENT_ORDERS = [
-  { country: 'SG', user: 'Angie L.', item: 'R-minu Hard Wax 500g', time: 'Just now' },
-  { country: 'VN', user: 'Nguyen T.', item: 'Lacan Pro Kit', time: '2m ago' },
-  { country: 'MY', user: 'Fattah A.', item: 'Soothing Oil', time: '5m ago' },
-  { country: 'PH', user: 'Maria C.', item: 'R-minu Hard Wax 1kg', time: '12m ago' },
-  { country: 'TH', user: 'Somchai P.', item: 'Lacan Wax Warmer', time: '15m ago' },
+  { country: 'SG', user: 'Angie L.', item: '알마이너 하드 왁스 500g', time: '방금 전' },
+  { country: 'VN', user: 'Nguyen T.', item: '라칸 프로 키트', time: '2분 전' },
+  { country: 'MY', user: 'Fattah A.', item: '수딩 오일', time: '5분 전' },
+  { country: 'PH', user: 'Maria C.', item: '알마이너 하드 왁스 1kg', time: '12분 전' },
+  { country: 'TH', user: 'Somchai P.', item: '라칸 왁스 워머기', time: '15분 전' },
 ];
 
 export default function SEALiveMap() {
@@ -62,16 +68,16 @@ export default function SEALiveMap() {
     <div className={styles.componentContainer} style={{ background: '#0f172a', color: 'white', border: '1px solid #334155' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
-          <h2 className={styles.title} style={{ color: 'white', marginBottom: '5px' }}>SEA Market Analysis</h2>
-          <p className={styles.desc} style={{ color: '#94a3b8' }}>Real-time monitoring & Regional Beauty Market Insights</p>
+          <h2 className={styles.title} style={{ color: 'white', marginBottom: '5px' }}>동남아 시장 분석 (SEA Market Analysis)</h2>
+          <p className={styles.desc} style={{ color: '#94a3b8' }}>실시간 주문 관제 및 국가별 뷰티 시장 핵심 인사이트</p>
         </div>
         <div style={{ display: 'flex', gap: '15px' }}>
            <div className="flex flex-col items-end">
-             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Total Active Users</span>
+             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>현재 접속자</span>
              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#38bdf8' }}>1,284</span>
            </div>
            <div className="flex flex-col items-end">
-             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Daily Rev (Est)</span>
+             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>일일 예상 매출</span>
              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#4ade80' }}>$4,250</span>
            </div>
         </div>
@@ -154,18 +160,18 @@ export default function SEALiveMap() {
           <div style={{ position: 'absolute', bottom: '20px', left: '20px', display: 'flex', gap: '15px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#38bdf8' }}></div>
-              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Active Order</span>
+              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>주문 발생</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#475569' }}></div>
-              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Offline</span>
+              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>오프라인</span>
             </div>
           </div>
         </div>
 
         {/* Live Feed Sidebar */}
         <div style={{ background: '#1e293b', padding: '15px', borderRadius: '12px', border: '1px solid #334155', display: 'flex', flexDirection: 'column' }}>
-           <h3 style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>Recent Orders</h3>
+           <h3 style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>최근 주문 현황</h3>
            
            <div style={{  display: 'flex', flexDirection: 'column', gap: '10px', overflowY: 'auto' }}>
              {RECENT_ORDERS.map((order, i) => (
@@ -177,13 +183,13 @@ export default function SEALiveMap() {
                    <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>{order.item}</div>
                    <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                      <span style={{ width: '16px', height: '12px', background: '#334155', display: 'inline-block', borderRadius: '2px' }}></span>
-                     {order.country} Warehouse
+                     {order.country} 물류센터
                    </div>
                 </div>
              ))}
              {/* Fake Skeleton for 'Streaming' feel */}
              <div style={{ height: '50px', border: '1px dashed #334155', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: '0.8rem' }}>
-                Waiting for incoming data...
+                데이터 수신 대기 중...
              </div>
            </div>
         </div>
@@ -191,7 +197,7 @@ export default function SEALiveMap() {
 
       {/* Market Insights Section (New) */}
       <h3 style={{ fontSize: '1.2rem', color: 'white', marginBottom: '15px', borderLeft: '4px solid #38bdf8', paddingLeft: '10px' }}>
-         Regional Beauty Market Insights
+         국가별 뷰티 시장 분석 요약
       </h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '15px' }}>
          {MARKET_INSIGHTS.map(m => (

@@ -14,11 +14,13 @@ interface Order {
   paymentId?: string; // Portone imp_uid
 }
 
+/* Order Manager - Korean Localized */
+
 const MOCK_ORDERS: Order[] = [
-  { id: 'ORD-001', user: 'Kim Min-ji', item: 'R-minu Hard Wax 500g', amount: 32000, status: 'Shipped', date: '2024-05-20', paymentId: 'imp_83921021' },
-  { id: 'ORD-002', user: 'Lee Jun-ho', item: 'Lacan Basic Protocol Kit', amount: 154000, status: 'Paid', date: '2024-05-21', paymentId: 'imp_12093120' },
-  { id: 'ORD-003', user: 'Park Ji-sung', item: 'R-minu 200g Refill', amount: 18000, status: 'Pending', date: '2024-05-21' },
-  { id: 'ORD-004', user: 'Choi Susie', item: 'Lacan Pro Wax Warmer', amount: 89000, status: 'Cancelled', date: '2024-05-19' },
+  { id: 'ORD-001', user: '김민지', item: '알마이너 하드 왁스 500g', amount: 32000, status: 'Shipped', date: '2024-05-20', paymentId: 'imp_83921021' },
+  { id: 'ORD-002', user: '이준호', item: '라칸 베이직 프로토콜 키트', amount: 154000, status: 'Paid', date: '2024-05-21', paymentId: 'imp_12093120' },
+  { id: 'ORD-003', user: '박지성', item: '알마이너 200g 리필', amount: 18000, status: 'Pending', date: '2024-05-21' },
+  { id: 'ORD-004', user: '최수지', item: '라칸 프로 왁스 워머기', amount: 89000, status: 'Cancelled', date: '2024-05-19' },
 ];
 
 export default function OrderManager() {
@@ -28,7 +30,6 @@ export default function OrderManager() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const getLocalizedStatus = (status: string) => {
-    if (language !== 'ko') return status;
     switch (status) {
       case 'Paid': return '결제완료';
       case 'Pending': return '대기중';
@@ -50,7 +51,7 @@ export default function OrderManager() {
 
   return (
     <div className={styles.componentContainer}>
-      <h2 className={styles.title}>{language === 'ko' ? '주문 관리' : 'Order Management'}</h2>
+      <h2 className={styles.title}>주문 관리</h2>
       
       <div className={styles.filterBar}>
         {['All', 'Paid', 'Pending', 'Shipped', 'Cancelled'].map(f => (
@@ -67,14 +68,14 @@ export default function OrderManager() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>{language === 'ko' ? '주문번호' : 'Order ID'}</th>
-            <th>{language === 'ko' ? '주문자' : 'Customer'}</th>
-            <th>{language === 'ko' ? '상품명' : 'Item'}</th>
-            <th>{language === 'ko' ? '결제금액' : 'Amount'}</th>
-            <th>{language === 'ko' ? '포트원 ID' : 'Portone ID'}</th>
-            <th>{language === 'ko' ? '일자' : 'Date'}</th>
-            <th>{language === 'ko' ? '상태' : 'Status'}</th>
-            <th>{language === 'ko' ? '관리' : 'Action'}</th>
+            <th>주문번호</th>
+            <th>주문자</th>
+            <th>상품명</th>
+            <th>결제금액</th>
+            <th>포트원 ID</th>
+            <th>일자</th>
+            <th>상태</th>
+            <th>관리</th>
           </tr>
         </thead>
         <tbody>
@@ -98,16 +99,16 @@ export default function OrderManager() {
                      value={order.status}
                      onChange={(e) => updateStatus(order.id, e.target.value as any)}
                    >
-                     <option value="Pending">{getLocalizedStatus('Pending')}</option>
-                     <option value="Paid">{getLocalizedStatus('Paid')}</option>
-                     <option value="Shipped">{getLocalizedStatus('Shipped')}</option>
-                     <option value="Cancelled">{getLocalizedStatus('Cancelled')}</option>
+                     <option value="Pending">대기중</option>
+                     <option value="Paid">결제완료</option>
+                     <option value="Shipped">배송중</option>
+                     <option value="Cancelled">취소됨</option>
                    </select>
                    <button 
                      className={styles.viewBtn} 
                      onClick={() => setSelectedOrder(order)}
                    >
-                     {language === 'ko' ? '보기' : 'View'}
+                     보기
                    </button>
                  </div>
                </td>
@@ -121,31 +122,31 @@ export default function OrderManager() {
          <div className={styles.modalOverlay} onClick={() => setSelectedOrder(null)}>
            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
              <div className={styles.modalHeader}>
-               <h3>{language === 'ko' ? '주문 상세 정보: ' : 'Order Details: '}{selectedOrder.id}</h3>
+               <h3>주문 상세 정보: {selectedOrder.id}</h3>
                <button className={styles.closeBtn} onClick={() => setSelectedOrder(null)}>&times;</button>
              </div>
              <div className={styles.modalBody}>
                <div className={styles.infoGrid}>
                  <div className={styles.infoItem}>
-                   <label>{language === 'ko' ? '구매자' : 'Customer'}</label>
+                   <label>구매자</label>
                    <p>{selectedOrder.user}</p>
                  </div>
                  <div className={styles.infoItem}>
-                   <label>{language === 'ko' ? '주문일' : 'Date'}</label>
+                   <label>주문일</label>
                    <p>{selectedOrder.date}</p>
                  </div>
                  <div className={styles.infoItem}>
-                   <label>{language === 'ko' ? '결제 ID (imp_uid)' : 'Payment ID (imp_uid)'}</label>
+                   <label>결제 ID (imp_uid)</label>
                    <p className={styles.code}>{selectedOrder.paymentId || 'N/A'}</p>
                  </div>
                  <div className={styles.infoItem}>
-                   <label>{language === 'ko' ? '주문 상태' : 'Status'}</label>
+                   <label>주문 상태</label>
                    <p><span className={`${styles.badge} ${styles['badge' + selectedOrder.status]}`}>{getLocalizedStatus(selectedOrder.status)}</span></p>
                  </div>
                </div>
                
                <div className={styles.modalItemsSection}>
-                 <h4>{language === 'ko' ? '주문 상품' : 'Items'}</h4>
+                 <h4>주문 상품</h4>
                  <div className={styles.orderItemRow}>
                    <span>{selectedOrder.item}</span>
                    <span>1 x {selectedOrder.amount.toLocaleString()}원</span>
@@ -154,15 +155,15 @@ export default function OrderManager() {
 
                <div className={styles.modalFooter}>
                  <div className={styles.totalAmount}>
-                   <span>{language === 'ko' ? '합계' : 'Total'}</span>
+                   <span>합계</span>
                    <strong>{selectedOrder.amount.toLocaleString()}원</strong>
                  </div>
                  <div className={styles.modalActions}>
                     <button className={styles.cancelOrderBtn} onClick={() => { updateStatus(selectedOrder.id, 'Cancelled'); setSelectedOrder(null); }}>
-                      {language === 'ko' ? '주문 취소' : 'Cancel Order'}
+                      주문 취소
                     </button>
                     <button className={styles.confirmBtn} onClick={() => setSelectedOrder(null)}>
-                      {language === 'ko' ? '확인' : 'Confirm'}
+                      확인
                     </button>
                  </div>
                </div>

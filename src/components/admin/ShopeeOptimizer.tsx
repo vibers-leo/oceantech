@@ -15,7 +15,7 @@ const KEYWORDS = [
 ];
 
 const MOCK_RESULTS = {
-  title: "🔥[Korea No.1] R-minu Premium Hard Wax (500g) | Painless & Strong Grip #LegWaxing",
+  title: "🔥Korea No.1 R-minu Premium Hard Wax (500g) | Painless & Strong Grip #LegWaxing",
   desc: `
 ✨ PRODUCT DESCRIPTION ✨
 
@@ -83,20 +83,20 @@ export default function ShopeeOptimizer() {
     <div className={styles.componentContainer}>
       <h2 className={styles.title} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <img src="/globe.svg" alt="Shopee" width={24} height={24} style={{ filter: 'invert(1)' }}/>
-        Shopee Listing Optimizer (AI-SEO)
+        쇼피 리스팅 최적화 (AI-SEO)
       </h2>
       <p className={styles.desc}>
-        Generates optimized product titles and descriptions for Shopee's search algorithm using high-volume keywords.
+        쇼피 검색 알고리즘에 최적화된 상품명과 설명을 AI가 고음량 키워드를 분석하여 자동 생성합니다.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginTop: '20px' }}>
         
         {/* Left: Inputs */}
         <div style={{ background: '#f8fafc', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '15px', fontWeight: 'bold' }}>1. Target Settings</h3>
+          <h3 style={{ fontSize: '1.1rem', marginBottom: '15px', fontWeight: 'bold' }}>1. 타겟 설정</h3>
           
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#64748b' }}>Product Name</label>
+            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#64748b' }}>상품명</label>
             <input 
               type="text" 
               value={productName}
@@ -107,7 +107,7 @@ export default function ShopeeOptimizer() {
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#64748b' }}>Strategic Keywords (Select 2-3)</label>
+            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: '#64748b' }}>전략 키워드 (2-3개 선택)</label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {KEYWORDS.map(kw => (
                 <button 
@@ -150,18 +150,18 @@ export default function ShopeeOptimizer() {
             }}
           >
             {isGenerating ? <RefreshCw className="animate-spin w-5 h-5"/> : <Sparkles className="w-5 h-5"/>}
-            {isGenerating ? 'Analyzing Market Trends...' : 'Generate Optimized Listing'}
+            {isGenerating ? '시장 트렌드 분석 중...' : '최적화 리스팅 생성'}
           </button>
         </div>
 
         {/* Right: Output */}
         <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: '15px', background: '#f1f5f9', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontWeight: 'bold', color: '#334155' }}>Preview (Shopee Mobile)</span>
+            <span style={{ fontWeight: 'bold', color: '#334155' }}>미리보기 (쇼피 모바일)</span>
             {result && (
               <button onClick={handleCopy} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', color: copied ? '#16a34a' : '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}>
                 {copied ? <Check className="w-4 h-4"/> : <Copy className="w-4 h-4"/>}
-                {copied ? 'Copied' : 'Copy All'}
+                {copied ? '복사완료' : '전체 복사'}
               </button>
             )}
           </div>
@@ -170,7 +170,7 @@ export default function ShopeeOptimizer() {
             {!result && !isGenerating && (
               <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.9rem', flexDirection: 'column', gap: '10px' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#f1f5f9' }}></div>
-                Waiting for input...
+                입력을 기다리는 중...
               </div>
             )}
 

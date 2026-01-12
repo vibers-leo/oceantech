@@ -18,10 +18,10 @@ export default function TradeKoreaAnalysis() {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">
             <Globe className="text-[#e63946]" />
-            TradeKorea Platform Analysis
+            트레이드코리아(tradeKorea) 플랫폼 분석
           </h2>
           <p className="text-sm opacity-80">
-            Powered by KITA (Korea International Trade Association). A critical channel for B2B export success.
+            한국무역협회(KITA) 운영. B2B 수출 성공을 위한 핵심 채널.
           </p>
         </div>
         <a 
@@ -30,7 +30,7 @@ export default function TradeKoreaAnalysis() {
           rel="noreferrer"
           className="bg-white text-[#e63946] px-4 py-2 rounded-lg font-bold text-sm hover:shadow-lg transition-all flex items-center gap-2"
         >
-          Visit Site <ExternalLink size={14} />
+          사이트 방문 <ExternalLink size={14} />
         </a>
       </div>
 
@@ -41,28 +41,28 @@ export default function TradeKoreaAnalysis() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
           <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
             <FileText className="text-blue-500" size={20} />
-            Platform Summary
+            플랫폼 개요
           </h3>
           <ul className="space-y-4">
             <li className="flex gap-3">
                 <div className="mt-1 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div>
                 <div>
-                    <strong className="block text-gray-900 text-sm">What is tradeKorea?</strong>
-                    <span className="text-gray-600 text-sm">Korea's representative B2B marketplace operated by KITA. It allows Korean sellers to list products and receive inquiries from global buyers.</span>
+                    <strong className="block text-gray-900 text-sm">트레이드코리아란?</strong>
+                    <span className="text-gray-600 text-sm">KITA가 운영하는 한국 대표 B2B 마켓플레이스입니다. 한국 셀러가 상품을 리스팅하고 글로벌 바이어의 인콰이어리를 받을 수 있습니다.</span>
                 </div>
             </li>
             <li className="flex gap-3">
                 <div className="mt-1 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div>
                 <div>
-                    <strong className="block text-gray-900 text-sm">Key Strength: Credibility</strong>
-                    <span className="text-gray-600 text-sm">Buyers trust suppliers here because of the verification by KITA. It's less crowded than Alibaba but higher quality leads.</span>
+                    <strong className="block text-gray-900 text-sm">핵심 강점: 신뢰도</strong>
+                    <span className="text-gray-600 text-sm">KITA의 검증을 거치므로 바이어 신뢰도가 높습니다. 알리바바보다 덜 붐비지만 리드 퀄리티는 더 높습니다.</span>
                 </div>
             </li>
             <li className="flex gap-3">
                 <div className="mt-1 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div>
                 <div>
-                    <strong className="block text-gray-900 text-sm">Matching Services</strong>
-                    <span className="text-gray-600 text-sm">Offers 'GbMS' (Global Business Matching Service) where KITA experts actively match your products with buyers.</span>
+                    <strong className="block text-gray-900 text-sm">매칭 서비스</strong>
+                    <span className="text-gray-600 text-sm">'GbMS'(Global Business Matching Service)를 통해 KITA 전문가가 귀사 제품과 바이어를 적극적으로 매칭해줍니다.</span>
                 </div>
             </li>
           </ul>
@@ -72,7 +72,7 @@ export default function TradeKoreaAnalysis() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
           <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
             <TrendingUp className="text-green-600" size={20} />
-            Action Plan for R-minu
+            알마이너(R-minu) 실행 전략
           </h3>
           
           <div className="space-y-4">
@@ -81,9 +81,9 @@ export default function TradeKoreaAnalysis() {
                     <CheckCircle size={18} />
                 </div>
                 <div>
-                    <h4 className="font-bold text-sm text-gray-900">1. Mini-Site Optimization</h4>
+                    <h4 className="font-bold text-sm text-gray-900">1. 미니사이트(Mini-Site) 최적화</h4>
                     <p className="text-xs text-gray-600 mt-1">
-                        We need to create a dedicated 'R-minu Brand Minisite' within tradeKorea. Uploading high-res images of our 500g/1kg Wax products is crucial.
+                        트레이드코리아 내에 '알마이너 전용 미니사이트'를 구축해야 합니다. 500g/1kg 왁스 제품의 고해상도 이미지를 업로드하는 것이 중요합니다.
                     </p>
                 </div>
              </div>
@@ -93,9 +93,9 @@ export default function TradeKoreaAnalysis() {
                     <Search size={18} />
                 </div>
                 <div>
-                    <h4 className="font-bold text-sm text-gray-900">2. Target 'Buy Offers'</h4>
+                    <h4 className="font-bold text-sm text-gray-900">2. 'Buy Offers' 타겟팅</h4>
                     <p className="text-xs text-gray-600 mt-1">
-                        Actively search for keywords like <span className="font-semibold text-blue-600">"Hair Removal Wax"</span> or <span className="font-semibold text-blue-600">"K-Beauty Cosmetics"</span> in the Buy Offer section and send proposals directly.
+                        Buy Offer 섹션에서 <span className="font-semibold text-blue-600">"Hair Removal Wax"</span> 또는 <span className="font-semibold text-blue-600">"K-Beauty Cosmetics"</span> 같은 키워드를 적극 검색하고 제안서를 직접 발송하세요.
                     </p>
                 </div>
              </div>
@@ -105,9 +105,9 @@ export default function TradeKoreaAnalysis() {
                     <Globe size={18} />
                 </div>
                 <div>
-                    <h4 className="font-bold text-sm text-gray-900">3. Apply for Online Exhibitions</h4>
+                    <h4 className="font-bold text-sm text-gray-900">3. 온라인 전시관 신청</h4>
                     <p className="text-xs text-gray-600 mt-1">
-                        KITA hosts "Online K-Product Exhibitions" periodically. We should apply for the "Beauty & Health" category to get premium exposure banner spots.
+                        KITA는 주기적으로 "온라인 K-Product 전시회"를 개최합니다. "Beauty & Health" 카테고리에 신청하여 프리미엄 노출 배너 자리를 확보해야 합니다.
                     </p>
                 </div>
              </div>
@@ -119,7 +119,7 @@ export default function TradeKoreaAnalysis() {
       {/* Bottom: Keyword Strategy */}
       <div className="bg-gradient-to-br from-[#1e293b] to-[#0f172a] text-white p-6 rounded-xl shadow-lg">
          <h3 className="tex-lg font-bold mb-4 flex items-center gap-2">
-            🚀 Recommended Keywords for Listing
+            🚀 리스팅 추천 키워드
          </h3>
          <div className="flex flex-wrap gap-3">
             {['Hard Wax Beans', 'Painless Depilatory', 'K-Beauty Supply', 'Hypoallergenic Wax', 'Salon Professional', 'Private Label (OEM)'].map(kw => (

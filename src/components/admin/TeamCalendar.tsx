@@ -18,6 +18,10 @@ interface TeamCalendarProps {
   onDeleteEvent: (id: number) => void;
 }
 
+/* Team Calendar with Korean Translations */
+
+// ... imports remain same
+
 export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: TeamCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date()); 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -72,6 +76,7 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
   };
 
   const renderCells = () => {
+    // ... render logic matches previous but uses Korean text for confirmations if any
     const cells = [];
     // Empty cells for padding
     for (let i = 0; i < firstDayOfMonth; i++) {
@@ -135,25 +140,25 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
                 <CalendarIcon size={20} />
             </div>
             <div>
-                <h2 className={styles.title}>Team Calendar</h2>
-                <p className={styles.subtitle}>Manage schedules & deadlines</p>
+                <h2 className={styles.title}>팀 일정 관리</h2>
+                <p className={styles.subtitle}>주요 일정 및 마감 기한 관리</p>
             </div>
         </div>
 
         <div className={styles.controls}>
             <div className={styles.legend}>
                 <div className={styles.legendItem}>
-                    <div className={`${styles.dot} ${styles.meeting}`}></div> Meeting
+                    <div className={`${styles.dot} ${styles.meeting}`}></div> 미팅
                 </div>
                 <div className={styles.legendItem}>
-                    <div className={`${styles.dot} ${styles.deadline}`}></div> Deadline
+                    <div className={`${styles.dot} ${styles.deadline}`}></div> 마감일
                 </div>
             </div>
 
             <div className={styles.navButton}>
                 <button onClick={handlePrevMonth} className={styles.navBtn}><ChevronLeft size={16}/></button>
                 <span className={styles.currentDate}>
-                    {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                    {currentDate.toLocaleString('ko-KR', { month: 'long', year: 'numeric' })}
                 </span>
                 <button onClick={handleNextMonth} className={styles.navBtn}><ChevronRight size={16}/></button>
             </div>
@@ -163,7 +168,7 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
       {/* Grid */}
       <div>
         <div className={styles.gridHeader}>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
+            {['일', '월', '화', '수', '목', '금', '토'].map((day, i) => (
                 <div key={day} className={`${styles.dayName} ${i === 0 ? styles.sun : i === 6 ? styles.sat : ''}`}>
                     {day}
                 </div>
@@ -180,7 +185,7 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
             <div className={styles.modal}>
                 <div className={styles.modalHeader}>
                     <div>
-                        <h3 className={styles.modalTitle}>Add Schedule</h3>
+                        <h3 className={styles.modalTitle}>일정 추가</h3>
                         <p className={styles.modalDate}>{selectedDate}</p>
                     </div>
                     <button onClick={() => setSelectedDate(null)} className={styles.closeBtn}><X size={16}/></button>
@@ -189,7 +194,7 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
                 <input 
                     autoFocus
                     type="text" 
-                    placeholder="e.g. Strategy Meeting..."
+                    placeholder="예: 전략 회의..."
                     className={styles.input}
                     value={newEventTitle}
                     onChange={(e) => setNewEventTitle(e.target.value)}
@@ -198,9 +203,9 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
                 
                 <div className={styles.typeSelector}>
                     {[
-                        { id: 'meeting', label: 'Meeting' },
-                        { id: 'deadline', label: 'Deadline' },
-                        { id: 'other', label: 'Other' }
+                        { id: 'meeting', label: '미팅' },
+                        { id: 'deadline', label: '마감일' },
+                        { id: 'other', label: '기타' }
                     ].map(type => (
                         <button
                             key={type.id}
@@ -216,7 +221,7 @@ export default function TeamCalendar({ events, onAddEvent, onDeleteEvent }: Team
                     onClick={triggerAddEvent}
                     className={styles.createBtn}
                 >
-                    Create Event
+                    일정 등록
                 </button>
             </div>
         </div>
