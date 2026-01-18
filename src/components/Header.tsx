@@ -102,6 +102,13 @@ export default function Header() {
             >
               EN
             </button>
+            <span className={styles.divider}>|</span>
+            <button 
+              className={`${styles.langBtn} ${language === 'th' ? styles.active : ''}`}
+              onClick={() => setLanguage('th')}
+            >
+              TH
+            </button>
           </div>
         </div>
       </div>

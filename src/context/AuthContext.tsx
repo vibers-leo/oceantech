@@ -35,7 +35,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Listen for Firebase Auth state changes
+    // 1. Check LocalStorage for Demo User first (Persist "Demo Mode")
+    const storedDemoUser = localStorage.getItem('demo_user');
+    if (storedDemoUser) {
+      try {
+             const parsedUser = JSON.parse(storedDemoUser);
+             setUser(parsedUser);
+             setIsLoading(false);
+             // If we are in demo mode, we might still want to listen to firebase or just ignore it.
+             // For simplicity, we can return early or keep the listener but prioritize demo user?
+             // Returning early is safer to prevent flickering if firebase returns null.
+             return; 
+      } catch (e) {
+             console.error('Failed to parse demo user', e);
+             localStorage.removeItem('demo_user');
+      }
+    }
+
+    // 2. Listen for Firebase Auth state changes
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         // Map Firebase user to our app user
@@ -55,7 +72,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: firebaseUser.email || ''
         });
       } else {
-        setUser(null);
+        // Only reset if NO demo user is found (double check to be safe, though return above handles it)
+        if (!localStorage.getItem('demo_user')) {
+             setUser(null);
+        }
       }
       setIsLoading(false);
     });
@@ -66,12 +86,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, pw: string) => {
     // [DEMO MODE] Bypass Firebase for specific demo admin account
     if ((email === 'admin@rminu.com' || email === 'juuuno@naver.com') && pw === 'admin1234') {
-      setUser({
+      const demoUser: User = {
         id: email === 'admin@rminu.com' ? 'demo-admin-id' : 'demo-juuuno-id',
         name: email === 'admin@rminu.com' ? 'Demo Admin' : 'Juno (Admin)',
         role: 'admin',
         email: email
-      });
+      };
+      
+      setUser(demoUser);
+      localStorage.setItem('demo_user', JSON.stringify(demoUser)); // Persist session
       return { success: true };
     }
 
@@ -89,8 +112,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
+    localStorage.removeItem('demo_user'); // Clear demo session
     try {
       await signOut(auth);
+      setUser(null);
       router.push('/');
     } catch (error) {
       console.error("Logout Error:", error);

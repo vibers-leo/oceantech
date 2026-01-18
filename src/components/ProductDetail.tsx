@@ -8,16 +8,16 @@ import styles from "./ProductDetail.module.css";
 export default function ProductDetail() {
   const { language } = useLanguage();
 
-  // Map 'ko' to 'kr' for folder name
-  const langFolder = language === "ko" ? "kr" : "en";
-  const prefix = language === "ko" ? "rminu-kr" : "rminu-en";
+  // Map 'ko' to 'kr' for folder name, 'th' to 'th'
+  const langFolder = language === "ko" ? "kr" : (language === "th" ? "th" : "en");
+  const prefix = language === "ko" ? "rminu-kr" : (language === "th" ? "rminu-th" : "rminu-en");
 
   // Total number of images
-  const totalImages = 17;
+  const totalImages = language === "th" ? 13 : 17;
 
   // Helper to get extension
   const getExtension = (index: number, lang: string) => {
-    if (lang === "ko") return "jpg";
+    if (lang === "ko" || lang === "th") return "jpg";
     // English logic
     if (index === 2) return "jpg";
     return "jpeg";
