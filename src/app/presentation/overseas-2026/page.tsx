@@ -140,6 +140,71 @@ const content = {
         ]
       }
     }
+  },
+  th: {
+    slide1: {
+      label: "2026 Management Vision (TH)",
+      title: "Global Expansion Strategy",
+      desc: <>Innovating Marine Biotechnology & Digital Sales Channels<br/>for a Connected World.</>
+    },
+    slide2: {
+      label: "Step 01. Digital Transformation",
+      title: "Global DTC Platform",
+      card1: {
+        title: "Global Standard Web Architecture",
+        items: [
+          { title: "Multi-Language & Currency:", desc: "Seamless toggle between Korean (KRW) and English (USD/EUR) to reduce friction for international B2B/B2C buyers." },
+          { title: "Dedicated Domains:", desc: "Separate .com/.net domains ensuring high SEO ranking in target regions." }
+        ]
+      },
+      card2: {
+        title: "Brand & Commerce Integration",
+        items: [
+          { title: "Unified Brand Showcase:", desc: "Showcasing \"Alminer\" (Premium Home Waxing) and \"Lacan\" (Marine Wax) portfolios in one hub." },
+          { title: "Cross-Border Commerce:", desc: "Direct purchase capabilities integrated with global payment gateways (PayPal, Stripe)." },
+          { title: "Business Inquiry System:", desc: "Dedicated B2B quote request forms directly connected to CRM." }
+        ]
+      }
+    },
+    slide3: {
+      label: "Step 02. Marketplace Strategy",
+      title: "Shopee SEA Expansion",
+      card1: {
+        title: "Strategic Value",
+        desc: "Utilizing Shopee, the No.1 E-commerce platform in Southeast Asia, as our primary efficient export channel.",
+        items: [
+          { title: "Target Markets:", desc: "Singapore (Testbed), Malaysia, Philippines, Vietnam, Thailand." },
+          { title: "Low Barrier to Entry:", desc: "Minimal setup costs compared to Amazon; high affinity for K-Brands." }
+        ]
+      },
+      card2: {
+        title: "Operational Excellence (SLS)",
+        items: [
+          { title: "SLS (Shopee Logistics Service):", desc: "We simply ship to the Gimpo/Incheon collection center. Shopee manages customs, international shipping, and last-mile delivery." },
+          { title: "Incubation Support:", desc: "Leveraging \"Shopee Korea\" incubation programs for marketing subsidies and keyword optimization." }
+        ]
+      }
+    },
+    slide4: {
+      label: "Step 03. 2026 Growth Engines",
+      title: "Strategic Partnerships & AI",
+      card1: {
+        title: "2026 Export Voucher Program",
+        desc: "Maximizing government subsidies to accelerate global reach.",
+        items: [
+          { title: "Marketing Track:", desc: "Funding for social media ads (Meta/Google) targeting SEA/US regions." },
+          { title: "Translation & Production:", desc: "Support for creating English/Chinese catalogues and promotional videos." },
+          { title: "Certification:", desc: "Subsidies for obtaining necessary FDA/CE certifications for new products." }
+        ]
+      },
+      card2: {
+        title: "AI-Driven Localization",
+        items: [
+          { title: "Human-in-the-loop AI Operations:", desc: "Utilizing DeepL & Chat-based AI for real-time customer service (CS) translation, overcoming language barriers instantly." },
+          { title: "Content Localization:", desc: "Automated generation of local-friendly marketing copy and SEO keywords for each target country." }
+        ]
+      }
+    }
   }
 };
 
