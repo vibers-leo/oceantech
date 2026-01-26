@@ -17,7 +17,7 @@ import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 import MarketComparison from '@/components/admin/MarketComparison';
 
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronRight, LayoutPanelLeft } from 'lucide-react';
 import TeamCalendar, { CalendarEvent } from '@/components/admin/TeamCalendar';
 
 export default function AdminPage() {
@@ -84,6 +84,7 @@ export default function AdminPage() {
             <span style={{ letterSpacing: '2px', color: '#3498db' }}>R-MINU</span> ADMIN
         </div>
         <nav className={styles.nav}>
+          {/* ... existing nav items ... */}
           <div 
             className={`${styles.navItem} ${activeTab === 'dashboard' ? styles.active : ''}`}
             onClick={() => { setActiveTab('dashboard'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
@@ -163,13 +164,23 @@ export default function AdminPage() {
           >
             {language === 'ko' ? '설정' : 'Settings'}
           </div>
+
+          <div style={{ marginTop: 'auto', padding: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.05)', border: 'none', color: '#bdc3c7', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem' }}
+            >
+              <ChevronLeft size={18} />
+              {language === 'ko' ? '사이드바 숨기기' : 'Hide Sidebar'}
+            </button>
+          </div>
         </nav>
       </div>
 
       <div className={styles.main}>
         <header className={styles.header}>
-          <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <Menu className="w-6 h-6" />
+          <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(!isSidebarOpen)} title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}>
+            {isSidebarOpen ? <ChevronLeft className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}
           </button>
           <h1>
             {(() => {
