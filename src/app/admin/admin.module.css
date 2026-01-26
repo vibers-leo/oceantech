@@ -11,13 +11,13 @@
 
 .sidebar {
   width: 250px;
-  min-width: 250px; /* Prevent shrinking */
   background: #2c3e50;
   color: white;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 50;
+  overflow: hidden;
 }
 
 /* Sidebar Toggle Logic */
@@ -29,7 +29,7 @@
   width: 0;
   min-width: 0;
   overflow: hidden;
-  transform: translateX(-250px);
+  transform: translateX(-100%);
 }
 
 .logo {
@@ -86,24 +86,37 @@
 
 .header {
   display: flex;
-  align-items: center; /* Align items including burger */
+  align-items: center;
   margin-bottom: 30px;
   gap: 20px;
+  background: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .toggleBtn {
-  background: none;
-  border: none;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   cursor: pointer;
-  color: #333;
-  padding: 4px; /* Hit area */
-  display: flex; /* For icon alignment */
+  color: #475569;
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
 }
 
 .toggleBtn:hover {
-  color: #3498db;
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: scale(1.05);
+}
+
+.toggleBtn:active {
+  transform: scale(0.95);
 }
 
 .header h1 {

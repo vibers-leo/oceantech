@@ -68,6 +68,30 @@ export default function Header() {
             <div className={styles.mobileDrawer} onClick={() => setIsMenuOpen(false)}>
               <div className={styles.drawerContent} onClick={e => e.stopPropagation()}>
                 <nav className={styles.mobileNav}>
+                  {/* Mobile Language Switcher */}
+                  <div className={styles.mobileLangSwitch}>
+                    <button 
+                      className={language === 'ko' ? styles.activeLang : ''} 
+                      onClick={() => { setLanguage('ko'); setIsMenuOpen(false); }}
+                    >
+                      KR
+                    </button>
+                    <span className={styles.mobileDivider}>|</span>
+                    <button 
+                      className={language === 'en' ? styles.activeLang : ''} 
+                      onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
+                    >
+                      EN
+                    </button>
+                    <span className={styles.mobileDivider}>|</span>
+                    <button 
+                      className={language === 'th' ? styles.activeLang : ''} 
+                      onClick={() => { setLanguage('th'); setIsMenuOpen(false); }}
+                    >
+                      TH
+                    </button>
+                  </div>
+                  
                   <Link href="/lacan" onClick={() => setIsMenuOpen(false)}>{t.nav.lacan}</Link>
                   <Link href="/alminer" onClick={() => setIsMenuOpen(false)}>{t.nav.alminer}</Link>
                   <Link href="/shop" onClick={() => setIsMenuOpen(false)}>{t.nav.shop}</Link>

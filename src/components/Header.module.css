@@ -12,7 +12,7 @@
 .header.scrolled {
   background: rgba(253, 251, 247, 0.95);
   padding: 16px 0;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
 }
 
@@ -113,7 +113,8 @@
   font-size: 0.9rem;
 }
 
-.guestMenu, .userMenu {
+.guestMenu,
+.userMenu {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -185,7 +186,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh - 80px);
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   z-index: 999;
 }
@@ -194,13 +195,19 @@
   background: var(--surface);
   width: 100%;
   padding: 40px 20px;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   animation: slideDownNav 0.3s ease-out;
 }
 
 @keyframes slideDownNav {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .mobileNav {
@@ -210,7 +217,8 @@
   align-items: center;
 }
 
-.mobileNav a, .mobileNav button {
+.mobileNav a,
+.mobileNav button {
   font-size: 1.25rem;
   font-weight: 500;
   color: var(--primary);
@@ -226,23 +234,54 @@
   margin: 10px 0;
 }
 
+.mobileLangSwitch {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.mobileLangSwitch button {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--secondary);
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  padding: 5px;
+}
+
+.mobileLangSwitch button.activeLang {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mobileDivider {
+  color: var(--border);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 900px) {
-  .nav, .authMenu {
+  .nav,
+  .authMenu,
+  .langSwitch {
     display: none;
   }
   .mobileMenuBtn {
     display: block;
   }
-}  
+}
 @media (max-width: 768px) {
   .nav {
     display: none; /* Hide desktop nav on mobile for now */
   }
-  
+
   .header {
     padding: 16px 0;
   }
-  
+
   .scrolled {
     padding: 12px 0;
   }

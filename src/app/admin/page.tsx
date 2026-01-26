@@ -15,6 +15,7 @@ import MemberManager from '@/components/admin/MemberManager';
 import ShopeeOptimizer from '@/components/admin/ShopeeOptimizer';
 import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
+import MarketComparison from '@/components/admin/MarketComparison';
 
 import { Menu, X } from 'lucide-react';
 import TeamCalendar, { CalendarEvent } from '@/components/admin/TeamCalendar';
@@ -79,13 +80,8 @@ export default function AdminPage() {
       ></div>
 
       <div className={`${styles.sidebar} ${isSidebarOpen ? styles.show : styles.hidden}`}>
-        <div className={styles.logo} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            ADMIN
-            {/* Close button for mobile within sidebar */}
-            <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(false)} style={{ color: 'white', display: 'none' }}> 
-               {/* Display none by default, could show on mobile only via CSS if needed, but overlay click handles it mostly */}
-               <X />
-            </button>
+        <div className={styles.logo} style={{ padding: '24px 20px' }}>
+            <span style={{ letterSpacing: '2px', color: '#3498db' }}>R-MINU</span> ADMIN
         </div>
         <nav className={styles.nav}>
           <div 
@@ -114,6 +110,12 @@ export default function AdminPage() {
             onClick={() => { setActiveTab('tradekorea'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
           >
             {language === 'ko' ? '트레이드코리아 분석' : 'TradeKorea Strategy'}
+          </div>
+          <div 
+            className={`${styles.navItem} ${activeTab === 'market_compare' ? styles.active : ''}`}
+            onClick={() => { setActiveTab('market_compare'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
+          >
+            {language === 'ko' ? '마켓별 정책 비교' : 'Market Policy Comparison'}
           </div>
 
           <div className={styles.navGroupTitle}>OPERATIONS</div>
@@ -183,6 +185,7 @@ export default function AdminPage() {
                   case 'pricing': return '글로벌 가격 전략';
                   case 'banners': return '배너 및 팝업 관리';
                   case 'stores': return '입점 스토어 현황';
+                  case 'market_compare': return '글로벌 정산 및 배송 정책 비교';
                   case 'settings': return '시스템 설정';
                   default: return activeTab;
                 }
@@ -190,7 +193,12 @@ export default function AdminPage() {
               return activeTab.charAt(0).toUpperCase() + activeTab.slice(1);
             })()}
           </h1>
-          <div className={styles.profile}>{user.name}</div>
+          <div className={styles.profile} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#f8fafc', padding: '8px 16px', borderRadius: '30px', border: '1px solid #e2e8f0' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#3498db', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem' }}>
+              {user.name.charAt(0)}
+            </div>
+            <span style={{ fontWeight: '600', color: '#475569', fontSize: '0.9rem' }}>{user.name}</span>
+          </div>
         </header>
 
         <div className={styles.contentArea}>
@@ -244,6 +252,7 @@ export default function AdminPage() {
           {activeTab === 'orders' && <OrderManager />}
           {activeTab === 'members' && <MemberManager />}
           {activeTab === 'pricing' && <PriceSimulator />}
+          {activeTab === 'market_compare' && <MarketComparison />}
           {activeTab === 'banners' && <BannerManager />}
           {activeTab === 'stores' && <StoreStatus />}
           {activeTab === 'settings' && <AdminSettings />}

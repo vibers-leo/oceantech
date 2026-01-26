@@ -128,13 +128,13 @@ export default function PriceSimulator() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>{language === 'ko' ? '제품 정보' : 'Product Information'}</th>
-                <th style={{width: '150px'}}>{language === 'ko' ? '기준가 (KRW)' : 'Base (KRW)'}</th>
+                <th style={{ width: '220px' }}>{language === 'ko' ? '제품 정보' : 'Product Information'}</th>
+                <th style={{ width: '160px' }}>{language === 'ko' ? '기준가 (KRW)' : 'Base (KRW)'}</th>
                 {CURRENCIES.map(c => (
-                   <th key={c.code}>
+                   <th key={c.code} style={{ minWidth: '160px' }}>
                      <div className={styles.thCol}>
-                       <span>{language === 'ko' ? c.countryKO : c.country}</span>
-                       <span className={styles.rate}>1₩ = {rates[c.code]?.toFixed(5)}</span>
+                       <span style={{ color: '#1e293b', fontSize: '0.95rem' }}>{language === 'ko' ? c.countryKO : c.country}</span>
+                       <span className={styles.rate} style={{ color: '#64748b' }}>1₩ = {rates[c.code]?.toFixed(5)}</span>
                      </div>
                    </th>
                  ))}
@@ -143,7 +143,7 @@ export default function PriceSimulator() {
             <tbody>
               {products.map(p => (
                 <tr key={p.id}>
-                  <td>{language === 'ko' ? (p as any).nameKO : p.name}</td>
+                  <td style={{ fontWeight: '600', color: '#334155' }}>{language === 'ko' ? (p as any).nameKO : p.name}</td>
                   <td>
                     <input 
                       type="number" 
@@ -163,23 +163,31 @@ export default function PriceSimulator() {
                     const isPositive = diff >= 0;
 
                     return (
-                      <td key={c.code} className={styles.currVal} style={{ paddingBottom: '1.5rem', paddingTop: '1rem', verticalAlign: 'top' }}>
-                        <div className={styles.priceMain} style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#1e293b' }}>
+                      <td key={c.code} className={styles.currVal} style={{ padding: '1.25rem 1rem', verticalAlign: 'top' }}>
+                        <div className={styles.priceMain} style={{ fontSize: '1.2rem', fontWeight: '700', color: '#0f172a', letterSpacing: '-0.01em' }}>
                           {formatCurrency(currentPrice, c.code)}
                         </div>
                         
                         {/* KRW Conversion Display */}
-                        <div style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
-                          (≈ {Math.round(currentPrice / currentRate).toLocaleString()}원)
+                        <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '6px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>KRW</span>
+                          {Math.round(currentPrice / currentRate).toLocaleString()}원
                         </div>
 
                         {/* Fluctuation Indicator */}
-                        <div className={styles.priceDiff} style={{ marginTop: '4px' }}>
-                          <span style={{ color: isPositive ? '#166534' : '#991b1b', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <div className={styles.priceDiff} style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid #f1f5f9' }}>
+                          <span style={{ 
+                            color: isPositive ? '#059669' : '#dc2626', 
+                            fontSize: '0.75rem', 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            gap: '2px',
+                            background: isPositive ? '#ecfdf5' : '#fef2f2',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontWeight: '600'
+                          }}>
                             {isPositive ? '▲' : '▼'} {formatCurrency(Math.abs(diff), c.code)}
-                            <span style={{ color: '#94a3b8', fontSize: '0.75rem', marginLeft: '2px' }}>
-                               변동
-                            </span>
                           </span>
                         </div>
                       </td>
