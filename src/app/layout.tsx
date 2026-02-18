@@ -12,9 +12,59 @@ import AIChatBot from '@/components/AIChatBot';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rminu.com';
+
 export const metadata: Metadata = {
-  title: 'Lacan & R-minu | Premium Waxing Standard',
-  description: '전문가를 위한 라캉, 당신을 위한 R-minu. 대한민국 프리미엄 왁싱의 새로운 기준을 제시합니다.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Lacan & R-minu | 프리미엄 왁싱의 새로운 기준',
+    template: '%s | Lacan & R-minu',
+  },
+  description: '전문가를 위한 라캉 왁스, 홈케어를 위한 알마이너(R-minu). 대한민국 프리미엄 제모 왁스 브랜드 오션해양테크.',
+  keywords: ['왁싱', '제모', '왁스', '라캉', '알마이너', 'R-minu', 'Lacan', '프리미엄 왁싱', '홈케어 제모', '오션해양테크'],
+  authors: [{ name: '오션해양테크', url: siteUrl }],
+  creator: '오션해양테크',
+  publisher: '오션해양테크',
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    alternateLocale: ['en_US', 'th_TH'],
+    url: siteUrl,
+    siteName: 'Lacan & R-minu',
+    title: 'Lacan & R-minu | 프리미엄 왁싱의 새로운 기준',
+    description: '전문가를 위한 라캉 왁스, 홈케어를 위한 알마이너(R-minu). 대한민국 프리미엄 제모 왁스 브랜드.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Lacan & R-minu - 프리미엄 왁싱',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lacan & R-minu | 프리미엄 왁싱의 새로운 기준',
+    description: '전문가를 위한 라캉 왁스, 홈케어를 위한 알마이너(R-minu).',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: siteUrl,
+    languages: {
+      'ko-KR': siteUrl,
+      'en-US': `${siteUrl}/en`,
+    },
+  },
 };
 
 export default function RootLayout({

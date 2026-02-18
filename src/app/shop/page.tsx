@@ -68,8 +68,8 @@ export default function ShopPage() {
         </section>
       )}
 
-      {/* EN: Global Marketplaces */}
-      {language === 'en' && (
+      {/* EN / TH: Global Marketplaces */}
+      {(language === 'en' || language === 'th') && (
         <section className={styles.globalSection}>
           <div className={styles.globalHeader}>
             <h2>{t.shopPage.global.title}</h2>

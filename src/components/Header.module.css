@@ -91,6 +91,22 @@
 .mobileMenuBtn {
   display: none;
   color: var(--primary);
+  background: none;
+  border: none;
+  padding: 4px;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.langGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobileAdminLink {
+  color: var(--alminer-primary) !important;
+  font-weight: 700;
 }
 
 .darkHero .mobileMenuBtn {

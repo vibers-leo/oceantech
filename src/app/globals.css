@@ -118,6 +118,25 @@ p {
   color: white;
 }
 
+/* Accessibility: 키보드 포커스 표시 (마우스 사용 시엔 숨김) */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Motion Preference: 애니메이션 줄이기 설정 존중 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
