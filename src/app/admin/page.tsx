@@ -20,9 +20,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import TeamCalendar from '@/components/admin/TeamCalendar';
 import type { CalendarEvent as TeamCalendarEvent } from '@/components/admin/TeamCalendar';
 import {
+  type DashboardStats,
   getCalendarEvents,
   addCalendarEvent,
   deleteCalendarEvent,
+  getDashboardStats,
 } from '@/lib/firestore';
 
 // Firestore string ID → TeamCalendar number ID 매핑
@@ -39,6 +41,8 @@ export default function AdminPage() {
 
   // Firestore 캘린더 이벤트
   const [events, setEvents] = useState<MappedEvent[]>([]);
+  // 대시보드 실시간 통계
+  const [stats, setStats] = useState<DashboardStats>({ totalOrders: 0, revenue: 0, pendingShipments: 0, totalInquiries: 0 });
 
   const loadEvents = useCallback(async () => {
     try {
@@ -61,9 +65,19 @@ export default function AdminPage() {
     }
   }, []);
 
+  const loadStats = useCallback(async () => {
+    try {
+      const s = await getDashboardStats();
+      setStats(s);
+    } catch (err) {
+      console.error('통계 로드 실패:', err);
+    }
+  }, []);
+
   useEffect(() => {
     if (user?.role === 'admin') {
       loadEvents();
+      loadStats();
     }
   }, [user, loadEvents]);
 
@@ -202,18 +216,22 @@ export default function AdminPage() {
               <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '총 주문 수' : 'Total Orders'}</h3>
-                  <div className={styles.value}>1,024</div>
-                  <div className={styles.trend}>{language === 'ko' ? '지난달 대비 +12%' : '+12% from last month'}</div>
+                  <div className={styles.value}>{stats.totalOrders.toLocaleString()}</div>
+                  <div className={styles.trend}>{language === 'ko' ? `문의 ${stats.totalInquiries}건` : `${stats.totalInquiries} inquiries`}</div>
                 </div>
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '매출액' : 'Revenue'}</h3>
-                  <div className={styles.value}>₩84,320,000</div>
-                  <div className={styles.trend}>{language === 'ko' ? '지난달 대비 +5%' : '+5% from last month'}</div>
+                  <div className={styles.value}>₩{stats.revenue.toLocaleString()}</div>
+                  <div className={styles.trend}>{language === 'ko' ? '취소 제외 합계' : 'Excl. cancelled'}</div>
                 </div>
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '배송 대기' : 'Pending Shipments'}</h3>
-                  <div className={styles.value}>42</div>
-                  <div className={styles.trend} style={{ color: 'orange' }}>{language === 'ko' ? '처리 필요' : 'Action Needed'}</div>
+                  <div className={styles.value}>{stats.pendingShipments}</div>
+                  <div className={styles.trend} style={{ color: stats.pendingShipments > 0 ? 'orange' : 'green' }}>
+                    {stats.pendingShipments > 0
+                      ? (language === 'ko' ? '처리 필요' : 'Action Needed')
+                      : (language === 'ko' ? '처리 완료' : 'All Clear')}
+                  </div>
                 </div>
               </div>
               <div className={styles.recentOrders}>

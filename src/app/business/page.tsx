@@ -1,11 +1,46 @@
 'use client';
 
+import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useToast } from '@/context/ToastContext';
 import styles from './business.module.css';
 import Button from '@/components/ui/Button';
+import { addInquiry } from '@/lib/firestore';
 
 export default function BusinessPage() {
   const { t } = useLanguage();
+  const { showToast } = useToast();
+  const [form, setForm] = useState({
+    company: '',
+    email: '',
+    region: '',
+    inquiryType: '',
+    message: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.company || !form.email || !form.region || !form.inquiryType || !form.message) {
+      showToast('모든 항목을 입력해주세요.', 'error');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await addInquiry(form);
+      showToast('문의가 성공적으로 접수되었습니다.', 'success');
+      setForm({ company: '', email: '', region: '', inquiryType: '', message: '' });
+    } catch (err) {
+      console.error('문의 접수 실패:', err);
+      showToast('문의 접수에 실패했습니다. 다시 시도해주세요.', 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -22,7 +57,7 @@ export default function BusinessPage() {
           <section className={styles.section}>
             <h2>{t.business.download.title}</h2>
             <p className={styles.desc}>{t.business.download.desc}</p>
-            
+
             <div className={styles.downloadGrid}>
               <div className={styles.downloadCard}>
                 <div className={styles.fileIcon}>PDF</div>
@@ -32,7 +67,6 @@ export default function BusinessPage() {
                 </div>
                 <Button variant="outline" size="sm">Download</Button>
               </div>
-
               <div className={styles.downloadCard}>
                 <div className={styles.fileIcon}>ZIP</div>
                 <div className={styles.fileInfo}>
@@ -41,7 +75,6 @@ export default function BusinessPage() {
                 </div>
                 <Button variant="outline" size="sm">Download</Button>
               </div>
-
               <div className={styles.downloadCard}>
                 <div className={styles.fileIcon}>AI</div>
                 <div className={styles.fileInfo}>
@@ -53,32 +86,62 @@ export default function BusinessPage() {
             </div>
           </section>
 
-          {/* Inquiry Form Placeholder */}
+          {/* Inquiry Form → Firestore */}
           <section className={styles.section}>
             <div className={styles.inquiryBox}>
               <h2>{t.business.inquiry.title}</h2>
               <p>{t.business.inquiry.desc}</p>
-              <form className={styles.form}>
+              <form className={styles.form} onSubmit={handleSubmit}>
                 <div className={styles.formGroup}>
-                  <input type="text" placeholder="Company Name" className={styles.input} />
-                  <input type="email" placeholder="Email Address" className={styles.input} />
+                  <input
+                    type="text"
+                    name="company"
+                    placeholder="Company Name"
+                    className={styles.input}
+                    value={form.company}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className={styles.input}
+                    value={form.email}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className={styles.formGroup}>
-                  <select className={styles.select}>
-                    <option>Select Region</option>
-                    <option>North America</option>
-                    <option>Europe</option>
-                    <option>Asia</option>
+                  <select name="region" className={styles.select} value={form.region} onChange={handleChange}>
+                    <option value="">Select Region</option>
+                    <option value="North America">North America</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Southeast Asia">Southeast Asia</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Other">Other</option>
                   </select>
-                  <select className={styles.select}>
-                    <option>Inquiry Type</option>
-                    <option>Wholesale</option>
-                    <option>Export / Distribution</option>
-                    <option>OEM / ODM</option>
+                  <select name="inquiryType" className={styles.select} value={form.inquiryType} onChange={handleChange}>
+                    <option value="">Inquiry Type</option>
+                    <option value="Wholesale">Wholesale</option>
+                    <option value="Export / Distribution">Export / Distribution</option>
+                    <option value="OEM / ODM">OEM / ODM</option>
                   </select>
                 </div>
-                <textarea placeholder="Message" className={styles.textarea}></textarea>
-                <Button variant="primary" size="lg" className={styles.submitBtn}>{t.business.inquiry.btn}</Button>
+                <textarea
+                  name="message"
+                  placeholder="Message"
+                  className={styles.textarea}
+                  value={form.message}
+                  onChange={handleChange}
+                />
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className={styles.submitBtn}
+                  type="submit"
+                  disabled={submitting}
+                >
+                  {submitting ? '접수 중...' : t.business.inquiry.btn}
+                </Button>
               </form>
             </div>
           </section>

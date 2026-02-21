@@ -127,3 +127,30 @@ export async function addInquiry(inq: Omit<Inquiry, 'id' | 'createdAt'>): Promis
   });
   return docRef.id;
 }
+
+// ============================
+// Dashboard 통계
+// ============================
+
+export interface DashboardStats {
+  totalOrders: number;
+  revenue: number;
+  pendingShipments: number;
+  totalInquiries: number;
+}
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const orders = await getOrders();
+  const inquiries = await getInquiries();
+
+  const activeOrders = orders.filter((o) => o.status !== 'Cancelled');
+  const revenue = activeOrders.reduce((sum, o) => sum + o.amount, 0);
+  const pendingShipments = orders.filter((o) => o.status === 'Paid' || o.status === 'Pending').length;
+
+  return {
+    totalOrders: orders.length,
+    revenue,
+    pendingShipments,
+    totalInquiries: inquiries.length,
+  };
+}
