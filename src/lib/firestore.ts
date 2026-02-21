@@ -128,6 +128,14 @@ export async function addInquiry(inq: Omit<Inquiry, 'id' | 'createdAt'>): Promis
   return docRef.id;
 }
 
+export async function updateOrderPayment(
+  id: string,
+  paymentId: string,
+  status: OrderStatus
+): Promise<void> {
+  await updateDoc(doc(db, 'orders', id), { paymentId, status });
+}
+
 // ============================
 // Dashboard 통계
 // ============================

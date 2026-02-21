@@ -1,19 +1,26 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
 import { useAuth } from '@/context/AuthContext';
 import styles from './checkout.module.css';
-import { addOrder } from '@/lib/firestore';
+import { addOrder, updateOrderPayment } from '@/lib/firestore';
+import { getCheckoutItems, clearCheckoutItems, type CheckoutItem } from '@/lib/cart';
+import * as PortOne from '@portone/browser-sdk/v2';
+
+const STORE_ID = process.env.NEXT_PUBLIC_PORTONE_STORE_ID || '';
+const CHANNEL_KEY_KR = process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KR || '';
+const CHANNEL_KEY_PAYPAL = process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY_PAYPAL || '';
 
 function CheckoutContent() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { showToast } = useToast();
   const { user } = useAuth();
   const router = useRouter();
 
+  const [items, setItems] = useState<CheckoutItem[]>([]);
   const [shipping, setShipping] = useState({
     recipient: '',
     phone: '',
@@ -22,55 +29,148 @@ function CheckoutContent() {
     address2: '',
     memo: '',
   });
-  const [paymentMethod, setPaymentMethod] = useState('card');
   const [submitting, setSubmitting] = useState(false);
 
-  // 주문 상품 (향후 장바구니/URL 파라미터에서 확장 가능)
-  const orderItem = { name: 'Alminer Hard Wax (200g)', qty: 1, price: 9500 };
-  const shippingFee = 3000;
-  const total = orderItem.price * orderItem.qty + shippingFee;
+  useEffect(() => {
+    const stored = getCheckoutItems();
+    if (stored.length === 0) {
+      router.replace('/shop');
+      return;
+    }
+    setItems(stored);
+  }, [router]);
+
+  const shippingFee = language === 'ko' ? 3000 : 0;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = subtotal + shippingFee;
+
+  const isKorean = language === 'ko';
+  const currency = isKorean ? 'KRW' : 'USD';
+
+  // USD 환산 (간이 환율 — 실서비스에서는 실시간 환율 API 사용)
+  const KRW_TO_USD = 0.00075;
+  const displayAmount = isKorean ? total : Math.round(total * KRW_TO_USD * 100) / 100;
+
+  const formatCurrency = (amount: number) => {
+    if (isKorean) return `${amount.toLocaleString('ko-KR')}원`;
+    return `$${amount.toFixed(2)}`;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShipping((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async () => {
+  const generateOrderId = () => {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `ORD-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${rand}`;
+  };
+
+  const handlePayment = async () => {
     if (!shipping.recipient || !shipping.phone || !shipping.address1) {
-      showToast('배송 정보를 입력해주세요.', 'error');
+      showToast(
+        isKorean ? '배송 정보를 입력해주세요.' : 'Please fill in the shipping details.',
+        'error'
+      );
+      return;
+    }
+
+    if (items.length === 0) {
+      showToast(isKorean ? '주문 상품이 없습니다.' : 'No items to order.', 'error');
       return;
     }
 
     setSubmitting(true);
-    try {
-      const now = new Date();
-      const dateStr = now.toISOString().split('T')[0];
-      const orderId = `ORD-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
-      await addOrder({
+    try {
+      // 1. Firestore에 주문 생성 (status: Pending)
+      const orderId = generateOrderId();
+      const dateStr = new Date().toISOString().split('T')[0];
+      const itemNames = items.map((i) => `${i.label} x${i.quantity}`).join(', ');
+
+      const firestoreId = await addOrder({
         orderId,
         user: shipping.recipient,
         email: user?.email || '',
-        item: orderItem.name,
+        item: itemNames,
         amount: total,
         status: 'Pending',
         date: dateStr,
       });
 
-      showToast('주문이 접수되었습니다!', 'success');
-      router.push('/shop');
+      // 2. PortOne 결제 요청
+      const channelKey = isKorean ? CHANNEL_KEY_KR : CHANNEL_KEY_PAYPAL;
+
+      const response = await PortOne.requestPayment({
+        storeId: STORE_ID,
+        channelKey,
+        paymentId: `payment-${orderId}-${Date.now()}`,
+        orderName: items.length === 1
+          ? items[0].label
+          : `${items[0].label} 외 ${items.length - 1}건`,
+        totalAmount: displayAmount,
+        currency,
+        payMethod: isKorean ? 'CARD' : 'PAYPAL',
+        customer: {
+          fullName: shipping.recipient,
+          phoneNumber: shipping.phone,
+          email: user?.email || undefined,
+        },
+        redirectUrl: `${window.location.origin}/shop/checkout/complete?orderId=${orderId}&firestoreId=${firestoreId}`,
+      });
+
+      // 3. 결제 결과 처리
+      if (!response || response.code != null) {
+        // 결제 실패 또는 사용자 취소
+        const msg = response?.message || (isKorean ? '결제가 취소되었습니다.' : 'Payment was cancelled.');
+        showToast(msg, 'error');
+        setSubmitting(false);
+        return;
+      }
+
+      // 4. 서버 사이드 결제 검증
+      const verifyRes = await fetch('/api/payment/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentId: response.paymentId,
+          orderId,
+          expectedAmount: displayAmount,
+        }),
+      });
+
+      const verifyData = await verifyRes.json();
+
+      if (!verifyRes.ok || !verifyData.success) {
+        showToast(
+          isKorean ? '결제 검증에 실패했습니다.' : 'Payment verification failed.',
+          'error'
+        );
+        setSubmitting(false);
+        return;
+      }
+
+      // 5. Firestore 주문 업데이트 (Paid)
+      await updateOrderPayment(firestoreId, response.paymentId, 'Paid');
+      clearCheckoutItems();
+
+      // 6. 완료 페이지로 이동
+      router.push(`/shop/checkout/complete?orderId=${orderId}`);
     } catch (err) {
-      console.error('주문 접수 실패:', err);
-      showToast('주문 접수에 실패했습니다.', 'error');
+      console.error('결제 처리 실패:', err);
+      showToast(
+        isKorean ? '결제 처리 중 오류가 발생했습니다.' : 'An error occurred during payment.',
+        'error'
+      );
     } finally {
       setSubmitting(false);
     }
   };
 
-  const paymentMethods = [
-    { id: 'card', label: 'Credit Card' },
-    { id: 'bank', label: 'Bank Transfer' },
-    { id: 'naver', label: 'Naver Pay' },
-  ];
+  if (items.length === 0) {
+    return <div className={styles.container}><p>Loading...</p></div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -92,31 +192,41 @@ function CheckoutContent() {
             <div className={styles.formGroup}>
               <label>{t.checkout.labels.address}</label>
               <div className={styles.addressGroup}>
-                <input type="text" name="postalCode" placeholder="Postal Code" className={styles.inputShort} value={shipping.postalCode} onChange={handleChange} />
-                <button type="button" className={styles.searchBtn}>Find</button>
+                <input type="text" name="postalCode" placeholder={isKorean ? '우편번호' : 'Postal Code'} className={styles.inputShort} value={shipping.postalCode} onChange={handleChange} />
+                <button type="button" className={styles.searchBtn}>
+                  {isKorean ? '검색' : 'Find'}
+                </button>
               </div>
-              <input type="text" name="address1" placeholder="Address Block 1" className={styles.input} style={{ marginTop: '10px' }} value={shipping.address1} onChange={handleChange} />
-              <input type="text" name="address2" placeholder="Detail Address" className={styles.input} style={{ marginTop: '10px' }} value={shipping.address2} onChange={handleChange} />
+              <input type="text" name="address1" placeholder={isKorean ? '기본 주소' : 'Address Line 1'} className={styles.input} style={{ marginTop: '10px' }} value={shipping.address1} onChange={handleChange} />
+              <input type="text" name="address2" placeholder={isKorean ? '상세 주소' : 'Address Line 2'} className={styles.input} style={{ marginTop: '10px' }} value={shipping.address2} onChange={handleChange} />
             </div>
             <div className={styles.formGroup}>
               <label>{t.checkout.labels.memo}</label>
-              <input type="text" name="memo" placeholder="Ex: Leave at front door" className={styles.input} value={shipping.memo} onChange={handleChange} />
+              <input type="text" name="memo" placeholder={isKorean ? '예: 문 앞에 놔주세요' : 'Ex: Leave at front door'} className={styles.input} value={shipping.memo} onChange={handleChange} />
             </div>
           </div>
 
           <div className={styles.sectionBlock}>
             <h2>{t.checkout.paymentInfo}</h2>
             <div className={styles.paymentMethods}>
-              {paymentMethods.map((pm) => (
-                <div
-                  key={pm.id}
-                  className={`${styles.payMethod} ${paymentMethod === pm.id ? styles.active : ''}`}
-                  onClick={() => setPaymentMethod(pm.id)}
-                >
-                  {pm.label}
+              {isKorean ? (
+                <>
+                  <div className={`${styles.payMethod} ${styles.active}`}>
+                    Credit Card
+                  </div>
+                  <div className={styles.payMethod}>Bank Transfer</div>
+                </>
+              ) : (
+                <div className={`${styles.payMethod} ${styles.active}`}>
+                  PayPal
                 </div>
-              ))}
+              )}
             </div>
+            <p className={styles.paymentNote}>
+              {isKorean
+                ? '결제하기 버튼을 누르면 결제 창이 열립니다.'
+                : 'A secure payment window will open when you click the button.'}
+            </p>
           </div>
         </div>
 
@@ -125,27 +235,41 @@ function CheckoutContent() {
           <div className={styles.summaryCard}>
             <h2>{t.checkout.orderSummary}</h2>
             <div className={styles.itemList}>
-              <div className={styles.item}>
-                <div className={styles.itemImg} />
-                <div className={styles.itemInfo}>
-                  <div className={styles.itemName}>{orderItem.name}</div>
-                  <div className={styles.itemMeta}>{orderItem.qty} ea</div>
+              {items.map((item, idx) => (
+                <div key={idx} className={styles.item}>
+                  <div className={styles.itemImg} />
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemName}>{item.label}</div>
+                    <div className={styles.itemMeta}>{item.quantity}ea</div>
+                  </div>
+                  <div className={styles.itemPrice}>
+                    {formatCurrency(item.price * item.quantity)}
+                  </div>
                 </div>
-                <div className={styles.itemPrice}>{orderItem.price.toLocaleString()}원</div>
-              </div>
+              ))}
             </div>
 
             <div className={styles.totalRow}>
-              <span>Total Amount</span>
-              <span className={styles.totalPrice}>{total.toLocaleString()}원</span>
+              <span>{isKorean ? '상품 금액' : 'Subtotal'}</span>
+              <span>{formatCurrency(subtotal)}</span>
             </div>
             <div className={styles.shippingRow}>
-              <span>Shipping</span>
-              <span>{shippingFee.toLocaleString()}원</span>
+              <span>{isKorean ? '배송비' : 'Shipping'}</span>
+              <span>{shippingFee > 0 ? formatCurrency(shippingFee) : 'Free'}</span>
+            </div>
+            <div className={styles.totalRow}>
+              <span>{isKorean ? '총 결제 금액' : 'Total'}</span>
+              <span className={styles.totalPrice}>{formatCurrency(displayAmount)}</span>
             </div>
 
-            <button className={styles.checkoutBtn} onClick={handleSubmit} disabled={submitting}>
-              {submitting ? '주문 처리 중...' : t.checkout.btn}
+            <button
+              className={styles.checkoutBtn}
+              onClick={handlePayment}
+              disabled={submitting}
+            >
+              {submitting
+                ? (isKorean ? '결제 진행 중...' : 'Processing...')
+                : t.checkout.btn}
             </button>
           </div>
         </div>

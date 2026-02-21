@@ -36,7 +36,7 @@ export const translations = {
     checkout: {
       title: '주문 결제',
       shippingInfo: '배송 정보',
-      paymentInfo: '결제 정보', 
+      paymentInfo: '결제 수단',
       orderSummary: '주문 상품 정보',
       labels: {
         recipient: '받는 분',
@@ -44,7 +44,11 @@ export const translations = {
         address: '주소',
         memo: '배송 메모'
       },
-      btn: '결제하기'
+      btn: '결제하기',
+      processing: '결제 진행 중...',
+      complete: '결제가 완료되었습니다!',
+      failed: '결제에 실패했습니다.',
+      continueShopping: '쇼핑 계속하기',
     },
     global: {
       title: 'Global Network',
@@ -204,7 +208,7 @@ export const translations = {
     checkout: {
       title: 'Checkout',
       shippingInfo: 'Shipping Info',
-      paymentInfo: 'Payment Info',
+      paymentInfo: 'Payment Method',
       orderSummary: 'Order Summary',
       labels: {
         recipient: 'Recipient',
@@ -212,7 +216,11 @@ export const translations = {
         address: 'Address',
         memo: 'Note'
       },
-      btn: 'Place Order'
+      btn: 'Pay Now',
+      processing: 'Processing...',
+      complete: 'Payment Complete!',
+      failed: 'Payment failed.',
+      continueShopping: 'Continue Shopping',
     },
     global: {
       title: 'Global Network',
@@ -372,7 +380,7 @@ export const translations = {
     checkout: {
       title: 'Checkout',
       shippingInfo: 'Shipping Info',
-      paymentInfo: 'Payment Info',
+      paymentInfo: 'Payment Method',
       orderSummary: 'Order Summary',
       labels: {
         recipient: 'Recipient',
@@ -380,7 +388,11 @@ export const translations = {
         address: 'Address',
         memo: 'Note'
       },
-      btn: 'Place Order'
+      btn: 'Pay Now',
+      processing: 'Processing...',
+      complete: 'Payment Complete!',
+      failed: 'Payment failed.',
+      continueShopping: 'Continue Shopping',
     },
     global: {
       title: 'Global Network',

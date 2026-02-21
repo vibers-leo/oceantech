@@ -2,16 +2,21 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
+import { useToast } from '@/context/ToastContext';
 import styles from './alminerShop.module.css';
 import ProductDetail from '@/components/ProductDetail';
 import Reviews from '@/components/Reviews';
 import ProductQnA from '@/components/ProductQnA';
 import ProductPolicy from '@/components/ProductPolicy';
 import Button from '@/components/ui/Button';
+import { setCheckoutItems } from '@/lib/cart';
 
 export default function AlminerShopPage() {
   const { t, language } = useLanguage();
+  const { showToast } = useToast();
+  const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState<{ label: string; price: number; quantity: number }[]>([]);
   const [mainImage, setMainImage] = useState('/rminu/알마이너-썸네일-1000g-2종.jpg'); // Default image
   const [activeTab, setActiveTab] = useState('detail');
@@ -173,8 +178,36 @@ export default function AlminerShopPage() {
 
           {/* Buttons */}
           <div className={styles.btnGroup}>
-            <Button href="#" variant="outline" size="lg" className={styles.cartBtn}>장바구니</Button>
-            <Button href="/shop/checkout" variant="alminer" size="lg" className={styles.buyBtn}>바로구매</Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className={styles.cartBtn}
+              onClick={() => {
+                if (selectedOptions.length === 0) {
+                  showToast(language === 'ko' ? '옵션을 선택해주세요.' : 'Please select an option.', 'error');
+                  return;
+                }
+                setCheckoutItems(selectedOptions);
+                showToast(language === 'ko' ? '장바구니에 담았습니다.' : 'Added to cart.', 'success');
+              }}
+            >
+              {t.alminer.shop.addToCart}
+            </Button>
+            <Button
+              variant="alminer"
+              size="lg"
+              className={styles.buyBtn}
+              onClick={() => {
+                if (selectedOptions.length === 0) {
+                  showToast(language === 'ko' ? '옵션을 선택해주세요.' : 'Please select an option.', 'error');
+                  return;
+                }
+                setCheckoutItems(selectedOptions);
+                router.push('/shop/checkout');
+              }}
+            >
+              {t.alminer.shop.buyNow}
+            </Button>
           </div>
         </div>
       </div>
