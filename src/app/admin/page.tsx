@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './admin.module.css';
-import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import PriceSimulator from '@/components/admin/PriceSimulator';
 import OrderManager from '@/components/admin/OrderManager';
@@ -17,156 +16,140 @@ import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 import MarketComparison from '@/components/admin/MarketComparison';
 
-import { Menu, X, ChevronLeft, ChevronRight, LayoutPanelLeft } from 'lucide-react';
-import TeamCalendar, { CalendarEvent } from '@/components/admin/TeamCalendar';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import TeamCalendar from '@/components/admin/TeamCalendar';
+import type { CalendarEvent as TeamCalendarEvent } from '@/components/admin/TeamCalendar';
+import {
+  getCalendarEvents,
+  addCalendarEvent,
+  deleteCalendarEvent,
+} from '@/lib/firestore';
+
+// Firestore string ID → TeamCalendar number ID 매핑
+interface MappedEvent extends TeamCalendarEvent {
+  _firestoreId?: string;
+}
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
   const { language } = useLanguage();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default open
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Persistent Schedule State
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  // Firestore 캘린더 이벤트
+  const [events, setEvents] = useState<MappedEvent[]>([]);
 
-  // Load from LocalStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('team_result_events');
-    if (saved) {
-      try {
-        setEvents(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse events', e);
+  const loadEvents = useCallback(async () => {
+    try {
+      const data = await getCalendarEvents();
+      setEvents(data.map((e, i) => ({
+        id: i + 1,
+        date: e.date,
+        title: e.title,
+        type: e.type,
+        participants: e.participants,
+        _firestoreId: e.id,
+      })));
+    } catch (err) {
+      console.error('캘린더 로드 실패:', err);
+      // 폴백: localStorage
+      const saved = localStorage.getItem('team_result_events');
+      if (saved) {
+        try { setEvents(JSON.parse(saved)); } catch { /* ignore */ }
       }
     }
   }, []);
 
-  // Save to LocalStorage on change
   useEffect(() => {
-    localStorage.setItem('team_result_events', JSON.stringify(events));
-  }, [events]);
+    if (user?.role === 'admin') {
+      loadEvents();
+    }
+  }, [user, loadEvents]);
 
-  const handleAddEvent = (newEvent: CalendarEvent) => {
-    setEvents(prev => [...prev, newEvent]);
+  const handleAddEvent = async (newEvent: TeamCalendarEvent) => {
+    setEvents((prev) => [...prev, newEvent]);
+    try {
+      await addCalendarEvent({
+        date: newEvent.date,
+        title: newEvent.title,
+        type: newEvent.type,
+        participants: newEvent.participants,
+      });
+      await loadEvents();
+    } catch (err) {
+      console.error('일정 추가 실패:', err);
+    }
   };
 
-  const handleDeleteEvent = (id: number) => {
-    setEvents(prev => prev.filter(e => e.id !== id));
+  const handleDeleteEvent = async (id: number) => {
+    const target = events.find((e) => e.id === id);
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+    try {
+      if (target?._firestoreId) {
+        await deleteCalendarEvent(target._firestoreId);
+      }
+    } catch (err) {
+      console.error('일정 삭제 실패:', err);
+    }
   };
 
   // Protect Route
   useEffect(() => {
-    if (!isLoading) {
-      if (!user || user.role !== 'admin') {
-        router.push('/login');
-      }
+    if (!isLoading && (!user || user.role !== 'admin')) {
+      router.push('/login');
     }
   }, [user, isLoading, router]);
-  
-  // Mobile responsive helper: close sidebar on route change or initial load if small screen?
-  // For now, simple toggle logic.
 
   if (isLoading || !user || user.role !== 'admin') {
-     return <div className="loading">Loading Admin Panel...</div>;
+    return <div className="loading">Loading Admin Panel...</div>;
   }
+
+  const closeSidebarOnMobile = () => {
+    if (window.innerWidth < 768) setIsSidebarOpen(false);
+  };
+
+  const navItem = (tab: string, labelKo: string, labelEn: string) => (
+    <div
+      className={`${styles.navItem} ${activeTab === tab ? styles.active : ''}`}
+      onClick={() => { setActiveTab(tab); closeSidebarOnMobile(); }}
+    >
+      {language === 'ko' ? labelKo : labelEn}
+    </div>
+  );
 
   return (
     <div className={styles.container}>
       {/* Mobile Overlay */}
-      <div 
-        className={`${styles.overlay} ${isSidebarOpen ? styles.show : ''}`} 
+      <div
+        className={`${styles.overlay} ${isSidebarOpen ? styles.show : ''}`}
         onClick={() => setIsSidebarOpen(false)}
-      ></div>
+      />
 
       <div className={`${styles.sidebar} ${isSidebarOpen ? styles.show : styles.hidden}`}>
         <div className={styles.logo} style={{ padding: '24px 20px' }}>
-            <span style={{ letterSpacing: '2px', color: '#3498db' }}>R-MINU</span> ADMIN
+          <span style={{ letterSpacing: '2px', color: '#3498db' }}>R-MINU</span> ADMIN
         </div>
         <nav className={styles.nav}>
-          {/* ... existing nav items ... */}
-          <div 
-            className={`${styles.navItem} ${activeTab === 'dashboard' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('dashboard'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '대시보드' : 'Dashboard'}
-          </div>
-          
+          {navItem('dashboard', '대시보드', 'Dashboard')}
+
           <div className={styles.navGroupTitle}>GLOBAL EXPANSION</div>
-          
-          <div 
-            className={`${styles.navItem} ${activeTab === 'shopee_opt' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('shopee_opt'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '쇼피 리스팅 (AI)' : 'Shopee Listing (AI)'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'live_map' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('live_map'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '동남아 시장분석 (Market Analysis)' : 'SEA Market Analysis'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'tradekorea' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('tradekorea'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '트레이드코리아 분석' : 'TradeKorea Strategy'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'market_compare' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('market_compare'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '마켓별 정책 비교' : 'Market Policy Comparison'}
-          </div>
+          {navItem('shopee_opt', '쇼피 리스팅 (AI)', 'Shopee Listing (AI)')}
+          {navItem('live_map', '동남아 시장분석 (Market Analysis)', 'SEA Market Analysis')}
+          {navItem('tradekorea', '트레이드코리아 분석', 'TradeKorea Strategy')}
+          {navItem('market_compare', '마켓별 정책 비교', 'Market Policy Comparison')}
 
           <div className={styles.navGroupTitle}>OPERATIONS</div>
-
-          <div 
-            className={`${styles.navItem} ${activeTab === 'schedule' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('schedule'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '일정 관리' : 'Schedule Management'}
-          </div>
-
-          <div 
-            className={`${styles.navItem} ${activeTab === 'orders' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('orders'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '주문 관리' : 'Orders'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'members' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('members'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '회원 승인/관리' : 'Members'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'pricing' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('pricing'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '글로벌 가격' : 'Global Pricing'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'banners' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('banners'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '배너 관리' : 'Banner Manager'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'stores' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('stores'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '입점 현황' : 'Store Status'}
-          </div>
-          <div 
-            className={`${styles.navItem} ${activeTab === 'settings' ? styles.active : ''}`}
-            onClick={() => { setActiveTab('settings'); if(window.innerWidth < 768) setIsSidebarOpen(false); }}
-          >
-            {language === 'ko' ? '설정' : 'Settings'}
-          </div>
+          {navItem('schedule', '일정 관리', 'Schedule Management')}
+          {navItem('orders', '주문 관리', 'Orders')}
+          {navItem('members', '회원 승인/관리', 'Members')}
+          {navItem('pricing', '글로벌 가격', 'Global Pricing')}
+          {navItem('banners', '배너 관리', 'Banner Manager')}
+          {navItem('stores', '입점 현황', 'Store Status')}
+          {navItem('settings', '설정', 'Settings')}
 
           <div style={{ marginTop: 'auto', padding: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(false)}
               style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.05)', border: 'none', color: '#bdc3c7', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem' }}
             >
@@ -179,27 +162,27 @@ export default function AdminPage() {
 
       <div className={styles.main}>
         <header className={styles.header}>
-          <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(!isSidebarOpen)} title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}>
+          <button className={styles.toggleBtn} onClick={() => setIsSidebarOpen(!isSidebarOpen)} title={isSidebarOpen ? 'Collapse Sidebar' : 'Expand Sidebar'}>
             {isSidebarOpen ? <ChevronLeft className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}
           </button>
           <h1>
             {(() => {
               if (language === 'ko') {
-                switch (activeTab) {
-                  case 'dashboard': return '대시보드';
-                  case 'shopee_opt': return '쇼피 리스팅 최적화 (AI)';
-                  case 'live_map': return '동남아 시장분석 및 관제탑';
-                  case 'tradekorea': return '트레이드코리아 활용 전략';
-                  case 'schedule': return '일정 관리';
-                  case 'orders': return '주문 관리';
-                  case 'members': return '회원 승인 및 관리';
-                  case 'pricing': return '글로벌 가격 전략';
-                  case 'banners': return '배너 및 팝업 관리';
-                  case 'stores': return '입점 스토어 현황';
-                  case 'market_compare': return '글로벌 정산 및 배송 정책 비교';
-                  case 'settings': return '시스템 설정';
-                  default: return activeTab;
-                }
+                const titles: Record<string, string> = {
+                  dashboard: '대시보드',
+                  shopee_opt: '쇼피 리스팅 최적화 (AI)',
+                  live_map: '동남아 시장분석 및 관제탑',
+                  tradekorea: '트레이드코리아 활용 전략',
+                  schedule: '일정 관리',
+                  orders: '주문 관리',
+                  members: '회원 승인 및 관리',
+                  pricing: '글로벌 가격 전략',
+                  banners: '배너 및 팝업 관리',
+                  stores: '입점 스토어 현황',
+                  market_compare: '글로벌 정산 및 배송 정책 비교',
+                  settings: '시스템 설정',
+                };
+                return titles[activeTab] || activeTab;
               }
               return activeTab.charAt(0).toUpperCase() + activeTab.slice(1);
             })()}
@@ -215,11 +198,8 @@ export default function AdminPage() {
         <div className={styles.contentArea}>
           {activeTab === 'dashboard' && (
             <>
-              {/* Team Calendar Section - Top Priority */}
               <TeamCalendar events={events} onAddEvent={handleAddEvent} onDeleteEvent={handleDeleteEvent} />
-
               <div className={styles.statsGrid}>
-                {/* Stat cards content... same as before */}
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '총 주문 수' : 'Total Orders'}</h3>
                   <div className={styles.value}>1,024</div>
@@ -233,17 +213,16 @@ export default function AdminPage() {
                 <div className={styles.statCard}>
                   <h3>{language === 'ko' ? '배송 대기' : 'Pending Shipments'}</h3>
                   <div className={styles.value}>42</div>
-                  <div className={styles.trend} style={{color: 'orange'}}>{language === 'ko' ? '처리 필요' : 'Action Needed'}</div>
+                  <div className={styles.trend} style={{ color: 'orange' }}>{language === 'ko' ? '처리 필요' : 'Action Needed'}</div>
                 </div>
               </div>
-
               <div className={styles.recentOrders}>
                 <h2>{language === 'ko' ? '최근 활동' : 'Recent Activity'}</h2>
                 <div className={styles.alertBox}>
                   <strong>{language === 'ko' ? '글로벌 확장 준비 완료' : 'Global Expansion Ready'}</strong>
                   <p>
-                    {language === 'ko' 
-                      ? '새로운 쇼피 리스팅 AI와 동남아 관제탑 기능이 추가되었습니다. 왼쪽 메뉴에서 확인하세요.' 
+                    {language === 'ko'
+                      ? '새로운 쇼피 리스팅 AI와 동남아 관제탑 기능이 추가되었습니다. 왼쪽 메뉴에서 확인하세요.'
                       : 'New features Shopee AI and SEA Live Map are live. Check the sidebar.'}
                   </p>
                 </div>
@@ -252,9 +231,9 @@ export default function AdminPage() {
           )}
 
           {activeTab === 'schedule' && (
-             <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
-                <TeamCalendar events={events} onAddEvent={handleAddEvent} onDeleteEvent={handleDeleteEvent} />
-             </div>
+            <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+              <TeamCalendar events={events} onAddEvent={handleAddEvent} onDeleteEvent={handleDeleteEvent} />
+            </div>
           )}
 
           {activeTab === 'shopee_opt' && <ShopeeOptimizer />}
