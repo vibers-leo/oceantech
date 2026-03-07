@@ -11,6 +11,7 @@ import Reviews from '@/components/Reviews';
 import ProductQnA from '@/components/ProductQnA';
 import ProductPolicy from '@/components/ProductPolicy';
 import Button from '@/components/ui/Button';
+import { ProductJsonLd } from '@/components/JsonLd';
 import { setCheckoutItems } from '@/lib/cart';
 
 export default function AlminerShopPage() {
@@ -38,7 +39,7 @@ export default function AlminerShopPage() {
   // If no option selected, show range or min price.
   // Let's us a state for "Display Price".
   const [displayPrice, setDisplayPrice] = useState(minPrice);
-  const [originalDisplayPrice, setOriginalDisplayPrice] = useState(69000); // Mock original
+  const [originalDisplayPrice, setOriginalDisplayPrice] = useState(Math.round(minPrice * 1.4 / 100) * 100);
 
   const formatPrice = (p: number) => new Intl.NumberFormat('ko-KR').format(p);
 
@@ -96,6 +97,7 @@ export default function AlminerShopPage() {
 
   return (
     <div className={styles.container}>
+      <ProductJsonLd />
       {/* Top Section: Gallery & Info */}
       <div className={styles.topSection}>
         {/* Left: Image Gallery */}
@@ -121,7 +123,7 @@ export default function AlminerShopPage() {
           <div className={styles.headerInfo}>
              <h1 className={styles.productTitle}>{t.alminer.product.name}</h1>
              <div className={styles.rating}>
-               ⭐⭐⭐⭐⭐ <span className={styles.reviewCount}>(42 Reviews)</span>
+               ⭐⭐⭐⭐⭐ <span className={styles.reviewCount}>(5 Reviews)</span>
              </div>
           </div>
 
@@ -132,8 +134,8 @@ export default function AlminerShopPage() {
           </div>
           
           <div className={styles.shippingInfo}>
-             <span className={styles.shipLabel}>배송</span>
-             <span className={styles.shipValue}>무료배송 • <strong>{getEstimatedArrival()}</strong></span>
+             <span className={styles.shipLabel}>{t.shopDetail.shipping}</span>
+             <span className={styles.shipValue}>{t.shopDetail.freeShipping} • <strong>{getEstimatedArrival()}</strong></span>
           </div>
 
           <div className={styles.divider}></div>
@@ -141,7 +143,7 @@ export default function AlminerShopPage() {
           {/* Option Selector */}
           <div className={styles.optionSection}>
             <select className={styles.selectInput} onChange={handleOptionSelect} defaultValue="-1">
-               <option value="-1" disabled>옵션 선택 (필수)</option>
+               <option value="-1" disabled>{t.shopDetail.selectOption}</option>
                {currentOptions.map((opt, idx) => (
                  <option key={idx} value={idx}>
                    {opt.label} - {formatPrice(opt.price)}원
@@ -172,7 +174,7 @@ export default function AlminerShopPage() {
 
           {/* Total Price */}
           <div className={styles.totalRow}>
-             <span>총 상품금액</span>
+             <span>{t.shopDetail.totalPrice}</span>
              <span className={styles.totalPriceText}>{formatPrice(totalPrice)}원</span>
           </div>
 
@@ -214,29 +216,29 @@ export default function AlminerShopPage() {
 
       {/* Detail Tabs */}
       <div className={styles.tabNav}>
-        <div 
+        <div
           className={`${styles.tab} ${activeTab === 'detail' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('detail')}
         >
-          상세정보
+          {t.shopDetail.tabs.detail}
         </div>
-        <div 
+        <div
           className={`${styles.tab} ${activeTab === 'reviews' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('reviews')}
         >
-          상품평 (5)
+          {t.shopDetail.tabs.reviews} (5)
         </div>
-        <div 
+        <div
           className={`${styles.tab} ${activeTab === 'qna' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('qna')}
         >
-          Q&A
+          {t.shopDetail.tabs.qna}
         </div>
-        <div 
+        <div
            className={`${styles.tab} ${activeTab === 'policy' ? styles.activeTab : ''}`}
            onClick={() => setActiveTab('policy')}
         >
-          반품/교환정보
+          {t.shopDetail.tabs.policy}
         </div>
       </div>
 

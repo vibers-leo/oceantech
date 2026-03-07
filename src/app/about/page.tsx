@@ -15,42 +15,36 @@ export default function AboutPage() {
           <h1 className="fade-in">{t.about.title}</h1>
         </div>
       </div>
-      
+
       <Section>
         <div className={styles.content}>
           <div className={`${styles.vision} fade-in`}>
             <span>{t.about.vision}</span>
             <h2>{t.about.visionText}</h2>
           </div>
-          
+
           <p className={styles.description}>{t.about.description}</p>
 
           <div className={styles.globalSection}>
             <div className={styles.sectionHeader}>
-              <h3>GLOBAL NETWORK</h3>
+              <h3>{t.global.title}</h3>
               <p>{t.global.description}</p>
             </div>
             <GlobalMap />
           </div>
 
           <div className={styles.historySection}>
-            <h3>HISTORY & MILESTONES</h3>
+            <h3>{t.about.history.title}</h3>
             <div className={styles.timeline}>
-               <div className={styles.timelineItem}>
-                 <span className={styles.year}>2024</span>
-                 <p>알마이너 (Alminer) 브랜드 런칭</p>
-               </div>
-               <div className={styles.timelineItem}>
-                 <span className={styles.year}>2023</span>
-                 <p>기업부설연구소 인증 획득</p>
-               </div>
-               <div className={styles.timelineItem}>
-                 <span className={styles.year}>2020</span>
-                 <p>라캉 (Lacan) 살롱 멤버십 500호점 돌파</p>
-               </div>
+              {t.about.history.items.map((item, index) => (
+                <div key={index} className={styles.timelineItem}>
+                  <span className={styles.year}>{item.year}</span>
+                  <p>{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
-          
+
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
               <h3>CEO</h3>
@@ -66,9 +60,9 @@ export default function AboutPage() {
               </div>
             </div>
             <div className={styles.infoItem}>
-              <h3>Contact</h3>
-              <p>010-7169-3438</p>
-              <p>jbanion@naver.com</p>
+              <h3>{t.about.contact}</h3>
+              <p>{t.footer.tel}</p>
+              <p>{t.footer.email}</p>
             </div>
           </div>
         </div>

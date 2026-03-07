@@ -6,6 +6,18 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './shop.module.css';
 
+// Global marketplace configuration - update URLs as stores go live
+const GLOBAL_STORES = {
+  amazon: {
+    url: '', // Add Amazon store URL when ready
+    status: 'coming_soon' as const, // 'active' | 'coming_soon'
+  },
+  shopee: {
+    url: '', // Add Shopee store URL when ready (user will provide later)
+    status: 'coming_soon' as const,
+  },
+};
+
 export default function ShopPage() {
   const { language, t } = useLanguage();
 
@@ -23,10 +35,10 @@ export default function ShopPage() {
           {/* LACAN Card */}
           <div className={`${styles.card} fade-in`} style={{ animationDelay: '0.4s' }}>
             <div className={styles.cardImage}>
-              <Image 
-                src="/lacan-bg.png" 
-                alt="Lacan Wax" 
-                fill 
+              <Image
+                src="/lacan-bg.png"
+                alt="Lacan Wax"
+                fill
                 style={{ objectFit: 'cover' }}
                 className={styles.bgImage}
               />
@@ -37,7 +49,7 @@ export default function ShopPage() {
               <h2>{t.shopPage.lacan.title}</h2>
               <p>{t.shopPage.lacan.desc}</p>
               <div className={styles.note}>{t.shopPage.lacan.note}</div>
-              <a href="http://lacanwax.com/" target="_blank" rel="noopener noreferrer" className={styles.button}>
+              <a href="https://lacanwax.com/" target="_blank" rel="noopener noreferrer" className={styles.button}>
                 {t.shopPage.lacan.btn} →
               </a>
             </div>
@@ -46,10 +58,10 @@ export default function ShopPage() {
           {/* ALMINER Card */}
           <div className={`${styles.card} fade-in`} style={{ animationDelay: '0.6s' }}>
             <div className={styles.cardImage}>
-              <Image 
-                src="/rminu/알마이너-추가-썸네일.jpg" 
-                alt="Alminer" 
-                fill 
+              <Image
+                src="/rminu/알마이너-추가-썸네일.jpg"
+                alt="Alminer"
+                fill
                 style={{ objectFit: 'cover' }}
                 className={styles.bgImage}
               />
@@ -75,19 +87,37 @@ export default function ShopPage() {
             <h2>{t.shopPage.global.title}</h2>
             <p>{t.shopPage.global.desc}</p>
           </div>
-          
-          <div className={styles.globalList}>
-            <a href="https://amazon.com" target="_blank" rel="noreferrer" className={styles.globalLink}>
-              <span className={styles.marketIcon}>A</span>
-              <span className={styles.marketName}>{t.shopPage.global.amazon}</span>
-              <span className={styles.arrow}>→</span>
-            </a>
-            <a href="https://shopee.com" target="_blank" rel="noreferrer" className={styles.globalLink}>
-              <span className={styles.marketIcon}>S</span>
-              <span className={styles.marketName}>{t.shopPage.global.shopee}</span>
-              <span className={styles.arrow}>→</span>
-            </a>
 
+          <div className={styles.globalList}>
+            {/* Amazon */}
+            {GLOBAL_STORES.amazon.status === 'active' && GLOBAL_STORES.amazon.url ? (
+              <a href={GLOBAL_STORES.amazon.url} target="_blank" rel="noreferrer" className={styles.globalLink}>
+                <span className={styles.marketIcon}>A</span>
+                <span className={styles.marketName}>{t.shopPage.global.amazon}</span>
+                <span className={styles.arrow}>→</span>
+              </a>
+            ) : (
+              <div className={`${styles.globalLink} ${styles.comingSoon}`}>
+                <span className={styles.marketIcon}>A</span>
+                <span className={styles.marketName}>{t.shopPage.global.amazon}</span>
+                <span className={styles.comingSoonBadge}>Coming Soon</span>
+              </div>
+            )}
+
+            {/* Shopee */}
+            {GLOBAL_STORES.shopee.status === 'active' && GLOBAL_STORES.shopee.url ? (
+              <a href={GLOBAL_STORES.shopee.url} target="_blank" rel="noreferrer" className={styles.globalLink}>
+                <span className={styles.marketIcon}>S</span>
+                <span className={styles.marketName}>{t.shopPage.global.shopee}</span>
+                <span className={styles.arrow}>→</span>
+              </a>
+            ) : (
+              <div className={`${styles.globalLink} ${styles.comingSoon}`}>
+                <span className={styles.marketIcon}>S</span>
+                <span className={styles.marketName}>{t.shopPage.global.shopee}</span>
+                <span className={styles.comingSoonBadge}>Coming Soon</span>
+              </div>
+            )}
           </div>
         </section>
       )}

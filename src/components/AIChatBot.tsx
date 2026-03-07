@@ -23,9 +23,6 @@ export default function AIChatBot() {
   const { language } = useLanguage();
   const pathname = usePathname();
 
-  // Always show, even on admin pages
-  const isHidden = false;
-
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       runGreetingSequence();
@@ -42,20 +39,18 @@ export default function AIChatBot() {
 
   const runGreetingSequence = async () => {
     setIsTyping(true);
-    await wait(1000);
-    addMessage('system', language === 'ko' ? '접속 환경 분석 중...' : 'Analyzing Connection Environment...');
-    
     await wait(800);
-    addMessage('system', language === 'ko' ? '서울, 대한민국 (IP: 121.145.***.***) 감지됨' : 'Detected: Seoul, KR');
-    
-    await wait(800);
-    addMessage('system', language === 'ko' ? '선호 언어: 한국어 (ko-KR) 설정 완료' : 'Language set to English (en-US)');
-    
+
+    const langLabel = language === 'ko' ? '한국어' : language === 'th' ? 'ภาษาไทย' : 'English';
+    addMessage('system', language === 'ko' ? `언어: ${langLabel} 설정 완료` : `Language: ${langLabel} set`);
+
     await wait(600);
     setIsTyping(false);
-    const greeting = language === 'ko' 
-      ? "안녕하세요! 오션테크 AI 어시스턴트입니다.\n2026 수출바우처 및 제품 관련하여 무엇을 도와드릴까요?"
-      : "Hello! I am the Ocean Tech AI Assistant.\nHow can I help you regarding Export Vouchers or our products?";
+    const greeting = language === 'ko'
+      ? "안녕하세요! 오션테크 AI 어시스턴트입니다.\n제품이나 수출 관련하여 무엇을 도와드릴까요?"
+      : language === 'th'
+      ? "สวัสดีครับ! ผมคือ AI Assistant ของ Ocean Tech\nมีอะไรให้ช่วยเกี่ยวกับผลิตภัณฑ์หรือการส่งออกครับ?"
+      : "Hello! I am the Ocean Tech AI Assistant.\nHow can I help you regarding our products or export inquiries?";
     addMessage('bot', greeting);
   };
 
@@ -72,7 +67,7 @@ export default function AIChatBot() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    
+
     const userText = input;
     setInput('');
     addMessage('user', userText);
@@ -83,26 +78,38 @@ export default function AIChatBot() {
     let reply = "";
     const lowerInput = userText.toLowerCase();
 
-    if (lowerInput.includes('수출') || lowerInput.includes('export')) {
-      reply = language === 'ko' 
-        ? "현재 2026년 수출바우처 사업 계획이 시스템에 등록되어 있습니다.\n주요 타겟 국가는 싱가포르, 말레이시아이며, 목표 매출액은 5만 달러입니다. 관련 문서를 띄워드릴까요?"
-        : "The 2026 Export Voucher Plan is registered in the system. Target markets are Singapore and Malaysia with a $50k target. Shall I open the document?";
-    } else if (lowerInput.includes('가격') || lowerInput.includes('price')) {
+    if (lowerInput.includes('수출') || lowerInput.includes('export') || lowerInput.includes('ส่งออก')) {
       reply = language === 'ko'
-        ? "글로벌 가격 정책을 조회합니다...\n현재 달러 환율 기준, 알마이너 하드 왁스(500g)의 권장 소비자가는 $18.50 (USD)입니다. 마진율 160%가 적용되었습니다."
-        : "Checking Global Pricing...\nBased on current rates, the R-minu Hard Wax (500g) MSRP is $18.50 USD. This includes a 160% markup margin.";
-    } else if (lowerInput.includes('비전') || lowerInput.includes('vision') || lowerInput.includes('회사') || lowerInput.includes('company')) {
+        ? "현재 아마존 US 입점과 쇼피 동남아 진출을 준비 중입니다.\n주요 타겟 국가는 싱가포르, 말레이시아, 태국이며, 수출 관련 문의는 Business 페이지에서 직접 남겨주실 수 있습니다."
+        : language === 'th'
+        ? "เรากำลังเตรียมเข้า Amazon US และ Shopee เอเชียตะวันออกเฉียงใต้ สำหรับสอบถามเกี่ยวกับการส่งออก กรุณาไปที่หน้า Business"
+        : "We are currently preparing for Amazon US and Shopee Southeast Asia. For export inquiries, please visit our Business page.";
+    } else if (lowerInput.includes('가격') || lowerInput.includes('price') || lowerInput.includes('ราคา')) {
       reply = language === 'ko'
-        ? "오션테크의 비전은 해양 바이오 기술과 디지털 뷰티의 융합입니다.\n바다의 생명력을 데이터 기반의 홈케어 솔루션으로 재해석하여, 글로벌 No.1 스마트 뷰티 기업으로 도약하는 것이 목표입니다."
-        : "Ocean Tech's vision is the convergence of Marine Bio-Tech and Digital Beauty.\nWe aim to be the Global No.1 Smart Beauty Company by reinterpreting marine vitality into data-driven home care solutions.";
-    } else if (lowerInput.includes('안녕') || lowerInput.includes('hi') || lowerInput.includes('hello')) {
+        ? "R-minu 하드왁스 가격 안내:\n• 200g: 9,500원\n• 400g: 14,400원\n• 500g: 14,450원\n• 1000g: 21,140원\n무료 배송이며, 쇼핑 페이지에서 바로 구매하실 수 있습니다."
+        : language === 'th'
+        ? "ราคา R-minu Hard Wax:\n• 200g: ₩9,500\n• 500g: ₩14,450\n• 1000g: ₩21,140\nจัดส่งฟรี! ไปที่หน้าร้านค้าเพื่อสั่งซื้อ"
+        : "R-minu Hard Wax pricing:\n• 200g: ₩9,500\n• 500g: ₩14,450\n• 1000g: ₩21,140\nFree shipping! Visit our Shop page to order.";
+    } else if (lowerInput.includes('라캉') || lowerInput.includes('lacan')) {
       reply = language === 'ko'
-        ? "반갑습니다! 오늘 미팅 준비는 완벽하신가요? 제가 도울 일이 있다면 말씀해주세요."
-        : "Greetings! Is everything ready for the meeting? Let me know if I can assist.";
+        ? "라캉 왁스는 전문가 전용 프리미엄 왁스 브랜드입니다.\n전문가 인증을 통해 가입하시면 특별 가격과 교육 자료를 이용하실 수 있습니다.\n라캉 페이지에서 자세한 내용을 확인해주세요."
+        : "Lacan Wax is a premium wax brand exclusively for certified professionals.\nVisit the Lacan page for more details on membership and benefits.";
+    } else if (lowerInput.includes('알마이너') || lowerInput.includes('rminu') || lowerInput.includes('r-minu') || lowerInput.includes('제품') || lowerInput.includes('product')) {
+      reply = language === 'ko'
+        ? "R-minu(알마이너)는 전문가용 라캉의 기술력을 홈케어로 확장한 셀프 왁싱 브랜드입니다.\n3가지 핵심 기술(엘라스틱 테크, 모발 응집 테크, 밀착 코팅 테크)이 적용되어 있습니다.\nR-minu 페이지에서 상세 정보를 확인하세요."
+        : "R-minu is a premium self-waxing brand with 3 core technologies.\nVisit the R-minu page for detailed product information.";
+    } else if (lowerInput.includes('안녕') || lowerInput.includes('hi') || lowerInput.includes('hello') || lowerInput.includes('สวัสดี')) {
+      reply = language === 'ko'
+        ? "반갑습니다! 제품, 가격, 수출 등 궁금한 점을 물어보세요."
+        : language === 'th'
+        ? "สวัสดีครับ! ถามได้เลยเกี่ยวกับผลิตภัณฑ์ ราคา หรือการส่งออก"
+        : "Hello! Feel free to ask about our products, pricing, or export opportunities.";
     } else {
       reply = language === 'ko'
-        ? "죄송합니다. 현재 데모 모드에서는 수출, 가격, 제품, 비전 관련 문의에만 답변할 수 있도록 설정되어 있습니다."
-        : "I apologize. In Demo Mode, I am configured to answer inquiries related to Export, Price, Products, and Vision only.";
+        ? "죄송합니다. 현재 데모 모드에서는 수출, 가격, 제품(라캉/R-minu) 관련 문의에만 답변 가능합니다.\n더 자세한 문의는 Business 페이지를 이용해주세요."
+        : language === 'th'
+        ? "ขออภัยครับ ในโหมดเดโม ผมตอบได้เฉพาะเรื่องการส่งออก ราคา และผลิตภัณฑ์เท่านั้น\nกรุณาใช้หน้า Business สำหรับคำถามเพิ่มเติม"
+        : "I apologize. In Demo Mode, I can answer inquiries about export, pricing, and products (Lacan/R-minu) only.\nFor detailed inquiries, please use our Business page.";
     }
 
     setIsTyping(false);
@@ -113,7 +120,23 @@ export default function AIChatBot() {
     if (e.key === 'Enter') handleSend();
   };
 
-  if (isHidden) return null;
+  const quickActions = language === 'ko'
+    ? [
+        { label: '제품 정보', query: '알마이너 제품 알려줘' },
+        { label: '가격 안내', query: '가격 정보 알려줘' },
+        { label: '수출 문의', query: '수출 정보 알려줘' },
+      ]
+    : language === 'th'
+    ? [
+        { label: 'ผลิตภัณฑ์', query: 'product info' },
+        { label: 'ราคา', query: 'price info' },
+        { label: 'ส่งออก', query: 'export info' },
+      ]
+    : [
+        { label: 'Products', query: 'Tell me about R-minu' },
+        { label: 'Pricing', query: 'Show me pricing' },
+        { label: 'Export', query: 'Tell me about export' },
+      ];
 
   return (
     <>
@@ -126,7 +149,7 @@ export default function AIChatBot() {
         >
           <div className={styles.gradientBg}></div>
           <Sparkles className="w-6 h-6 text-[#00d2ff]" />
-          
+
           <div className={`${styles.tooltip} ${isHovered ? styles.visible : ''}`}>
             <span style={{ color: '#00d2ff' }}>AI Agent</span> Online
           </div>
@@ -136,13 +159,13 @@ export default function AIChatBot() {
       <div className={`${styles.chatWindow} ${!isOpen ? styles.closed : ''}`}>
         <div className={styles.header}>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#00d2ff]/10 flex items-center justify-center border border-[#00d2ff]/30" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.3)' }}>
               <Sparkles className="w-4 h-4 text-[#00d2ff]" />
             </div>
             <div>
               <h3 className={styles.headerTitle}>
-                Ocean AI 
-                <span className={styles.betaTag}>BETA</span>
+                Ocean AI
+                <span className={styles.betaTag}>DEMO</span>
               </h3>
               <p className={styles.statusText}>
                 <span className={`${styles.animatePulse}`} style={{ width: '6px', height: '6px', backgroundColor: '#22c55e', borderRadius: '50%', display: 'inline-block' }}></span>
@@ -158,7 +181,7 @@ export default function AIChatBot() {
         <div className={styles.messageArea}>
           {messages.map((msg) => (
             <div key={msg.id} className={`${styles.messageRow} ${styles[msg.role]}`}>
-              
+
               {msg.role === 'system' && (
                 <div className={styles.systemMessage}>
                    <Globe className="w-3 h-3" /> {msg.text}
@@ -192,24 +215,15 @@ export default function AIChatBot() {
 
         {messages.length > 0 && messages.length < 5 && (
             <div className={styles.quickActions}>
-                <button 
-                  onClick={() => { setInput(language === 'ko' ? '수출 정보 알려줘' : 'Tell me export info'); handleSend(); }}
+              {quickActions.map((action, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { setInput(action.query); setTimeout(() => handleSend(), 0); }}
                   className={styles.actionButton}
                 >
-                   {language === 'ko' ? '📊 수출 계획 확인' : '📊 Check Export Plan'}
+                  {action.label}
                 </button>
-                <button 
-                   onClick={() => { setInput(language === 'ko' ? '가격 정책 보여줘' : 'Show me pricing'); handleSend(); }}
-                   className={styles.actionButton}
-                >
-                   {language === 'ko' ? '💰 글로벌 가격' : '💰 Global Pricing'}
-                </button>
-                <button 
-                   onClick={() => { setInput(language === 'ko' ? '회사 비전이 뭐야?' : 'What is the vision?'); handleSend(); }}
-                   className={styles.actionButton}
-                >
-                   {language === 'ko' ? '🏢 회사 비전' : '🏢 Company Vision'}
-                </button>
+              ))}
             </div>
         )}
 
@@ -220,10 +234,10 @@ export default function AIChatBot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={language === 'ko' ? "무엇이든 물어보세요..." : "Ask me anything..."}
+              placeholder={language === 'ko' ? "무엇이든 물어보세요..." : language === 'th' ? "ถามอะไรก็ได้..." : "Ask me anything..."}
               className={styles.textInput}
             />
-            <button 
+            <button
               onClick={handleSend}
               disabled={!input.trim()}
               className={styles.sendButton}
@@ -232,7 +246,7 @@ export default function AIChatBot() {
             </button>
           </div>
           <div className={styles.footer}>
-            Powered by <span style={{ color: '#6b7280', fontWeight: 'bold' }}>Ocean-Gemini Engine</span>
+            Powered by <span style={{ color: '#6b7280', fontWeight: 'bold' }}>Ocean AI</span>
           </div>
         </div>
       </div>

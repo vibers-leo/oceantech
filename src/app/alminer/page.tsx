@@ -14,10 +14,10 @@ export default function AlminerPage() {
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroBg}>
-          <Image 
-            src="/rminu/알마이너-추가-썸네일.jpg" 
-            alt="Alminer R-minu" 
-            fill 
+          <Image
+            src="/rminu/알마이너-추가-썸네일.jpg"
+            alt="Alminer R-minu"
+            fill
             className={styles.heroImg}
             style={{ objectFit: 'cover' }}
             priority
@@ -40,8 +40,8 @@ export default function AlminerPage() {
       {/* Intro Section */}
       <Section className={styles.intro}>
         <div className={styles.introText}>
-          <span className={styles.label}>THE HERITAGE</span>
-          <h2>LA CAN Expertise for Home</h2>
+          <span className={styles.label}>{t.alminer.heritageLabel}</span>
+          <h2>{t.alminer.heritageTitle}</h2>
           <p>{t.alminer.description}</p>
         </div>
       </Section>
@@ -50,11 +50,11 @@ export default function AlminerPage() {
       <Section background="light">
         <div className={styles.productHighlight}>
           <div className={styles.productVisual}>
-            <Image 
-              src="/rminu/알마이너-썸네일-1000g-2종.jpg" 
-              alt="R-minu Hard Wax" 
-              fill 
-              className={styles.highlightImg} 
+            <Image
+              src="/rminu/알마이너-썸네일-1000g-2종.jpg"
+              alt="R-minu Hard Wax"
+              fill
+              className={styles.highlightImg}
             />
           </div>
           <div className={styles.productDetail}>
@@ -66,7 +66,7 @@ export default function AlminerPage() {
               ))}
             </ul>
             <Button href="/shop/alminer" variant="alminer" size="lg">
-              {t.alminer.product.name} 구매하기
+              {t.alminer.buyProduct}
             </Button>
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function AlminerPage() {
 
       {/* Features Grid - 3 Core Technologies */}
       <Section>
-        <h2 className={styles.sectionTitle}>3 Core Technologies</h2>
+        <h2 className={styles.sectionTitle}>{t.alminer.coreTitle}</h2>
         <div className={styles.grid}>
           {t.alminer.features.map((feature, index) => (
             <div key={index} className={styles.featureCard}>
@@ -90,7 +90,7 @@ export default function AlminerPage() {
 
       {/* Gallery Section */}
       <Section background="light">
-        <h2 className={styles.sectionTitle}>Product Lineup</h2>
+        <h2 className={styles.sectionTitle}>{t.alminer.lineupTitle}</h2>
         <div className={styles.galleryGrid}>
           <div className={styles.galleryItem}>
             <div className={styles.imgWrapper}>
@@ -117,9 +117,9 @@ export default function AlminerPage() {
       <Section background="dark" className={styles.visionSection}>
         <div className={styles.visionContent}>
           <span className={styles.visionLabel}>BRAND PHILOSOPHY</span>
-          <h2>Safe & Professional</h2>
-          <p>알마이너는 왁싱 전문가의 노하우와 실제 샵에서 사용되는 프리미엄 원료를 그대로 담았습니다.</p>
-          <p style={{ marginTop: '20px', fontSize: '1.2rem', opacity: 0.9 }}>집에서도 안전하고 완벽한 제모를 경험하세요.</p>
+          <h2>{t.alminer.visionTitle}</h2>
+          <p>{t.alminer.visionText1}</p>
+          <p style={{ marginTop: '20px', fontSize: '1.2rem', opacity: 0.9 }}>{t.alminer.visionText2}</p>
         </div>
       </Section>
     </div>

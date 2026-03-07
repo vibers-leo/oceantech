@@ -5,6 +5,13 @@ import { useAuth } from '@/context/AuthContext';
 import styles from './Footer.module.css';
 import Link from 'next/link';
 
+// SNS links configuration - update with actual URLs when available
+const SNS_LINKS = {
+  instagram: '', // e.g. 'https://instagram.com/oceantech_official'
+  kakao: '',     // e.g. 'https://pf.kakao.com/_xxxxx'
+  blog: '',      // e.g. 'https://blog.naver.com/oceantech'
+};
+
 export default function Footer() {
   const { t } = useLanguage();
   const { user } = useAuth();
@@ -37,33 +44,33 @@ export default function Footer() {
 
           <div className={styles.bottom}>
             <div className={styles.socials}>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialLink}
-                aria-label="Instagram"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://pf.kakao.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialLink}
-                aria-label="Kakao"
-              >
-                Kakao
-              </a>
-              <a
-                href="https://blog.naver.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialLink}
-                aria-label="Blog"
-              >
-                Blog
-              </a>
+              {SNS_LINKS.instagram ? (
+                <a href={SNS_LINKS.instagram} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
+                  Instagram
+                </a>
+              ) : (
+                <span className={`${styles.socialLink} ${styles.socialDisabled}`} aria-label="Instagram">
+                  Instagram
+                </span>
+              )}
+              {SNS_LINKS.kakao ? (
+                <a href={SNS_LINKS.kakao} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Kakao">
+                  Kakao
+                </a>
+              ) : (
+                <span className={`${styles.socialLink} ${styles.socialDisabled}`} aria-label="Kakao">
+                  Kakao
+                </span>
+              )}
+              {SNS_LINKS.blog ? (
+                <a href={SNS_LINKS.blog} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Blog">
+                  Blog
+                </a>
+              ) : (
+                <span className={`${styles.socialLink} ${styles.socialDisabled}`} aria-label="Blog">
+                  Blog
+                </span>
+              )}
             </div>
             <p className={styles.copyright}>{t.footer.rights}</p>
           </div>

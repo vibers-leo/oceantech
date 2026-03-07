@@ -8,6 +8,8 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { ToastProvider } from '@/context/ToastContext';
 import AIChatBot from '@/components/AIChatBot';
+import HtmlLangUpdater from '@/components/HtmlLangUpdater';
+import { OrganizationJsonLd } from '@/components/JsonLd';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -67,24 +69,36 @@ export const metadata: Metadata = {
   },
 };
 
+function RootLayoutInner({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Header />
+      <main style={{ minHeight: '100vh', paddingTop: '80px' }}>
+        {children}
+      </main>
+      <Footer />
+      <AIChatBot />
+      <ScrollToTop />
+    </>
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="ko" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <OrganizationJsonLd />
+      </head>
       <body>
         <LanguageProvider>
           <ToastProvider>
             <AuthProvider>
-              <Header />
-              <main style={{ minHeight: '100vh', paddingTop: '80px' }}>
-                {children}
-              </main>
-              <Footer />
-              <AIChatBot />
-              <ScrollToTop />
+              <HtmlLangUpdater />
+              <RootLayoutInner>{children}</RootLayoutInner>
             </AuthProvider>
           </ToastProvider>
         </LanguageProvider>

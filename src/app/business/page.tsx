@@ -26,17 +26,17 @@ export default function BusinessPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.company || !form.email || !form.region || !form.inquiryType || !form.message) {
-      showToast('모든 항목을 입력해주세요.', 'error');
+      showToast(t.business.inquiry.allRequired, 'error');
       return;
     }
     setSubmitting(true);
     try {
       await addInquiry(form);
-      showToast('문의가 성공적으로 접수되었습니다.', 'success');
+      showToast(t.business.inquiry.success, 'success');
       setForm({ company: '', email: '', region: '', inquiryType: '', message: '' });
     } catch (err) {
-      console.error('문의 접수 실패:', err);
-      showToast('문의 접수에 실패했습니다. 다시 시도해주세요.', 'error');
+      console.error('Inquiry submission failed:', err);
+      showToast(t.business.inquiry.error, 'error');
     } finally {
       setSubmitting(false);
     }
@@ -86,7 +86,7 @@ export default function BusinessPage() {
             </div>
           </section>
 
-          {/* Inquiry Form → Firestore */}
+          {/* Inquiry Form */}
           <section className={styles.section}>
             <div className={styles.inquiryBox}>
               <h2>{t.business.inquiry.title}</h2>
@@ -96,7 +96,7 @@ export default function BusinessPage() {
                   <input
                     type="text"
                     name="company"
-                    placeholder="Company Name"
+                    placeholder={t.business.inquiry.form.company}
                     className={styles.input}
                     value={form.company}
                     onChange={handleChange}
@@ -104,7 +104,7 @@ export default function BusinessPage() {
                   <input
                     type="email"
                     name="email"
-                    placeholder="Email Address"
+                    placeholder={t.business.inquiry.form.email}
                     className={styles.input}
                     value={form.email}
                     onChange={handleChange}
@@ -112,23 +112,23 @@ export default function BusinessPage() {
                 </div>
                 <div className={styles.formGroup}>
                   <select name="region" className={styles.select} value={form.region} onChange={handleChange}>
-                    <option value="">Select Region</option>
-                    <option value="North America">North America</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Southeast Asia">Southeast Asia</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Other">Other</option>
+                    <option value="">{t.business.inquiry.form.region}</option>
+                    <option value="North America">{t.business.inquiry.form.regions.northAmerica}</option>
+                    <option value="Europe">{t.business.inquiry.form.regions.europe}</option>
+                    <option value="Southeast Asia">{t.business.inquiry.form.regions.southeastAsia}</option>
+                    <option value="Japan">{t.business.inquiry.form.regions.japan}</option>
+                    <option value="Other">{t.business.inquiry.form.regions.other}</option>
                   </select>
                   <select name="inquiryType" className={styles.select} value={form.inquiryType} onChange={handleChange}>
-                    <option value="">Inquiry Type</option>
-                    <option value="Wholesale">Wholesale</option>
-                    <option value="Export / Distribution">Export / Distribution</option>
-                    <option value="OEM / ODM">OEM / ODM</option>
+                    <option value="">{t.business.inquiry.form.inquiryType}</option>
+                    <option value="Wholesale">{t.business.inquiry.form.types.wholesale}</option>
+                    <option value="Export / Distribution">{t.business.inquiry.form.types.export}</option>
+                    <option value="OEM / ODM">{t.business.inquiry.form.types.oem}</option>
                   </select>
                 </div>
                 <textarea
                   name="message"
-                  placeholder="Message"
+                  placeholder={t.business.inquiry.form.message}
                   className={styles.textarea}
                   value={form.message}
                   onChange={handleChange}
@@ -140,7 +140,7 @@ export default function BusinessPage() {
                   type="submit"
                   disabled={submitting}
                 >
-                  {submitting ? '접수 중...' : t.business.inquiry.btn}
+                  {submitting ? t.business.inquiry.submitting : t.business.inquiry.btn}
                 </Button>
               </form>
             </div>

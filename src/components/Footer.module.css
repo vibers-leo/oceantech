@@ -98,6 +98,15 @@
   color: var(--accent);
 }
 
+.socialDisabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.socialDisabled:hover {
+  color: #aaa;
+}
+
 .copyright {
   color: #aaa;
   font-size: 0.8rem;

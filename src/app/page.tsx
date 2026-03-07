@@ -25,8 +25,8 @@ export default function Home() {
           />
         </div>
         <div className={styles.heroContent}>
-          <h1 className="fade-in">Premium Waxing<br />Standard</h1>
-          <p className="fade-in" style={{ animationDelay: '0.2s' }}>전문가를 위한 라캉, 당신을 위한 R-minu</p>
+          <h1 className="fade-in">{t.hero.title}<br />Standard</h1>
+          <p className="fade-in" style={{ animationDelay: '0.2s' }}>{t.hero.subtitle}</p>
         </div>
         <div className={`${styles.scrollIndicator} fade-in`} style={{ animationDelay: '1.2s' }}>
            <span>SCROLL</span>

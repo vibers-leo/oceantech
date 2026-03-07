@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './Reviews.module.css';
 
 interface Review {
@@ -62,24 +63,26 @@ const reviews: Review[] = [
 ];
 
 export default function Reviews() {
+  const { t } = useLanguage();
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3>상품평 ({reviews.length})</h3>
+        <h3>{t.reviews.title} ({reviews.length})</h3>
         <div className={styles.sourceBadge}>
           <span className={styles.sourceLogo}>C</span>
-          Source: Coupang
+          {t.reviews.source}: Coupang
         </div>
       </div>
 
       <div className={styles.ratingOverview}>
         <div className={styles.bigRating}>4.8</div>
         <div className={styles.stars}>⭐⭐⭐⭐⭐</div>
-        <div className={styles.countText}>1,242 Reviews</div>
+        <div className={styles.countText}>{reviews.length} {t.reviews.title}</div>
       </div>
 
-      {/* Photo Reviews Grid - Highlighted */}
-      <h4 className={styles.sectionTitle}>📸 포토 상품평</h4>
+      {/* Photo Reviews Grid */}
+      <h4 className={styles.sectionTitle}>{t.reviews.photoReviews}</h4>
       <div className={styles.photoGrid}>
         {reviews.filter(r => r.images && r.images.length > 0).map(review => (
           <div key={review.id} className={styles.photoCard}>
@@ -98,7 +101,7 @@ export default function Reviews() {
       </div>
 
       {/* Normal List */}
-      <h4 className={styles.sectionTitle} style={{marginTop: '40px'}}>전체 리뷰</h4>
+      <h4 className={styles.sectionTitle} style={{marginTop: '40px'}}>{t.reviews.allReviews}</h4>
       <div className={styles.reviewList}>
         {reviews.map((review) => (
           <div key={review.id} className={styles.reviewItem}>
@@ -106,15 +109,15 @@ export default function Reviews() {
               <div className={styles.userInfo}>
                 <span className={styles.name}>{review.reviewerName}</span>
                 <span className={styles.date}>{review.date}</span>
-                <span className={styles.sourceTag}>{review.source} 구매복합</span>
+                <span className={styles.sourceTag}>{review.source} {t.reviews.purchaseVerified}</span>
               </div>
               <div className={styles.stars}>
                 {'⭐'.repeat(review.starRating)}
               </div>
             </div>
-            
+
             <p className={styles.content}>{review.content}</p>
-            
+
             {review.images && review.images.length > 0 && (
                <div className={styles.reviewImages}>
                  {review.images.map((img, idx) => (

@@ -210,6 +210,26 @@
   font-size: 1.5rem;
 }
 
+.comingSoon {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.comingSoon:hover {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.comingSoonBadge {
+  background: #f0f0f0;
+  color: #999;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 @media (max-width: 768px) {
   .selectionGrid {
     grid-template-columns: 1fr;

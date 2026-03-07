@@ -41,14 +41,14 @@ export default function LacanPage() {
       {/* Intro Section */}
       <Section className={styles.intro}>
         <div className={styles.introText}>
-          <h2>The Gold Standard</h2>
+          <h2>{t.lacan.introTitle}</h2>
           <p>{t.lacan.description}</p>
         </div>
       </Section>
 
       {/* Features Grid */}
       <Section background="light">
-        <h2 className={styles.sectionTitle}>Why Professionals Choose Lacan</h2>
+        <h2 className={styles.sectionTitle}>{t.lacan.whyTitle}</h2>
         <div className={styles.grid}>
           {t.lacan.features.map((feature, index) => (
             <div key={index} className={styles.featureCard}>
@@ -62,7 +62,7 @@ export default function LacanPage() {
 
       {/* Product Lineup */}
       <Section>
-        <h2 className={styles.sectionTitle}>Product Lineup</h2>
+        <h2 className={styles.sectionTitle}>{t.lacan.lineupTitle}</h2>
         <div className={styles.productList}>
           {t.lacan.products.map((product: any, index: number) => (
             <div key={index} className={styles.productCard}>
@@ -79,8 +79,8 @@ export default function LacanPage() {
                 <h3>{product.name}</h3>
                 <p>{product.desc}</p>
                 <div className={styles.btnWrapper}>
-                  <Button href="http://lacanwax.com/" variant="outline" size="sm" external>
-                    VIEW DETAIL
+                  <Button href="https://lacanwax.com/" variant="outline" size="sm" external>
+                    {t.lacan.viewDetail}
                   </Button>
                 </div>
               </div>
