@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
@@ -79,6 +80,10 @@ export default function LoginPage() {
         <button type="submit" className={styles.loginBtn} disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
         </button>
+
+        <div className={styles.forgotPassword}>
+          <Link href="/forgot-password">비밀번호를 잊으셨나요?</Link>
+        </div>
 
         <div className={styles.hint}>
           Hint: admin / 1234

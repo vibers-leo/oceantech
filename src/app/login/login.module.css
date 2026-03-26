@@ -74,6 +74,21 @@
   cursor: not-allowed;
 }
 
+.forgotPassword {
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.forgotPassword a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgotPassword a:hover {
+  color: #333;
+}
+
 .hint {
   margin-top: 30px;
   font-size: 0.8rem;
