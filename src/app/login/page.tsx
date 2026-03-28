@@ -85,9 +85,6 @@ export default function LoginPage() {
           <Link href="/forgot-password">비밀번호를 잊으셨나요?</Link>
         </div>
 
-        <div className={styles.hint}>
-          Hint: admin / 1234
-        </div>
       </form>
     </div>
   );

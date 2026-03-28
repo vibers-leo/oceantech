@@ -79,19 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, pw: string) => {
-    // 데모 모드 전용 바이패스 (프로덕션에서는 비활성화됨)
-    if (IS_DEMO_MODE && ADMIN_EMAILS.includes(email) && pw === 'admin1234') {
-      const demoUser: User = {
-        id: `demo-${email.split('@')[0]}`,
-        name: email.split('@')[0],
-        role: 'admin',
-        email,
-      };
-      setUser(demoUser);
-      localStorage.setItem('demo_user', JSON.stringify(demoUser));
-      return { success: true };
-    }
-
     try {
       await signInWithEmailAndPassword(auth, email, pw);
       return { success: true };
