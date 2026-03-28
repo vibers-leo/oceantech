@@ -15,6 +15,7 @@ import ShopeeOptimizer from '@/components/admin/ShopeeOptimizer';
 import SEALiveMap from '@/components/admin/SEALiveMap';
 import TradeKoreaAnalysis from '@/components/admin/TradeKoreaAnalysis';
 import MarketComparison from '@/components/admin/MarketComparison';
+import VibersBanner from '@/components/VibersBanner';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import TeamCalendar from '@/components/admin/TeamCalendar';
@@ -264,6 +265,12 @@ export default function AdminPage() {
           {activeTab === 'banners' && <BannerManager />}
           {activeTab === 'stores' && <StoreStatus />}
           {activeTab === 'settings' && <AdminSettings />}
+
+          {/* 계발자들 프로젝트 */}
+          <div style={{ marginTop: 32, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: '#888', marginBottom: 8 }}>계발자들 프로젝트</p>
+            <VibersBanner size="medium" currentProject="oceantechlab" />
+          </div>
         </div>
       </div>
     </div>
