@@ -75,6 +75,28 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${inter.variable} ${playfair.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": ["WebSite", "Product"],
+              "name": "Lacan & R-minu | 오션해양테크",
+              "url": "https://rminu.com",
+              "description": "전문가를 위한 라캉 왁스, 홈케어를 위한 알마이너(R-minu). 대한민국 프리미엄 제모 왁스 브랜드.",
+              "brand": {
+                "@type": "Brand",
+                "name": "Lacan & R-minu"
+              },
+              "creator": {
+                "@type": "Organization",
+                "name": "계발자들 (Vibers)",
+                "url": "https://vibers.co.kr"
+              },
+              "inLanguage": "ko"
+            })
+          }}
+        />
         <LanguageProvider>
           <ToastProvider>
             <AuthProvider>

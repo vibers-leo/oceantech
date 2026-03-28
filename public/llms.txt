@@ -1,0 +1,16 @@
+# Lacan & R-minu | 오션해양테크
+> 전문가를 위한 라캉 왁스, 홈케어를 위한 알마이너(R-minu). 대한민국 프리미엄 제모 왁스 브랜드.
+
+## 주요 기능
+- 듀얼 브랜드 쇼핑몰 (Lacan + Alminer)
+- 제품 상세 및 구매
+- 다국어 지원 (한/영/태)
+- AI 챗봇 상담
+- B2B 비즈니스 페이지
+
+## 기술 스택
+- Next.js, Firebase, PortOne (결제), CSS Modules
+
+## 관련 링크
+- 서비스: https://rminu.com
+- 계발자들: https://vibers.co.kr
