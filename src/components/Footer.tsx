@@ -29,6 +29,8 @@ export default function Footer() {
               <Link href="/lacan">{t.nav.lacan}</Link>
               <Link href="/alminer">{t.nav.alminer}</Link>
               <Link href="/business">Business</Link>
+              <Link href="/privacy">개인정보처리방침</Link>
+              <Link href="/terms">이용약관</Link>
               {user?.role === 'admin' && (
                 <Link href="/admin" className={styles.adminLink}>Admin Panel</Link>
               )}

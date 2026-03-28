@@ -1,0 +1,178 @@
+.container {
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: 80px 0;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.date {
+  font-size: 0.875rem;
+  color: var(--secondary);
+  margin-bottom: 3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  padding-left: 16px;
+  border-left: 4px solid var(--accent);
+}
+
+.subSection {
+  margin-top: 1rem;
+}
+
+.subHeading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  font-size: 1rem;
+  color: var(--secondary);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.list {
+  list-style-type: disc;
+  padding-left: 2rem;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.list li {
+  margin-bottom: 0.25rem;
+}
+
+.orderedList {
+  list-style-type: decimal;
+  padding-left: 2rem;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.orderedList li {
+  margin-bottom: 0.5rem;
+}
+
+.infoBox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.infoTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.infoItem {
+  margin-bottom: 0.5rem;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.infoValue {
+  color: var(--secondary);
+  font-size: 0.875rem;
+  padding-left: 1rem;
+}
+
+.contactBox {
+  background: var(--accent-light);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 1.5rem;
+  color: var(--primary);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.contactTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.remedyGrid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.remedyItem {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.remedyTitle {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.remedyInfo {
+  color: var(--secondary);
+  font-size: 0.85rem;
+}
+
+.backLink {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.backLink a {
+  font-size: 0.875rem;
+  color: var(--accent);
+  transition: color 0.2s;
+}
+
+.backLink a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .heading {
+    font-size: 1.25rem;
+  }
+}
