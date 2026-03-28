@@ -4,6 +4,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
 import styles from './Footer.module.css';
 import Link from 'next/link';
+import CoupangBanner from './CoupangBanner';
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -69,6 +70,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <CoupangBanner />
     </footer>
   );
 }
