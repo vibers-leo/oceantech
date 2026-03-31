@@ -16,7 +16,7 @@ export default function LacanPage() {
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <Image 
-            src="/lacan/lacan_hero_1.jpg" 
+            src="/lacan/products/hard_wax_pro.png" 
             alt="Lacan Professional Wax" 
             fill 
             className={styles.heroImg}

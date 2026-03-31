@@ -113,18 +113,17 @@ export const translations = {
         { title: 'Technical Education', desc: '라캉 아카데미를 통해 단순 제품 공급을 넘어, 시술 테크닉과 살롱 경영 노하우를 공유합니다.' }
       ],
       products: [
-        { name: 'Lacan Hard Wax', desc: '하이엔드 하드왁스 라캉 왁싱샵 전용 (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax.jpeg' },
-        { name: 'Rocket Solution Quick 5 (240 Sheets)', desc: '라캉 로켓솔루션 Quick 5 브라질리언 팩-240장', tag: 'Professional', img: '/lacan/products/pack_240.jpeg' },
-        { name: 'Rocket Solution Quick 5 (160 Sheets)', desc: '라캉 로켓솔루션 Quick 5 브라질리언 팩-160장', tag: 'Best Seller', img: '/lacan/products/pack_160.jpeg' },
-        { name: 'Rocket Solution Quick 5 (80 Sheets)', desc: '라캉 로켓솔루션 Quick 5 브라질리언 팩-80장', tag: 'Starter', img: '/lacan/products/pack_80.jpeg' }
+        { name: 'Lacan Hard Wax Pro', desc: '전문가용 하이엔드 하드왁스 - 골드 포뮬러 (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax_pro.png' },
+        { name: 'Rocket Solution Quick 5', desc: '라캉 로켓솔루션 Quick 5 브라질리언 전용 팩', tag: 'Best Seller', img: '/lacan/products/rocket_solution.png' },
+        { name: 'Professional Waxing Kit', desc: '살롱 운영을 위한 필수 스타터 키트', tag: 'Expert', img: '/lacan/products/hard_wax_pro.png' },
+        { name: 'Lacan Aftercare Solution', desc: '시술 후 진정을 위한 프리미엄 솔루션', tag: 'Essential', img: '/lacan/products/rocket_solution.png' }
       ],
       cta: '전문가 인증 및 파트너 신청'
     },
     alminer: {
       title: 'R-MINU',
       subtitle: 'Expertise Made Easy, Professional Self-Waxing',
-      description: '알마이너는 전문가용 왁스 브랜드 "라캉(LA CAN)"의 기술력을 홈케어로 확장한 프리미엄 셀프 왁싱 브랜드입니다. 집에서도 실수가 없도록 안전하고 완벽한 제모를 위해 3단계 핵심 테크놀로지를 적용했습니다.',
-      comingSoon: '저자극 & 고밀착 프리미엄 포뮬러',
+      description: '알마이너는 전문가용 왁스 브랜드 "라캉(LA CAN)"의 기술력을 홈케어로 확장한 프리미엄 셀프 왁싱 브랜드입니다. 집에서도 전문가처럼 안전하고 완벽한 제모를 경험할 수 있도록 설계되었습니다.',
       features: [
         { title: '엘라스틱 테크 (Elasticity)', desc: '공중합체(Copolymer MI 150) 성분으로 시술 후에도 왁스가 끊어지거나 부서지지 않으며, 특유의 탄성으로 넓고 얇은 롱 스트립 시술이 가능합니다.' },
         { title: '모발 응집 테크 (Hair Cohesion)', desc: 'Pinus Massoniana 나무에서 추출한 아비에트산(Abietic acid) 85% 이상의 접착 성분으로 짧고 미세한 모발까지 완벽하게 응집하여 제거합니다.' },
@@ -159,15 +158,15 @@ export const translations = {
         selectOption: '옵션 선택'
       },
       gallery: {
-        pro1kg: 'R-minu 1kg 전문가용',
+        pro1kg: 'R-minu 1kg 대용량',
         home200g: 'R-minu 200g 홈케어 키트',
-        texture: '프리미엄 텍스처 (무색/무향)'
+        texture: '프리미엄 골드 텍스처'
       }
     },
     footer: {
       rights: '© 2024 Ocean Tech Co., Ltd. All rights reserved.',
       companyName: '(주)오션테크',
-      businessNum: '사업자등록번호: 000-00-00000',
+      businessNum: '사업자등록번호: 607-86-13764',
       tel: 'Tel: 010-7169-3438',
       email: 'Email: jbanion@naver.com'
     }
@@ -285,12 +284,12 @@ export const translations = {
         { title: 'Technical Education', desc: '라캉 아카데미를 통해 단순 제품 공급을 넘어, 시술 테크닉과 살롱 경영 노하우를 공유합니다.' }
       ],
       products: [
-        { name: 'Lacan Hard Wax', desc: 'High-End Hard Wax for Professional Use (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax.jpeg' },
-        { name: 'Rocket Solution Quick 5 (240 Sheets)', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack - 240 Sheets', tag: 'Professional', img: '/lacan/products/pack_240.jpeg' },
-        { name: 'Rocket Solution Quick 5 (160 Sheets)', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack - 160 Sheets', tag: 'Best Seller', img: '/lacan/products/pack_160.jpeg' },
-        { name: 'Rocket Solution Quick 5 (80 Sheets)', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack - 80 Sheets', tag: 'Starter', img: '/lacan/products/pack_80.jpeg' }
+        { name: 'Lacan Hard Wax Pro', desc: 'High-End Hard Wax for Professional Use (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax_pro.png' },
+        { name: 'Rocket Solution Quick 5', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack', tag: 'Best Seller', img: '/lacan/products/rocket_solution.png' },
+        { name: 'Professional Waxing Kit', desc: 'Essential Starter Kit for Salon Operations', tag: 'Expert', img: '/lacan/products/hard_wax_pro.png' },
+        { name: 'Lacan Aftercare Solution', desc: 'Premium Solution for Post-Treatment Soothing', tag: 'Essential', img: '/lacan/products/rocket_solution.png' }
       ],
-      cta: '전문가 인증 및 파트너 신청'
+      cta: 'Apply for Partnership'
     },
     alminer: {
       title: 'R-MINU',
@@ -339,7 +338,7 @@ export const translations = {
     footer: {
       rights: '© 2024 Ocean Tech Co., Ltd. All rights reserved.',
       companyName: 'Ocean Tech Co., Ltd.',
-      businessNum: 'Registration No: 000-00-00000',
+      businessNum: 'Registration No: 607-86-13764',
       tel: 'Tel: +82 10-7169-3438',
       email: 'Email: jbanion@naver.com'
     }
@@ -467,8 +466,7 @@ export const translations = {
     alminer: {
       title: 'R-MINU',
       subtitle: 'Expertise Made Easy, Professional Self-Waxing',
-      description: 'R-minu is a premium self-waxing brand that translates the expertise of "LA CAN" for home use. It incorporates 3 core technologies to ensure safe, flawless hair removal for beginners at home.',
-      comingSoon: 'Low Irritation & High Adhesion Premium Formula',
+      description: 'R-minu is a premium self-waxing brand that translates the expertise of "LA CAN" for home use. It is designed to ensure safe, flawless hair removal for beginners like a professional at home.',
       features: [
         { title: 'Elasticity Tech', desc: 'Using Copolymer MI 150, the wax remains flexible without breaking, enabling perfect long-strip application with high elasticity.' },
         { title: 'Hair Cohesion Tech', desc: 'Contains over 85% Abietic acid extracted from Pinus Massoniana for powerful grip on even short and fine hairs.' },

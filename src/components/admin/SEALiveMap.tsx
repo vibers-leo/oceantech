@@ -2,20 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './AdminComponents.module.css';
+import { getOrders, type Order } from '@/lib/firestore';
 
-/*
-  SEA Market Analysis
-  - Visualizes "Live Orders" from 6 SEA countries.
-  - Provides concise beauty market insights for each region.
-*/
-
-/*
-  SEA Market Analysis
-  - Visualizes "Live Orders" from 6 SEA countries.
-  - Provides concise beauty market insights for each region.
-*/
-
-// Market Data
 const MARKET_INSIGHTS = [
   { id: 'VN', country: 'Vietnam', flag: '🇻🇳', title: 'K-뷰티 고관여층', desc: '한국 화장품에 대한 신뢰도 높음. 가격 민감도가 있지만 품질 중시. 인플루언서 마케팅 필수.' },
   { id: 'TH', country: 'Thailand', flag: '🇹🇭', title: '트렌드 리더', desc: '경쟁이 치열하고 성숙한 시장. 미백 및 안티에이징 수요 강력. 소셜 커머스(틱톡샵 등) 강세.' },
@@ -25,43 +13,49 @@ const MARKET_INSIGHTS = [
   { id: 'ID', country: 'Indonesia', flag: '🇮🇩', title: '할랄 필수 (BPOM)', desc: '거대한 내수 시장. BPOM 및 할랄 인증 사실상 필수. 젊은 층 중심의 기초 화장품 성장세.' },
 ];
 
-// Coordinates roughly relative to a 800x600 viewBox
 const LOCATIONS = [
-  { id: 'VN', name: 'Vietnam', x: 260, y: 180, delay: 2000 },
-  { id: 'TH', name: 'Thailand', x: 200, y: 220, delay: 3500 },
-  { id: 'PH', name: 'Philippines', x: 400, y: 200, delay: 1500 },
-  { id: 'MY', name: 'Malaysia', x: 220, y: 350, delay: 4200 },
-  { id: 'SG', name: 'Singapore', x: 230, y: 390, delay: 800 },
-  { id: 'ID', name: 'Indonesia', x: 280, y: 450, delay: 5000 },
-];
-
-const RECENT_ORDERS = [
-  { country: 'SG', user: 'Angie L.', item: '알마이너 하드 왁스 500g', time: '방금 전' },
-  { country: 'VN', user: 'Nguyen T.', item: '라칸 프로 키트', time: '2분 전' },
-  { country: 'MY', user: 'Fattah A.', item: '수딩 오일', time: '5분 전' },
-  { country: 'PH', user: 'Maria C.', item: '알마이너 하드 왁스 1kg', time: '12분 전' },
-  { country: 'TH', user: 'Somchai P.', item: '라칸 왁스 워머기', time: '15분 전' },
+  { id: 'VN', name: 'Vietnam', x: 260, y: 180 },
+  { id: 'TH', name: 'Thailand', x: 200, y: 220 },
+  { id: 'PH', name: 'Philippines', x: 400, y: 200 },
+  { id: 'MY', name: 'Malaysia', x: 220, y: 350 },
+  { id: 'SG', name: 'Singapore', x: 230, y: 390 },
+  { id: 'ID', name: 'Indonesia', x: 280, y: 450 },
 ];
 
 export default function SEALiveMap() {
   const [activeNodes, setActiveNodes] = useState<string[]>([]);
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Simulation loop
   useEffect(() => {
-    const intervals: NodeJS.Timeout[] = [];
+    async function loadData() {
+      setLoading(true);
+      try {
+        const data = await getOrders();
+        // Limit to 5 recent orders for the sidebar
+        setRecentOrders(data.slice(0, 5));
+        
+        // If there are real orders, trigger pings for those countries
+        const countries = [...new Set(data.map(o => o.email?.split('@')[1]?.includes('sg') ? 'SG' : o.email?.split('@')[1]?.includes('vn') ? 'VN' : 'KR'))];
+        // Note: Real routing would use a 'region' field. Using a fallback for demo.
+      } catch (error) {
+        console.error('Failed to load orders for map:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
 
-    LOCATIONS.forEach(loc => {
-      const interval = setInterval(() => {
-        // Trigger ping
-        setActiveNodes(prev => [...prev, loc.id]);
-        setTimeout(() => {
-          setActiveNodes(prev => prev.filter(id => id !== loc.id));
-        }, 1000); // Ping duration
-      }, loc.delay + Math.random() * 2000);
-      intervals.push(interval);
-    });
+    // Simulation loop for visual effect (only if no real orders or just as ambient)
+    const interval = setInterval(() => {
+      const randomLoc = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
+      setActiveNodes(prev => [...prev, randomLoc.id]);
+      setTimeout(() => {
+        setActiveNodes(prev => prev.filter(id => id !== randomLoc.id));
+      }, 1500);
+    }, 4000);
 
-    return () => intervals.forEach(clearInterval);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -174,23 +168,19 @@ export default function SEALiveMap() {
            <h3 style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>최근 주문 현황</h3>
            
            <div style={{  display: 'flex', flexDirection: 'column', gap: '10px', overflowY: 'auto' }}>
-             {RECENT_ORDERS.map((order, i) => (
+             {recentOrders.length > 0 ? recentOrders.map((order, i) => (
                 <div key={i} className="animate-fadeRight" style={{ background: '#0f172a', padding: '12px', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                      <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'white' }}>{order.user}</span>
-                     <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{order.time}</span>
+                     <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{order.date}</span>
                    </div>
                    <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>{order.item}</div>
-                   <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                     <span style={{ width: '16px', height: '12px', background: '#334155', display: 'inline-block', borderRadius: '2px' }}></span>
-                     {order.country} 물류센터
-                   </div>
                 </div>
-             ))}
-             {/* Fake Skeleton for 'Streaming' feel */}
-             <div style={{ height: '50px', border: '1px dashed #334155', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: '0.8rem' }}>
-                데이터 수신 대기 중...
-             </div>
+             )) : (
+               <div style={{ padding: '20px', textAlign: 'center', color: '#475569', fontSize: '0.8rem' }}>
+                 최근 주문 내역이 없습니다.
+               </div>
+             )}
            </div>
         </div>
       </div>

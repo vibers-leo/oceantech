@@ -3,36 +3,42 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './PopupBanner.module.css';
+import { getPopupConfig } from '@/lib/firestore';
 
 export default function PopupBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const [config, setConfig] = useState<{title: string, imagePath: string} | null>(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const checkVisibility = () => {
-      // 1. Check if admin has disabled it globally
-      const globalConfig = localStorage.getItem('global_popup_config');
-      const isEnabledGlobally = globalConfig ? JSON.parse(globalConfig).isEnabled : true;
-      
-      if (!isEnabledGlobally) {
-        setIsVisible(false);
-        return;
-      }
+    const checkVisibility = async () => {
+      try {
+        const liveConfig = await getPopupConfig();
+        
+        if (!liveConfig.isEnabled) {
+          setIsVisible(false);
+          return;
+        }
 
-      // 2. Check if current user has hidden it for today
-      const hidePopup = localStorage.getItem('hidePopup_lacan_event');
-      if (!hidePopup) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
+        setConfig({ title: liveConfig.title, imagePath: liveConfig.imagePath });
+
+        // Check if current user has hidden it for today
+        const hidePopup = localStorage.getItem('hidePopup_lacan_event');
+        if (!hidePopup) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      } catch (error) {
+        console.error('Failed to fetch popup config:', error);
       }
     };
 
     checkVisibility();
 
-    // Listen for admin config changes
+    // Listen for admin config changes in the same session
     window.addEventListener('popup_config_updated', checkVisibility);
 
     // Keyboard support - close on Escape
@@ -49,8 +55,6 @@ export default function PopupBanner() {
 
   const closePopup = (dontShowAgain = false) => {
     if (dontShowAgain) {
-      const today = new Date();
-      // Simple logic: just store a flag. Ideally, store typical expiry.
       localStorage.setItem('hidePopup_lacan_event', 'true');
     }
     setIsVisible(false);
@@ -89,7 +93,7 @@ export default function PopupBanner() {
     };
   }, [isDragging, dragOffset]);
 
-  if (!isVisible) return null;
+  if (!isVisible || !config) return null;
 
   return (
     <div 
@@ -98,7 +102,8 @@ export default function PopupBanner() {
         position: 'fixed', 
         left: position.x, 
         top: position.y,
-        margin: 0, // Reset centering margins
+        margin: 0,
+        zIndex: 9999,
         cursor: isDragging ? 'grabbing' : 'default'
       }}
     >
@@ -110,8 +115,8 @@ export default function PopupBanner() {
       </div>
       <div className={styles.imageWrapper}>
           <Image 
-            src="/라캉-무료테스트-전단.png" 
-            alt="Lacan Free Test Event" 
+            src={config.imagePath} 
+            alt={config.title} 
             width={400} 
             height={500} 
             style={{ objectFit: 'contain', width: '100%', height: 'auto' }}

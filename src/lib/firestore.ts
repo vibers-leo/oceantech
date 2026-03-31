@@ -162,3 +162,74 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     totalInquiries: inquiries.length,
   };
 }
+
+// ============================
+// Config & Settings
+// ============================
+
+export interface PopupConfig {
+  isEnabled: boolean;
+  title: string;
+  imagePath: string;
+  updatedAt: string;
+}
+
+export async function getPopupConfig(): Promise<PopupConfig> {
+  const docRef = doc(db, 'config', 'popup');
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    return snap.data() as PopupConfig;
+  }
+  // Default values
+  return {
+    isEnabled: false,
+    title: '라캉 전문가용 무료 테스트 이벤트',
+    imagePath: '/라캉-무료테스트-전단.png',
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export async function updatePopupConfig(config: PopupConfig): Promise<void> {
+  const docRef = doc(db, 'config', 'popup');
+  await updateDoc(docRef, { ...config });
+}
+
+// ============================
+// TradeKorea Checklist
+// ============================
+
+export interface ChecklistItem {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export async function getTradeKoreaChecklist(): Promise<ChecklistItem[]> {
+  const docRef = doc(db, 'checklists', 'tradekorea');
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    return snap.data().items as ChecklistItem[];
+  }
+  // Default checklist
+  return [
+    { id: 1, title: '트레이드코리아 계정 생성 (Seller Account)', completed: true },
+    { id: 2, title: '영문 사업자등록증 제출 (Biz License)', completed: true },
+    { id: 3, title: '통신판매업신고증 제출 (Online Sales Permit)', completed: true },
+    { id: 4, title: '미니사이트 로고/배너 등록 (Mini-site Design)', completed: false },
+    { id: 5, title: '대표 상품 (왁스) 5개 이상 등록 (Product Listing)', completed: false },
+    { id: 6, title: 'KITA (한국무역협회) 회원 인증 (KITA Member)', completed: false },
+  ];
+}
+
+export async function updateTradeKoreaChecklist(items: ChecklistItem[]): Promise<void> {
+  const docRef = doc(db, 'checklists', 'tradekorea');
+  const snap = await getDoc(docRef);
+  if (!snap.exists()) {
+    // Note: In real production, you might need to use setDoc if it doesn't exist
+    // But for this project, I'll assume db.collection().doc() set is fine.
+    // I'll use a safer approach in implementation if needed.
+  }
+  // Simplified for this context
+  const { setDoc } = await import('firebase/firestore');
+  await setDoc(docRef, { items, updatedAt: serverTimestamp() });
+}

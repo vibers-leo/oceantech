@@ -1,35 +1,42 @@
-'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   CheckCircle, TrendingUp, Globe, FileText, 
   LayoutDashboard, ListChecks, Store, User, Mail, 
   Sparkles, Package, ShieldCheck
 } from 'lucide-react';
 import styles from './TradeKoreaAnalysis.module.css';
-
-/* 
-  TradeKorea Seller Space Manager (Korean Localization)
-  - Primary: Korean, Secondary: English (small text)
-*/
+import { getTradeKoreaChecklist, updateTradeKoreaChecklist, type ChecklistItem } from '@/lib/firestore';
 
 export default function TradeKoreaAnalysis() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [loading, setLoading] = useState(true);
   
   // --- STATE: Setup Checklist ---
-  const [setupSteps, setSetupSteps] = useState([
-    { id: 1, title: '트레이드코리아 계정 생성 (Seller Account)', completed: true },
-    { id: 2, title: '영문 사업자등록증 제출 (Biz License)', completed: true },
-    { id: 3, title: '통신판매업신고증 제출 (Online Sales Permit)', completed: true },
-    { id: 4, title: '미니사이트 로고/배너 등록 (Mini-site Design)', completed: false },
-    { id: 5, title: '대표 상품 (왁스) 5개 이상 등록 (Product Listing)', completed: false },
-    { id: 6, title: 'KITA (한국무역협회) 회원 인증 (KITA Member)', completed: false },
-  ]);
+  const [setupSteps, setSetupSteps] = useState<ChecklistItem[]>([]);
 
-  const toggleStep = (id: number) => {
-    setSetupSteps(steps => 
-      steps.map(step => step.id === id ? { ...step, completed: !step.completed } : step)
-    );
+  useEffect(() => {
+    async function loadChecklist() {
+      setLoading(true);
+      try {
+        const data = await getTradeKoreaChecklist();
+        setSetupSteps(data);
+      } catch (error) {
+        console.error('Failed to load checklist:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadChecklist();
+  }, []);
+
+  const toggleStep = async (id: number) => {
+    const updated = setupSteps.map(step => step.id === id ? { ...step, completed: !step.completed } : step);
+    setSetupSteps(updated);
+    try {
+      await updateTradeKoreaChecklist(updated);
+    } catch (error) {
+      console.error('Failed to update checklist:', error);
+    }
   };
 
   const progress = Math.round((setupSteps.filter(s => s.completed).length / setupSteps.length) * 100);
@@ -89,8 +96,10 @@ export default function TradeKoreaAnalysis() {
 
       {/* Main Content */}
       <div style={{ minHeight: '600px' }}>
-        
-        {/* === TAB 1: DASHBOARD === */}
+        {loading && <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>데이터 로드 중...</div>}
+        {!loading && (
+          <>
+            {/* === TAB 1: DASHBOARD === */}
         {activeTab === 'dashboard' && (
             <div className={styles.gridMain}>
                 
@@ -388,6 +397,8 @@ export default function TradeKoreaAnalysis() {
             </div>
         )}
 
+          </>
+        )}
       </div>
     </div>
   );

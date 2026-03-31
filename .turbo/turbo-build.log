@@ -4,14 +4,14 @@ $ next build
 
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
-✓ Compiled successfully in 2.4s
+✓ Compiled successfully in 10.1s
   Running TypeScript ...
   Collecting page data using 9 workers ...
-  Generating static pages using 9 workers (0/23) ...
-  Generating static pages using 9 workers (5/23) 
-  Generating static pages using 9 workers (11/23) 
-  Generating static pages using 9 workers (17/23) 
-✓ Generating static pages using 9 workers (23/23) in 178.6ms
+  Generating static pages using 9 workers (0/26) ...
+  Generating static pages using 9 workers (6/26) 
+  Generating static pages using 9 workers (12/26) 
+  Generating static pages using 9 workers (19/26) 
+✓ Generating static pages using 9 workers (26/26) in 14.7s
   Finalizing page optimization ...
 
 Route (app)
@@ -24,18 +24,21 @@ Route (app)
 ├ ƒ /api/payment/verify
 ├ ○ /business
 ├ ○ /export-voucher/business-plan
+├ ○ /forgot-password
 ├ ○ /lacan
 ├ ○ /lacan/pro/login
 ├ ○ /lacan/pro/register
 ├ ○ /login
 ├ ○ /presentation/overseas-2026
+├ ○ /privacy
 ├ ○ /robots.txt
 ├ ○ /shop
 ├ ○ /shop/alminer
 ├ ○ /shop/checkout
 ├ ○ /shop/checkout/complete
 ├ ○ /signup
-└ ○ /sitemap.xml
+├ ○ /sitemap.xml
+└ ○ /terms
 
 
 ƒ Proxy (Middleware)

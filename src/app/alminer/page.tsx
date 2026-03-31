@@ -15,7 +15,7 @@ export default function AlminerPage() {
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <Image 
-            src="/rminu/알마이너-추가-썸네일.jpg" 
+            src="/rminu/products/home_wax_kit.png" 
             alt="Alminer R-minu" 
             fill 
             className={styles.heroImg}
@@ -29,10 +29,6 @@ export default function AlminerPage() {
             <span className={styles.badge}>PREMIUM SELF WAXING</span>
             <h1 className="fade-in">{t.alminer.title}</h1>
             <p className="fade-in" style={{ animationDelay: '0.2s' }}>{t.alminer.subtitle}</p>
-            <div className={`${styles.statusBadge} fade-in`} style={{ animationDelay: '0.4s' }}>
-              <span className={styles.pulse}></span>
-              {t.alminer.comingSoon}
-            </div>
           </div>
         </div>
       </section>
@@ -51,7 +47,7 @@ export default function AlminerPage() {
         <div className={styles.productHighlight}>
           <div className={styles.productVisual}>
             <Image 
-              src="/rminu/알마이너-썸네일-1000g-2종.jpg" 
+              src="/rminu/products/home_wax_kit.png" 
               alt="R-minu Hard Wax" 
               fill 
               className={styles.highlightImg} 
@@ -94,19 +90,19 @@ export default function AlminerPage() {
         <div className={styles.galleryGrid}>
           <div className={styles.galleryItem}>
             <div className={styles.imgWrapper}>
-              <Image src="/rminu/알마이너-썸네일-1000g-2종.jpg" alt="1000g Package" fill className={styles.gImg} />
+              <Image src="/rminu/products/home_wax_kit.png" alt="1000g Package" fill className={styles.gImg} />
             </div>
             <span>{t.alminer.gallery.pro1kg}</span>
           </div>
           <div className={styles.galleryItem}>
             <div className={styles.imgWrapper}>
-              <Image src="/rminu/알마이너-썸네일-200g-1종.jpg" alt="200g Package" fill className={styles.gImg} />
+              <Image src="/rminu/products/home_wax_kit.png" alt="200g Package" fill className={styles.gImg} />
             </div>
             <span>{t.alminer.gallery.home200g}</span>
           </div>
           <div className={styles.galleryItem}>
              <div className={styles.imgWrapper}>
-               <Image src="/rminu/알마이너-추가-썸네일.jpg" alt="Detail View" fill className={styles.gImg} />
+               <Image src="/rminu/products/texture_macro.png" alt="Detail View" fill className={styles.gImg} />
              </div>
              <span>{t.alminer.gallery.texture}</span>
           </div>

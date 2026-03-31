@@ -3,6 +3,7 @@
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './GlobalMap.module.css';
+import Image from 'next/image';
 
 export default function GlobalMap() {
   const { t } = useLanguage();
@@ -10,13 +11,12 @@ export default function GlobalMap() {
   return (
     <div className={styles.mapContainer}>
       <div className={styles.mapBackground}>
-        {/* Simplified World Map SVG Outline */}
-        <svg viewBox="0 0 1000 500" className={styles.worldMap}>
-          {/* Rough outlines of continents */}
-          <path d="M150,100 Q200,50 300,100 T400,150 T300,300 T150,350 T100,200 Z" className={styles.continent} /> {/* Americas */}
-          <path d="M450,100 Q550,50 650,100 T750,150 T650,300 T450,350 T400,200 Z" className={styles.continent} /> {/* Eurasia/Africa */}
-          <path d="M750,300 Q800,280 850,300 T800,400 Z" className={styles.continent} /> {/* Australia */}
-        </svg>
+        <Image 
+          src="/about/global_network.png" 
+          alt="Global Network" 
+          fill 
+          style={{ objectFit: 'cover', opacity: 0.8 }}
+        />
 
         {/* Dynamic Pins */}
         <div className={styles.pin} style={{ top: '30%', left: '20%' }}>

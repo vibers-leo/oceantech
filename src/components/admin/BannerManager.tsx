@@ -1,42 +1,52 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
-import styles from './AdminComponents.module.css';
 import Image from 'next/image';
+import styles from './AdminComponents.module.css';
 import { useToast } from '@/context/ToastContext';
+import { getPopupConfig, updatePopupConfig, type PopupConfig } from '@/lib/firestore';
 
 export default function BannerManager() {
   const { showToast } = useToast();
-  const [isPopupEnabled, setIsPopupEnabled] = useState(true);
+  const [isPopupEnabled, setIsPopupEnabled] = useState(false);
   const [bannerTitle, setBannerTitle] = useState('라캉 전문가용 무료 테스트 이벤트');
   const [imagePath, setImagePath] = useState('/라캉-무료테스트-전단.png');
+  const [loading, setLoading] = useState(true);
 
-  // Load configuration from localStorage for demo purposes
+  // Load configuration from Firestore
   useEffect(() => {
-    const savedConfig = localStorage.getItem('global_popup_config');
-    if (savedConfig) {
-      const config = JSON.parse(savedConfig);
-      setIsPopupEnabled(config.isEnabled);
-      setBannerTitle(config.title || bannerTitle);
-      setImagePath(config.imagePath || imagePath);
+    async function loadConfig() {
+      setLoading(true);
+      try {
+        const config = await getPopupConfig();
+        setIsPopupEnabled(config.isEnabled);
+        setBannerTitle(config.title);
+        setImagePath(config.imagePath);
+      } catch (error) {
+        console.error('Failed to load popup config:', error);
+      } finally {
+        setLoading(false);
+      }
     }
+    loadConfig();
   }, []);
 
-  const handleSave = () => {
-    const config = {
+  const handleSave = async () => {
+    const config: PopupConfig = {
       isEnabled: isPopupEnabled,
       title: bannerTitle,
       imagePath: imagePath,
       updatedAt: new Date().toISOString()
     };
-    localStorage.setItem('global_popup_config', JSON.stringify(config));
-    
-    // Dispatch a custom event so other components (like PopupBanner) can react if they are in the same tab
-    // In a real app, this would be a DB update and the banner would fetch it on load.
-    window.dispatchEvent(new Event('popup_config_updated'));
-    
-    showToast('팝업 설정이 저장되었습니다.', 'success');
+    try {
+      await updatePopupConfig(config);
+      window.dispatchEvent(new Event('popup_config_updated'));
+      showToast('팝업 설정이 실시간으로 반영되었습니다.', 'success');
+    } catch (error) {
+      console.error('Failed to save popup config:', error);
+      showToast('설정 저장 중 오류가 발생했습니다.', 'error');
+    }
   };
+
+  if (loading) return <div className={styles.desc}>Loading settings...</div>;
 
   return (
     <div className={styles.componentContainer}>

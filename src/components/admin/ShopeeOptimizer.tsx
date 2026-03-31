@@ -83,7 +83,7 @@ export default function ShopeeOptimizer() {
     <div className={styles.componentContainer}>
       <h2 className={styles.title} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <img src="/globe.svg" alt="Shopee" width={24} height={24} style={{ filter: 'invert(1)' }}/>
-        쇼피 리스팅 최적화 (AI-SEO)
+        쇼피 리스팅 최적화 (SEO Template)
       </h2>
       <p className={styles.desc}>
         쇼피 검색 알고리즘에 최적화된 상품명과 설명을 AI가 고음량 키워드를 분석하여 자동 생성합니다.
