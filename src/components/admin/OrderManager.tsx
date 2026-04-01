@@ -8,7 +8,9 @@ import {
   type OrderStatus,
   getOrders,
   updateOrderStatus,
+  deleteOrder,
 } from '@/lib/firestore';
+import { Trash2, Eye } from 'lucide-react';
 
 export default function OrderManager() {
   const { language } = useLanguage();
@@ -55,6 +57,17 @@ export default function OrderManager() {
       }
     } catch (err) {
       console.error('상태 변경 실패:', err);
+    }
+  };
+
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm(language === 'ko' ? '이 주문을 영구 삭제하시겠습니까?' : 'Permanently delete this order?')) return;
+    try {
+      await deleteOrder(id);
+      setOrders((prev) => prev.filter((o) => o.id !== id));
+      if (selectedOrder?.id === id) setSelectedOrder(null);
+    } catch (err) {
+      console.error('주문 삭제 실패:', err);
     }
   };
 
@@ -126,8 +139,16 @@ export default function OrderManager() {
                       <option value="Shipped">배송중</option>
                       <option value="Cancelled">취소됨</option>
                     </select>
-                    <button className={styles.viewBtn} onClick={() => setSelectedOrder(order)}>
-                      보기
+                    <button className={styles.viewBtn} onClick={() => setSelectedOrder(order)} title="Detail">
+                      <Eye size={16} />
+                    </button>
+                    <button 
+                      className={styles.viewBtn} 
+                      onClick={() => handleDeleteOrder(order.id)} 
+                      style={{ color: '#ef4444', borderColor: '#fee2e2' }}
+                      title="Delete"
+                    >
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </td>

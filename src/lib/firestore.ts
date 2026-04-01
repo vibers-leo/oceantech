@@ -82,6 +82,10 @@ export async function updateOrderStatus(id: string, status: OrderStatus): Promis
   await updateDoc(doc(db, 'orders', id), { status });
 }
 
+export async function deleteOrder(id: string): Promise<void> {
+  await deleteDoc(doc(db, 'orders', id));
+}
+
 // ============================
 // Calendar Events
 // ============================
@@ -134,6 +138,10 @@ export async function updateOrderPayment(
   status: OrderStatus
 ): Promise<void> {
   await updateDoc(doc(db, 'orders', id), { paymentId, status });
+}
+
+export async function deleteUser(uid: string): Promise<void> {
+  await deleteDoc(doc(db, 'users', uid));
 }
 
 // ============================

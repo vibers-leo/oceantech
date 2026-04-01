@@ -16,7 +16,7 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <Image 
-            src="/hero-beauty-premium.png" 
+            src="/hero-beauty.png" 
             alt="Ocean Tech Beauty" 
             fill 
             priority
@@ -49,7 +49,7 @@ export default function Home() {
           </div>
           <div className={`${styles.brandVisual} ${styles.lacanVisual}`}>
             <Image 
-              src="/lacan/products/hard_wax_pro.png" 
+              src="/lacan/products/hard_wax.jpeg" 
               alt="Lacan Premium Wax" 
               fill
               quality={90}
@@ -71,7 +71,7 @@ export default function Home() {
           </div>
           <div className={`${styles.brandVisual} ${styles.alminerVisual}`}>
              <Image 
-              src="/rminu/products/home_wax_kit.png" 
+              src="/rminu/알마이너-썸네일-200g-2종.jpg" 
               alt="R-minu Home Waxing" 
               fill
               quality={90}

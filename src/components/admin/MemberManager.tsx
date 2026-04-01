@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import styles from './AdminComponents.module.css';
 import { useLanguage } from '@/context/LanguageContext';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, doc, updateDoc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, query, deleteDoc } from 'firebase/firestore';
+import { Trash2 } from 'lucide-react';
 
 interface UserData {
   uid: string;
@@ -68,6 +69,17 @@ export default function MemberManager() {
     }
   };
 
+  const deleteMember = async (uid: string) => {
+    if (!confirm(language === 'ko' ? '이 회원을 영구 삭제하시겠습니까? 데이터 복구가 불가능합니다.' : 'Permanently delete this member?')) return;
+    try {
+      await deleteDoc(doc(db, 'users', uid));
+      setMembers(prev => prev.filter(m => m.uid !== uid));
+    } catch (error) {
+      console.error("Error deleting member:", error);
+      alert('Error deleting member');
+    }
+  };
+
   if (loading) return <div className={styles.desc}>Loading members...</div>;
 
   return (
@@ -112,10 +124,20 @@ export default function MemberManager() {
                   {member.role === 'pro_pending' && !member.isApproved && (
                     <button 
                       className={styles.viewBtn}
-                      style={{backgroundColor: '#2563eb', color: 'white', border: 'none'}} 
+                      style={{backgroundColor: '#2563eb', color: 'white', border: 'none', marginRight: '5px'}} 
                       onClick={() => approveMember(member.uid)}
                     >
                       {language === 'ko' ? '승인하기' : 'Approve'}
+                    </button>
+                  )}
+                  {member.role !== 'admin' && (
+                    <button 
+                      className={styles.viewBtn}
+                      style={{color: '#ef4444', borderColor: '#fee2e2'}} 
+                      onClick={() => deleteMember(member.uid)}
+                      title="Delete User"
+                    >
+                      <Trash2 size={16} />
                     </button>
                   )}
                 </td>

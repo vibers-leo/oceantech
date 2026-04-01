@@ -113,10 +113,10 @@ export const translations = {
         { title: 'Technical Education', desc: '라캉 아카데미를 통해 단순 제품 공급을 넘어, 시술 테크닉과 살롱 경영 노하우를 공유합니다.' }
       ],
       products: [
-        { name: 'Lacan Hard Wax Pro', desc: '전문가용 하이엔드 하드왁스 - 골드 포뮬러 (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax_pro.png' },
-        { name: 'Rocket Solution Quick 5', desc: '라캉 로켓솔루션 Quick 5 브라질리언 전용 팩', tag: 'Best Seller', img: '/lacan/products/rocket_solution.png' },
-        { name: 'Professional Waxing Kit', desc: '살롱 운영을 위한 필수 스타터 키트', tag: 'Expert', img: '/lacan/products/hard_wax_pro.png' },
-        { name: 'Lacan Aftercare Solution', desc: '시술 후 진정을 위한 프리미엄 솔루션', tag: 'Essential', img: '/lacan/products/rocket_solution.png' }
+        { name: 'Lacan Hard Wax Pro', desc: '전문가용 하이엔드 하드왁스 (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax.jpeg' },
+        { name: 'Rocket Solution Quick 5', desc: '라캉 로켓솔루션 Quick 5 브라질리언 전용 팩', tag: 'Best Seller', img: '/lacan/lacan_hero_1.jpg' },
+        { name: 'Professional Waxing Kit', desc: '살롱 운영을 위한 필수 스타터 키트', tag: 'Expert', img: '/lacan/products/hard_wax.jpeg' },
+        { name: 'Lacan Aftercare Solution', desc: '시술 후 진정을 위한 프리미엄 솔루션', tag: 'Essential', img: '/lacan/lacan_hero_1.jpg' }
       ],
       cta: '전문가 인증 및 파트너 신청'
     },
@@ -284,10 +284,10 @@ export const translations = {
         { title: 'Technical Education', desc: '라캉 아카데미를 통해 단순 제품 공급을 넘어, 시술 테크닉과 살롱 경영 노하우를 공유합니다.' }
       ],
       products: [
-        { name: 'Lacan Hard Wax Pro', desc: 'High-End Hard Wax for Professional Use (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax_pro.png' },
-        { name: 'Rocket Solution Quick 5', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack', tag: 'Best Seller', img: '/lacan/products/rocket_solution.png' },
-        { name: 'Professional Waxing Kit', desc: 'Essential Starter Kit for Salon Operations', tag: 'Expert', img: '/lacan/products/hard_wax_pro.png' },
-        { name: 'Lacan Aftercare Solution', desc: 'Premium Solution for Post-Treatment Soothing', tag: 'Essential', img: '/lacan/products/rocket_solution.png' }
+        { name: 'Lacan Hard Wax Pro', desc: 'High-End Hard Wax for Professional Use (1Kg)', tag: 'Signature', img: '/lacan/products/hard_wax.jpeg' },
+        { name: 'Rocket Solution Quick 5', desc: 'Lacan Rocket Solution Quick 5 Brazilian Pack', tag: 'Best Seller', img: '/lacan/lacan_hero_1.jpg' },
+        { name: 'Professional Waxing Kit', desc: 'Essential Starter Kit for Salon Operations', tag: 'Expert', img: '/lacan/products/hard_wax.jpeg' },
+        { name: 'Lacan Aftercare Solution', desc: 'Premium Solution for Post-Treatment Soothing', tag: 'Essential', img: '/lacan/lacan_hero_1.jpg' }
       ],
       cta: 'Apply for Partnership'
     },

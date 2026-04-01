@@ -15,7 +15,7 @@ export default function AlminerPage() {
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <Image 
-            src="/rminu/products/home_wax_kit.png" 
+            src="/th/rminu-th_01.jpg" 
             alt="Alminer R-minu" 
             fill 
             className={styles.heroImg}
@@ -47,7 +47,7 @@ export default function AlminerPage() {
         <div className={styles.productHighlight}>
           <div className={styles.productVisual}>
             <Image 
-              src="/rminu/products/home_wax_kit.png" 
+              src="/rminu/알마이너-썸네일-200g-2종.jpg" 
               alt="R-minu Hard Wax" 
               fill 
               className={styles.highlightImg} 
@@ -90,19 +90,19 @@ export default function AlminerPage() {
         <div className={styles.galleryGrid}>
           <div className={styles.galleryItem}>
             <div className={styles.imgWrapper}>
-              <Image src="/rminu/products/home_wax_kit.png" alt="1000g Package" fill className={styles.gImg} />
+              <Image src="/rminu/알마이너-썸네일-1000g-2종.jpg" alt="1000g Package" fill className={styles.gImg} />
             </div>
             <span>{t.alminer.gallery.pro1kg}</span>
           </div>
           <div className={styles.galleryItem}>
             <div className={styles.imgWrapper}>
-              <Image src="/rminu/products/home_wax_kit.png" alt="200g Package" fill className={styles.gImg} />
+              <Image src="/rminu/알마이너-썸네일-200g-1종.jpg" alt="200g Package" fill className={styles.gImg} />
             </div>
             <span>{t.alminer.gallery.home200g}</span>
           </div>
           <div className={styles.galleryItem}>
              <div className={styles.imgWrapper}>
-               <Image src="/rminu/products/texture_macro.png" alt="Detail View" fill className={styles.gImg} />
+               <Image src="/th/rminu-th_02.jpg" alt="Detail View" fill className={styles.gImg} />
              </div>
              <span>{t.alminer.gallery.texture}</span>
           </div>

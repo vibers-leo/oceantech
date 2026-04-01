@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './AdminComponents.module.css';
-import { getOrders, type Order } from '@/lib/firestore';
+import { getOrders, getDashboardStats, type Order, type DashboardStats } from '@/lib/firestore';
 
 const MARKET_INSIGHTS = [
   { id: 'VN', country: 'Vietnam', flag: '🇻🇳', title: 'K-뷰티 고관여층', desc: '한국 화장품에 대한 신뢰도 높음. 가격 민감도가 있지만 품질 중시. 인플루언서 마케팅 필수.' },
@@ -25,19 +25,29 @@ const LOCATIONS = [
 export default function SEALiveMap() {
   const [activeNodes, setActiveNodes] = useState<string[]>([]);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       setLoading(true);
       try {
-        const data = await getOrders();
-        // Limit to 5 recent orders for the sidebar
-        setRecentOrders(data.slice(0, 5));
+        const [ordersData, statsData] = await Promise.all([
+          getOrders(),
+          getDashboardStats()
+        ]);
         
-        // If there are real orders, trigger pings for those countries
-        const countries = [...new Set(data.map(o => o.email?.split('@')[1]?.includes('sg') ? 'SG' : o.email?.split('@')[1]?.includes('vn') ? 'VN' : 'KR'))];
-        // Note: Real routing would use a 'region' field. Using a fallback for demo.
+        setRecentOrders(ordersData.slice(0, 8));
+        setStats(statsData);
+        
+        // 실제 주문 이메일 도메인 분석을 통한 국가 핑 노출 (데모용 로직 유지)
+        const orderCountries = ordersData
+          .map(o => o.email?.split('@')[1]?.includes('vn') ? 'VN' : o.email?.split('@')[1]?.includes('th') ? 'TH' : '')
+          .filter(c => c !== '');
+        
+        if (orderCountries.length > 0) {
+           setActiveNodes([orderCountries[0]]);
+        }
       } catch (error) {
         console.error('Failed to load orders for map:', error);
       } finally {
@@ -67,12 +77,12 @@ export default function SEALiveMap() {
         </div>
         <div style={{ display: 'flex', gap: '15px' }}>
            <div className="flex flex-col items-end">
-             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>현재 접속자</span>
-             <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#38bdf8' }}>1,284</span>
+             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>누적 주문 건수</span>
+             <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#38bdf8' }}>{stats?.totalOrders || 0}</span>
            </div>
            <div className="flex flex-col items-end">
-             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>일일 예상 매출</span>
-             <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#4ade80' }}>$4,250</span>
+             <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>실시간 누적 매출</span>
+             <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#4ade80' }}>₩{(stats?.revenue || 0).toLocaleString()}</span>
            </div>
         </div>
       </div>

@@ -6,12 +6,12 @@ import { Copy, Sparkles, RefreshCw, Check } from 'lucide-react';
 
 /* 
   Shopee Listing Optimizer 
-  - Generates SEO-optimized titles & descriptions for Shopee logic using Mock AI.
+  - Generates SEO-optimized titles & descriptions based on Ocean Tech's proprietary waxing tech.
 */
 
 const KEYWORDS = [
-  'Painless', 'Strong Grip', 'Sensitive Skin', 'Korean Beauty', 'Hypoallergenic', 
-  'Low Melting Point', 'Salon Quality', 'Ready Stock', 'Fast Shipping'
+  'Painless', 'Salon Quality', 'Copolymer MI 150', 'Abietic Acid 85%', 'Low Melting Point', 
+  'Korean Beauty', 'Sensitive Skin', 'Strong Grip', 'Hypoallergenic', 'Ready Stock'
 ];
 
 const MOCK_RESULTS = {
@@ -66,7 +66,27 @@ export default function ShopeeOptimizer() {
       
       setResult({
         title: title,
-        desc: MOCK_RESULTS.desc
+        desc: `
+<Ocean Tech Official Global Store>
+
+✨ PRODUCT: ${productName}
+🇰🇷 Origin: Made in Korea (100% Authentic)
+📦 Package: Professional Salon Size available
+🚚 Shipping: Direct from Korea / SLS Standard
+
+🌟 WHY CHOOSE ${productName.toUpperCase()}? 🌟
+✅ Copolymer MI 150 Tech: High elasticity formula (no breaking).
+✅ 85% Abietic Acid Content: Extreme hair cohesion for fine hairs.
+✅ Paraffin #55 Blending: Low skin adhesion, maximum hair grip.
+✅ Professional Heritage: Used in premium "LA CAN" waxing salons.
+
+💡 HOW TO USE
+1. Warm the beads until it reaches honey-like consistency.
+2. Apply a thin layer in the direction of hair growth.
+3. Wait 5-10 seconds and pull off rapidly against hair growth.
+
+#waxing #hardwax #kbeauty #premiumwax #lacan #alminer #painlesswax #koreanbeauty #hairremoval
+        `
       });
       setIsGenerating(false);
     }, 1500);
@@ -150,7 +170,7 @@ export default function ShopeeOptimizer() {
             }}
           >
             {isGenerating ? <RefreshCw className="animate-spin w-5 h-5"/> : <Sparkles className="w-5 h-5"/>}
-            {isGenerating ? '시장 트렌드 분석 중...' : '최적화 리스팅 생성'}
+            {isGenerating ? '리스팅 엔진 가동 중...' : 'SEO 리스팅 최적화 생성'}
           </button>
         </div>
 
