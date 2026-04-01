@@ -9,6 +9,7 @@ interface SectionProps {
   background?: 'white' | 'light' | 'dark' | 'none';
   fullWidth?: boolean;
   id?: string;
+  style?: React.CSSProperties;
 }
 
 export default function Section({
@@ -17,11 +18,13 @@ export default function Section({
   background = 'white',
   fullWidth = false,
   id,
+  style,
 }: SectionProps) {
   return (
     <section 
       id={id}
       className={`${styles.section} ${styles[background]} ${className}`}
+      style={style}
     >
       <div className={fullWidth ? '' : 'container'}>
         {children}

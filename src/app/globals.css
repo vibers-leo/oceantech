@@ -1,20 +1,47 @@
 :root {
-  --background: #fdfbf7;
-  --foreground: #1a1a1a;
-  --primary: #1a1a1a;
-  --secondary: #666666;
-  --accent: #c5a065;
-  --accent-light: #e8dcc5;
-  --surface: #FFFFFF;
-  --border: #E5E5E5;
-
-  /* Brand Colors */
-  --lacan-primary: #5D4037;
-  --lacan-bg: #EDE0D4;
+  /* Premium Palette: Sophisticated & High-End */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  
+  --primary: #1e293b;
+  --primary-light: #334155;
+  --primary-dark: #020617;
+  
+  --accent: #d4af37; /* Legacy Gold */
+  --accent-soft: #fbf6e0;
+  --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f1d27b 100%);
+  
+  --lacan-primary: #5d4037;
+  --lacan-bg: #fdfaf7;
   --alminer-primary: #ff5c00;
-  --alminer-accent: #ff8c00;
+  --alminer-gradient: linear-gradient(135deg, #ff5c00 0%, #ff8c00 100%);
 
-  /* --font-sans and --font-serif are defined by Next.js font loader in layout.tsx */
+  --surface: #ffffff;
+  --surface-subtle: #f8fafc;
+  --border: #e2e8f0;
+  --border-subtle: #f1f5f9;
+
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+  /* Shared Tokens */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 32px;
+  --radius-full: 9999px;
+
+  --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.2s ease;
+}
+
+[data-theme='dark'] {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --surface: #0f172a;
+  --surface-subtle: #1e293b;
+  --border: #1e293b;
+  --glass: rgba(15, 23, 42, 0.7);
 }
 
 * {
@@ -27,128 +54,135 @@ html {
   scroll-behavior: smooth;
 }
 
-html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  font-family: var(--font-sans);
+  font-family: 'Outfit', var(--font-sans), sans-serif;
   background-color: var(--background);
   color: var(--foreground);
-  line-height: 1.6;
-  word-break: keep-all; /* Prevent mid-word breaks for Korean */
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  cursor: pointer;
-  font-family: inherit;
-}
-
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* Typography Supernova Styles */
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--primary-dark);
 }
 
-h1 {
-  font-size: 3.5rem;
-  letter-spacing: -0.02em;
-}
-h2 {
-  font-size: 2.5rem;
-  letter-spacing: -0.01em;
-  margin-bottom: 1rem;
-}
-h3 {
-  font-size: 1.75rem;
-  margin-bottom: 0.75rem;
-}
+h1 { font-size: clamp(3rem, 8vw, 5rem); }
+h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 1.5rem; }
+h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); }
 
 p {
-  margin-bottom: 1rem;
-  color: var(--secondary);
+  color: #64748b;
+  font-size: 1.1rem;
 }
 
-/* Utilities */
+/* Base Components & Utilities */
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-.section {
-  padding: 100px 0;
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
 }
 
-.btn {
+.gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: inline-block;
-  padding: 12px 32px;
+}
+
+/* Button Refinement */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 36px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  transition: var(--transition-smooth);
+  overflow: hidden;
+  z-index: 1;
+  border: none;
+}
+
+.btn-primary {
   background: var(--primary);
   color: white;
-  border: 1px solid var(--primary);
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
 }
 
-.btn:hover {
-  background: transparent;
-  color: var(--primary);
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+  background: var(--primary-dark);
 }
 
-.btn-outline {
-  background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
-}
-
-.btn-outline:hover {
-  background: var(--primary);
+.btn-accent {
+  background: var(--accent-gradient);
   color: white;
 }
 
-/* Accessibility: 키보드 포커스 표시 (마우스 사용 시엔 숨김) */
-*:focus {
-  outline: none;
+.btn-accent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.3);
 }
 
-*:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+/* Animations & Effects */
+.parallax-bg {
+  transform: translateZ(0);
 }
 
-/* Motion Preference: 애니메이션 줄이기 설정 존중 */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-.fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+@keyframes reveal {
+  from { opacity: 0; clip-path: inset(10% 0 10% 0); transform: translateY(30px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
+}
+
+.reveal-anim {
+  animation: reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Mask for Hero Overlays */
+.mask-bottom {
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }

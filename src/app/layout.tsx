@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Outfit, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -10,7 +10,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { ToastProvider } from '@/context/ToastContext';
 import AIChatBot from '@/components/AIChatBot';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rminu.com';
@@ -74,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="ko" className={`${outfit.variable} ${playfair.variable}`}>
       <body>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-CGK1BSBM63"

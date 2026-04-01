@@ -20,61 +20,77 @@ export default function Home() {
             alt="Ocean Tech Beauty" 
             fill 
             priority
-            quality={90}
+            quality={100}
+            className={styles.heroImg}
             style={{ objectFit: 'cover' }}
           />
         </div>
+        <div className={styles.heroOverlay} />
+        
         <div className={styles.heroContent}>
-          <h1 className="fade-in">Ultimate Waxing<br />Experience</h1>
-          <p className="fade-in" style={{ animationDelay: '0.2s' }}>The Gold Standard for Professionals and You</p>
+          <span className="reveal-anim" style={{ letterSpacing: '0.4em', display: 'block', marginBottom: '20px', color: 'var(--accent)' }}>
+            EMBODYING THE PRESTIGE
+          </span>
+          <h1 className="reveal-anim" style={{ animationDelay: '0.2s' }}>
+            The New Standard<br />of <span className="gradient-text">Premium Waxing</span>
+          </h1>
+          <p className="reveal-anim" style={{ animationDelay: '0.4s' }}>
+            FOR PROFESSIONALS & HOME EXPERTISE
+          </p>
         </div>
-        <div className={`${styles.scrollIndicator} fade-in`} style={{ animationDelay: '1.2s' }}>
-           <span>DISCOVER MORE</span>
+
+        <div className={`${styles.scrollIndicator} reveal-anim`} style={{ animationDelay: '1.2s' }}>
+           <span>SCROLL</span>
            <div className={styles.scrollLine}></div>
         </div>
-        <div className={styles.heroOverlay}></div>
       </section>
 
       {/* Brands Section */}
       <section className={styles.brands}>
         {/* Lacan Card */}
         <div className={styles.brandCard}>
-          <div className={styles.brandContent}>
-            <span className={styles.brandLabel}>FOR PROFESSIONALS</span>
-            <h3>{t.lacan.title}</h3>
-            <p>{t.lacan.description}</p>
-            <Link href="/lacan" className={styles.lacanBtn}>
-              EXPLORE LACAN
-            </Link>
-          </div>
-          <div className={`${styles.brandVisual} ${styles.lacanVisual}`}>
+          <div className={styles.brandVisual}>
             <Image 
               src="/lacan/products/hard_wax.jpeg" 
               alt="Lacan Premium Wax" 
               fill
-              quality={90}
+              quality={100}
               style={{ objectFit: 'cover' }}
             />
             <div className={styles.visualOverlay}></div>
+          </div>
+          <div className={styles.brandContent}>
+            <span className={styles.brandLabel}>PROFESSIONAL EXPERTISE</span>
+            <h3>{t.lacan.title}</h3>
+            <p>{t.lacan.description}</p>
+            <div>
+              <Link href="/lacan" className={styles.lacanBtn}>
+                EXPLORE LACAN 
+                <span style={{ marginLeft: '12px', fontSize: '1.2rem' }}>→</span>
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* Alminer Card */}
         <div className={styles.brandCard}>
-          <div className={styles.brandContent}>
-            <span className={styles.brandLabel}>FOR HOME CARE</span>
+          <div className={styles.brandContent} style={{ alignItems: 'flex-end', textAlign: 'right' }}>
+            <span className={styles.brandLabel}>HOME RITUALS</span>
             <h3>{t.alminer.title}</h3>
-            <p>{t.alminer.description}</p>
-            <Link href="/alminer" className={styles.alminerBtn}>
-              EXPLORE R-MINU
-            </Link>
+            <p style={{ marginLeft: 'auto' }}>{t.alminer.description}</p>
+            <div>
+              <Link href="/alminer" className={styles.alminerBtn}>
+                EXPLORE R-MINU
+                <span style={{ marginLeft: '12px', fontSize: '1.2rem' }}>→</span>
+              </Link>
+            </div>
           </div>
-          <div className={`${styles.brandVisual} ${styles.alminerVisual}`}>
+          <div className={styles.brandVisual}>
              <Image 
               src="/rminu/알마이너-썸네일-200g-2종.jpg" 
               alt="R-minu Home Waxing" 
               fill
-              quality={90}
+              quality={100}
               style={{ objectFit: 'cover' }}
             />
             <div className={styles.visualOverlayLight}></div>

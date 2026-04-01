@@ -69,7 +69,7 @@ export default function SEALiveMap() {
   }, []);
 
   return (
-    <div className={styles.componentContainer} style={{ background: '#0f172a', color: 'white', border: '1px solid #334155' }}>
+    <div className={styles.componentContainer} style={{ background: '#0f172a', color: 'white', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
           <h2 className={styles.title} style={{ color: 'white', marginBottom: '5px' }}>동남아 시장 분석 (SEA Market Analysis)</h2>
@@ -90,7 +90,7 @@ export default function SEALiveMap() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '20px', marginBottom: '30px' }}>
         
         {/* Map Visualization */}
-        <div style={{ position: 'relative', height: '500px', background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)', borderRadius: '12px', overflow: 'hidden', border: '1px solid #334155' }}>
+        <div style={{ position: 'relative', height: '500px', background: 'radial-gradient(circle at center, #1e293b 0%, #020617 100%)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
           {/* Grid Lines */}
           <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.1 }}></div>
 
