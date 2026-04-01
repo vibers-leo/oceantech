@@ -11,16 +11,17 @@ export default function AboutPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
+        <div className={styles.headerBg}></div>
         <div className="container">
-          <h1 className="fade-in">{t.about.title}</h1>
+          <h1 className="reveal-anim">{t.about.title}</h1>
         </div>
       </div>
       
       <Section>
         <div className={styles.content}>
-          <div className={`${styles.vision} fade-in`}>
+          <div className={`${styles.vision} reveal-anim`} style={{ animationDelay: '0.2s' }}>
             <span>{t.about.vision}</span>
-            <h2>{t.about.visionText}</h2>
+            <h2 className="gradient-text">{t.about.visionText}</h2>
           </div>
           
           <p className={styles.description}>{t.about.description}</p>
@@ -53,11 +54,11 @@ export default function AboutPage() {
           
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
-              <h3>CEO</h3>
+              <h3>CHIEF EXECUTIVE</h3>
               <p>{t.about.ceo}</p>
             </div>
             <div className={styles.infoItem}>
-              <h3>Location</h3>
+              <h3>HEADQUARTERS</h3>
               <p>{t.about.address}</p>
               <div className={styles.techMap}>
                  <div className={styles.mapGrid}></div>
@@ -66,8 +67,8 @@ export default function AboutPage() {
               </div>
             </div>
             <div className={styles.infoItem}>
-              <h3>Contact</h3>
-              <p>010-7169-3438</p>
+              <h3>DIRECT CONTACT</h3>
+              <p>+82 10-7169-3438</p>
               <p>jbanion@naver.com</p>
             </div>
           </div>

@@ -45,9 +45,10 @@ export default function BusinessPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <div className="container">
-          <span className={styles.label}>BUSINESS RESOURCE CENTER</span>
-          <h1>{t.business.subtitle}</h1>
+        <div className={styles.headerBg}></div>
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <span className={`${styles.label} reveal-anim`}>BUSINESS RESOURCE CENTER</span>
+          <h1 className="reveal-anim" style={{ animationDelay: '0.2s' }}>{t.business.subtitle}</h1>
         </div>
       </div>
 
@@ -65,7 +66,7 @@ export default function BusinessPage() {
                   <h3>{t.business.download.catalog}</h3>
                   <p>2025 OceanTech Product Catalog.pdf</p>
                 </div>
-                <Button variant="outline" size="sm">Download</Button>
+                <Button variant="outline" size="sm" style={{ width: '100%' }}>DOWNLOAD ASSET</Button>
               </div>
               <div className={styles.downloadCard}>
                 <div className={styles.fileIcon}>ZIP</div>
@@ -73,7 +74,7 @@ export default function BusinessPage() {
                   <h3>{t.business.download.kit}</h3>
                   <p>Media_Kit_v2.0.zip</p>
                 </div>
-                <Button variant="outline" size="sm">Download</Button>
+                <Button variant="outline" size="sm" style={{ width: '100%' }}>DOWNLOAD ASSET</Button>
               </div>
               <div className={styles.downloadCard}>
                 <div className={styles.fileIcon}>AI</div>
@@ -81,7 +82,7 @@ export default function BusinessPage() {
                   <h3>{t.business.download.bi}</h3>
                   <p>Brand_Logo_Assets.ai</p>
                 </div>
-                <Button variant="outline" size="sm">Download</Button>
+                <Button variant="outline" size="sm" style={{ width: '100%' }}>DOWNLOAD ASSET</Button>
               </div>
             </div>
           </section>
@@ -133,15 +134,13 @@ export default function BusinessPage() {
                   value={form.message}
                   onChange={handleChange}
                 />
-                <Button
-                  variant="primary"
-                  size="lg"
+                <button
                   className={styles.submitBtn}
                   type="submit"
                   disabled={submitting}
                 >
                   {submitting ? '접수 중...' : t.business.inquiry.btn}
-                </Button>
+                </button>
               </form>
             </div>
           </section>

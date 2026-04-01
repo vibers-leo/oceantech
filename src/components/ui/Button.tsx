@@ -14,6 +14,7 @@ interface ButtonProps {
   external?: boolean;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  style?: React.CSSProperties;
 }
 
 export default function Button({
@@ -26,26 +27,27 @@ export default function Button({
   external = false,
   disabled = false,
   type = 'button',
+  style,
 }: ButtonProps) {
   const classes = `${styles.btn} ${styles[variant]} ${styles[size]} ${className}`;
 
   if (href) {
     if (external) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={classes} style={style}>
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} className={classes} style={style}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={classes} onClick={onClick} disabled={disabled} type={type}>
+    <button className={classes} onClick={onClick} disabled={disabled} type={type} style={style}>
       {children}
     </button>
   );
